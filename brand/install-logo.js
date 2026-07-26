@@ -121,7 +121,7 @@ async function renderIcoBuffer(svg) {
 
     // 2) Every favicon variant -> same LadeVault mark (main-* and alt-*, all app suffixes).
     // Skip apps that have dedicated icons built by build-icons.js.
-    const CUSTOM_APPS = new Set(['pad', 'kanban', 'code', 'form', 'diagram', 'slide']);
+    const CUSTOM_APPS = new Set(['pad', 'kanban', 'code', 'form', 'diagram', 'slide', 'doc', 'poll', 'presentation']);
     const isCustomApp = (filename) => {
         for (const app of CUSTOM_APPS) {
             if (filename.includes(`-${app}.`)) return true;
