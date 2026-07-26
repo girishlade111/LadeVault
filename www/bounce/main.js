@@ -20,7 +20,7 @@ define(['/api/config'], function (ApiConfig) {
     // only redirect if the request comes from CryptPad's sandbox
     const safeOrigin = new URL(ApiConfig.httpSafeOrigin).origin;
     if (!document.referrer) {
-        window.alert('This link only works when loaded from a CryptPad document');
+        window.alert('This link only works when loaded from a LadeVault document');
         return void reject();
     }
     try {

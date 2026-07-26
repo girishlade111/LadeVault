@@ -252,7 +252,7 @@ define([
                 var updateURI = function (secret) {
                     var username = accountName;
                     var hostname = new URL(origin).hostname;
-                    var label = "CryptPad";
+                    var label = "LadeVault";
 
                     var uri = `otpauth://totp/${encodeURI(label)}:${encodeURI(username)}@${hostname}?secret=${secret}`;
 

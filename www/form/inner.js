@@ -3341,7 +3341,7 @@ define([
                 src:'/customize/CryptPad_logo_grey.svg?'+ApiConfig.requireConf.urlArgs,
                 alt:'CryptPad_logo'
             }),
-            h('span', 'CryptPad')
+            h('span', 'LadeVault')
         ]);
         $(logo).click(function () {
             APP.framework._.sfCommon.gotoURL('/');
