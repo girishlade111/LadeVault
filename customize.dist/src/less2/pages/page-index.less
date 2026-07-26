@@ -232,6 +232,21 @@
             }
         }
     });
+
+    // Fluent 2 brand icons - homepage size override (larger icons on app grid)
+    .bs-callout {
+        svg.cp-icon.cp-icon-color-pad,
+        svg.cp-icon.cp-icon-color-kanban,
+        svg.cp-icon.cp-icon-color-code,
+        svg.cp-icon.cp-icon-color-form,
+        svg.cp-icon.cp-icon-color-diagram,
+        svg.cp-icon.cp-icon-color-slide {
+            width: 48px;
+            height: 48px;
+            padding: 10px 10px 0 10px;
+            box-sizing: content-box;
+        }
+    }
     .cp-app-drive {
         display: flex;
         flex-direction: row;

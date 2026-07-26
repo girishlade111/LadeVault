@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="grad_diagram" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8C8564"/>
+      <stop offset="100%" stop-color="#6E6849"/>
+    </linearGradient>
+    <linearGradient id="highlight_diagram" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow_diagram" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="4" dy="6" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <!-- back document layer -->
+  <path d="M144,64 L348,64 Q376,64 376,92 L376,396 Q376,424 348,424 L144,424 Q116,424 116,396 L116,92 Q116,64 144,64 Z" fill="#5b5641" filter="url(#shadow_diagram)"/>
+  <!-- front document -->
+  <path d="M160,80 L364,80 Q392,80 392,108 L392,412 Q392,440 364,440 L160,440 Q132,440 132,412 L132,108 Q132,80 160,80 Z" fill="url(#grad_diagram)" filter="url(#shadow_diagram)"/>
+  <!-- connecting lines -->
+  <line x1="210" y1="220" x2="310" y2="180" stroke="#ffffff" stroke-opacity="0.5" stroke-width="6" stroke-linecap="round"/>
+  <line x1="210" y1="220" x2="260" y2="320" stroke="#ffffff" stroke-opacity="0.5" stroke-width="6" stroke-linecap="round"/>
+  <line x1="310" y1="180" x2="260" y2="320" stroke="#ffffff" stroke-opacity="0.5" stroke-width="6" stroke-linecap="round"/>
+  <!-- arrow head on line from node1 to node2 -->
+  <path d="M298,184 L306,180 L298,176" fill="none" stroke="#ffffff" stroke-opacity="0.6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- nodes -->
+  <circle cx="210" cy="220" r="22" fill="#ffffff" fill-opacity="0.8"/>
+  <circle cx="310" cy="180" r="22" fill="#ffffff" fill-opacity="0.6"/>
+  <circle cx="260" cy="320" r="22" fill="#ffffff" fill-opacity="0.7"/>
+  <!-- highlight -->
+  <path d="M160,80 L364,80 Q392,80 392,108 L392,412 Q392,440 364,440 L160,440 Q132,440 132,412 L132,108 Q132,80 160,80 Z" fill="url(#highlight_diagram)"/>
+</svg>

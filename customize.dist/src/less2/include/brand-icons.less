@@ -1,0 +1,43 @@
+/*
+ * SPDX-FileCopyrightText: 2024 LadeVault contributors
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+// Fluent 2 brand icon overrides
+// Replaces inline Lucide SVG rendering with background-image references
+// to our custom multi-layer Fluent 2 icon SVGs.
+
+@brand-icon-path: "/customize/brand-icons";
+
+// Mixin that applies the brand icon background to a given app type
+.brand-icon-override(@type) {
+    svg.cp-icon.cp-icon-color-@{type} {
+        display: inline-block;
+        background-image: url("@{brand-icon-path}/@{type}.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        overflow: hidden;
+        color: transparent !important;
+        // Hide all internal SVG drawing elements (Lucide paths)
+        * {
+            visibility: hidden;
+        }
+    }
+}
+
+// Default sizing for brand icons (drive list view, general contexts)
+.brand-icons-base() {
+    .brand-icon-override(pad);
+    .brand-icon-override(kanban);
+    .brand-icon-override(code);
+    .brand-icon-override(form);
+    .brand-icon-override(diagram);
+    .brand-icon-override(slide);
+}
+
+// Mixin for applying brand icons - called from icon-colors.less
+.brandIcons_main() {
+    .brand-icons-base();
+}

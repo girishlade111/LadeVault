@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="grad_slide" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#66756B"/>
+      <stop offset="100%" stop-color="#4F5B53"/>
+    </linearGradient>
+    <linearGradient id="highlight_slide" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow_slide" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="4" dy="6" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <!-- back slide -->
+  <path d="M142,130 L388,130 Q410,130 410,152 L410,308 Q410,330 388,330 L142,330 Q120,330 120,308 L120,152 Q120,130 142,130 Z" fill="#3d4640" filter="url(#shadow_slide)"/>
+  <!-- middle slide -->
+  <path d="M162,150 L408,150 Q430,150 430,172 L430,328 Q430,350 408,350 L162,350 Q140,350 140,328 L140,172 Q140,150 162,150 Z" fill="#525e56" filter="url(#shadow_slide)"/>
+  <!-- front slide -->
+  <path d="M182,170 L428,170 Q450,170 450,192 L450,348 Q450,370 428,370 L182,370 Q160,370 160,348 L160,192 Q160,170 182,170 Z" fill="url(#grad_slide)" filter="url(#shadow_slide)"/>
+  <!-- content hint on front slide -->
+  <rect x="185" y="210" width="140" height="14" rx="7" fill="#ffffff" fill-opacity="0.35"/>
+  <rect x="185" y="240" width="100" height="10" rx="5" fill="#ffffff" fill-opacity="0.2"/>
+  <!-- small shape placeholder -->
+  <circle cx="360" cy="280" r="30" fill="#ffffff" fill-opacity="0.15"/>
+  <!-- highlight -->
+  <path d="M182,170 L428,170 Q450,170 450,192 L450,348 Q450,370 428,370 L182,370 Q160,370 160,348 L160,192 Q160,170 182,170 Z" fill="url(#highlight_slide)"/>
+</svg>

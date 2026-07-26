@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="grad_form" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5E8277"/>
+      <stop offset="100%" stop-color="#476459"/>
+    </linearGradient>
+    <linearGradient id="highlight_form" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow_form" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="4" dy="6" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <!-- back document layer -->
+  <path d="M152,64 L344,64 Q372,64 372,92 L372,396 Q372,424 344,424 L152,424 Q124,424 124,396 L124,92 Q124,64 152,64 Z" fill="#3d554d" filter="url(#shadow_form)"/>
+  <!-- front document -->
+  <path d="M168,80 L360,80 Q388,80 388,108 L388,412 Q388,440 360,440 L168,440 Q140,440 140,412 L140,108 Q140,80 168,80 Z" fill="url(#grad_form)" filter="url(#shadow_form)"/>
+  <!-- form rows -->
+    <rect x="172" y="170" width="28" height="28" rx="6" fill="none" stroke="#ffffff" stroke-opacity="0.7" stroke-width="4"/>
+    <path d="M178,184 L184,190 L194,178" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="215" y="178" width="130" height="12" rx="6" fill="#ffffff" fill-opacity="0.35"/>
+    <rect x="172" y="220" width="28" height="28" rx="6" fill="none" stroke="#ffffff" stroke-opacity="0.7" stroke-width="4"/>
+    <path d="M178,234 L184,240 L194,228" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="215" y="228" width="100" height="12" rx="6" fill="#ffffff" fill-opacity="0.35"/>
+    <rect x="172" y="270" width="28" height="28" rx="6" fill="none" stroke="#ffffff" stroke-opacity="0.7" stroke-width="4"/>
+    <path d="M178,284 L184,290 L194,278" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="215" y="278" width="130" height="12" rx="6" fill="#ffffff" fill-opacity="0.35"/>
+    <rect x="172" y="320" width="28" height="28" rx="6" fill="none" stroke="#ffffff" stroke-opacity="0.7" stroke-width="4"/>
+    
+    <rect x="215" y="328" width="100" height="12" rx="6" fill="#ffffff" fill-opacity="0.2"/>
+    <rect x="172" y="370" width="28" height="28" rx="6" fill="none" stroke="#ffffff" stroke-opacity="0.7" stroke-width="4"/>
+    
+    <rect x="215" y="378" width="130" height="12" rx="6" fill="#ffffff" fill-opacity="0.2"/>
+  <!-- highlight -->
+  <path d="M168,80 L360,80 Q388,80 388,108 L388,412 Q388,440 360,440 L168,440 Q140,440 140,412 L140,108 Q140,80 168,80 Z" fill="url(#highlight_form)"/>
+</svg>
