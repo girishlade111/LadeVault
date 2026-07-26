@@ -19,7 +19,7 @@
         "whiteboard": "Whiteboard"
     },
     "typeError": "Dette dokument er ikke kompatibelt med det valgte program",
-    "main_title": "CryptPad: Zero Knowledge, Collaborative Real Time Editing",
+    "main_title": "LadeVault: Zero Knowledge, Collaborative Real Time Editing",
     "common_connectionLost": "<b>Serverforbindelse afbrudt</b><br>Du er nu i skrivebeskyttet tilstand, indtil forbindelsen er tilbage.",
     "onLogout": "Du er logget ud, {0}klik her{1} for at logge ind<br>eller tryk på Esc for at få adgang til dit dokument i skrivebeskyttet tilstand.",
     "historyText": "Redigeringshistorik",
@@ -31,7 +31,7 @@
     "chainpadError": "En kritisk fejl har fundet sted i forbindelse med at updatere dit indhold. Denne side er i skrive-beskyttet tilstand for at garantere at du ikke mister dit arbejde. <br> Tryk Esc for at fortsætte med se dette dokument, eller genindlæs siden for at prøve at redigere igen.",
     "errorCopy": " Du kan stadig bruge den nuværende version i skrive-beskyttet tilstand ved at trykke Esc.",
     "storageStatus": "Plads:<br><b>{0}</b> brugt ud af <b>{1}</b>",
-    "newVersionError": "En ny version af CryptPad er tilgængelig .<br><a href='#'>Genindlæs</a> for at bruge den nye version eller tryk Esc for at tilgå dit indhold i <b>offline tilstand</b>.",
+    "newVersionError": "En ny version af LadeVault er tilgængelig .<br><a href='#'>Genindlæs</a> for at bruge den nye version eller tryk Esc for at tilgå dit indhold i <b>offline tilstand</b>.",
     "pinLimitReachedAlertNoAccounts": "Du har nået din opbevaringsplads grænse",
     "initializing": "Opstarter...",
     "forgetPrompt": "Når du klikker OK, bliver dette dokument rykket til papirkurven. Er du sikker?",
