@@ -436,13 +436,21 @@ function buildIco(entries) {
         const icoBuf = buildIco(icoEntries);
         fs.writeFileSync(path.join(ICO_DIR, `${name}.ico`), icoBuf);
 
-        // Install to customize.dist/favicon/
+        // Install to customize.dist/favicon/ (including aliases for doc, poll, presentation)
         const png512 = path.join(PNG_DIR, `${name}-512.png`);
         const pngBuf = fs.readFileSync(png512);
-        fs.writeFileSync(path.join(FAVICON_DIR, `main-favicon-${name}.png`), pngBuf);
-        fs.writeFileSync(path.join(FAVICON_DIR, `alt-favicon-${name}.png`), pngBuf);
-        fs.writeFileSync(path.join(FAVICON_DIR, `main-favicon-${name}.ico`), icoBuf);
-        fs.writeFileSync(path.join(FAVICON_DIR, `alt-favicon-${name}.ico`), icoBuf);
+        const ALIASES = {
+            pad: ['doc'],
+            form: ['poll'],
+            slide: ['presentation']
+        };
+        const targets = [name, ...(ALIASES[name] || [])];
+        for (const target of targets) {
+            fs.writeFileSync(path.join(FAVICON_DIR, `main-favicon-${target}.png`), pngBuf);
+            fs.writeFileSync(path.join(FAVICON_DIR, `alt-favicon-${target}.png`), pngBuf);
+            fs.writeFileSync(path.join(FAVICON_DIR, `main-favicon-${target}.ico`), icoBuf);
+            fs.writeFileSync(path.join(FAVICON_DIR, `alt-favicon-${target}.ico`), icoBuf);
+        }
 
         // Also copy master SVG to customize.dist/images/icons/
         const CUST_ICON_DIR = path.join(__dirname, '..', 'customize.dist', 'images', 'icons');
