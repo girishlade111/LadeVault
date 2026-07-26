@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="grad_code" x1="0%" y1="0%" x2="100%" y2="100%" gradientTransform="rotate(135, 0.5, 0.5)">
+      <stop offset="0%" stop-color="#7A8257"/>
+      <stop offset="100%" stop-color="#616B42"/>
+    </linearGradient>
+    <linearGradient id="highlight_code" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow_code" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="4" dy="6" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <!-- back document layer -->
+  <path d="M139.64,65 L338.36,65 Q363,65 363,89.64 L363,392.36 Q363,417 338.36,417 L139.64,417 Q115,417 115,392.36 L115,89.64 Q115,65 139.64,65 Z" fill="#4f5539" filter="url(#shadow_code)"/>
+  <!-- front document body -->
+  <path d="M156.64,80 L355.36,80 Q380,80 380,104.64 L380,407.36 Q380,432 355.36,432 L156.64,432 Q132,432 132,407.36 L132,104.64 Q132,80 156.64,80 Z" fill="url(#grad_code)" filter="url(#shadow_code)"/>
+  <!-- code brackets -->
+  <path d="M220,256 L180,290 L220,324" fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M292,256 L332,290 L292,324" fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M270,240 L242,340" fill="none" stroke="#ffffff" stroke-opacity="0.4" stroke-width="14" stroke-linecap="round"/>
+  <!-- highlight -->
+  <path d="M156.64,80 L355.36,80 Q380,80 380,104.64 L380,407.36 Q380,432 355.36,432 L156.64,432 Q132,432 132,407.36 L132,104.64 Q132,80 156.64,80 Z" fill="url(#highlight_code)"/>
+</svg>
