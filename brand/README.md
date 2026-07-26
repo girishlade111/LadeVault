@@ -26,12 +26,30 @@ darker tonal shade for depth — no literal folder, no text, transparent backgro
 Below ~32px the master's inner seam and grain turn to noise, so favicon sizes render
 from the simplified `ladevault-favicon.svg` instead (bolder fold, flat 2-stop gradient).
 
-## Rebuild
+## Rebuild the standalone asset set (in `brand/`)
 
 ```bash
 node brand/build-logo.js
 ```
 
-Requires Node with the `sharp` package (already a project dependency). Edit the path
-data / colors at the top of `build-logo.js` and re-run to regenerate every size and the
-`.ico` from the two SVG sources.
+## Install into the live app
+
+The app does **not** read from `brand/`. It serves logos and favicons from
+`customize.dist/` (via `/customize/...`). Run the installer to overwrite those:
+
+```bash
+node brand/install-logo.js
+```
+
+This replaces:
+- `customize.dist/CryptPad_logo.svg`, `CryptPad_logo_hero.svg` (azure) and
+  `CryptPad_logo_grey.svg` (grey) — the header/footer/loading logos
+- every `customize.dist/favicon/main-favicon*.{png,ico}` and `alt-favicon*.{png,ico}`
+  (all per-app variants) with the new mark
+- `customize.dist/favicon.ico` (root favicon)
+
+After installing, hard-refresh the browser (Ctrl+Shift+R) or clear cache — browsers
+cache favicons aggressively, which is usually why the old icon still appears.
+
+Requires Node with the `sharp` package (already a project dependency). Colors and glyph
+geometry live at the top of both scripts.
