@@ -132,7 +132,7 @@ define([
         try {
             name = Pages.Instance.name || new URL('/', ApiConfig.httpUnsafeOrigin).host;
         } catch (err) {
-            name = 'CryptPad';
+            name = 'LadeVault';
         }
         Pages.Instance.name = name;
         Pages.Instance.description = Pages.Instance.description || Msg.main_catch_phrase;
@@ -162,7 +162,7 @@ define([
                             "aria-hidden": true,
                             alt: ''
                         }),
-                        h('span.logo-font', 'CryptPad')
+                        h('span.logo-font', 'LadeVault')
                     ])
                 ]),
                 h('span.cp-footer-version', 'v' + Pages.versionString)

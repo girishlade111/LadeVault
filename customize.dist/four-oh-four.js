@@ -17,7 +17,7 @@ define([
     });
 
     var is500 = Boolean(document.querySelector('#five-hundred'));
-    var brand = h('h1#cp-brand', 'CryptPad');
+    var brand = h('h1#cp-brand', 'LadeVault');
     // Msg.fivehundred_internalServerError.four04_pageNotFound
     var message = h('h2#cp-scramble', Messages[is500? 'fivehundred_internalServerError':'four04_pageNotFound']);
     var title = h('h2#cp-title', is500? "500":"404");

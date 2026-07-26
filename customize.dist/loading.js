@@ -30,7 +30,7 @@ define([
 </div>
 <div id="cp-loading-footer">
     <div class="cp-loading-logo">
-        <img class="cp-loading-cryptofist" src="${logoPath}?${urlArgs}" alt="" aria-hidden="true"><span>CryptPad</span>
+        <img class="cp-loading-cryptofist" src="${logoPath}?${urlArgs}" alt="" aria-hidden="true"><span>LadeVault</span>
     </div>
     <div id="cp-loading-status">
         <i data-lucide="lock" aria-hidden="true"></i>

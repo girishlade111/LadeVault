@@ -14,7 +14,7 @@ elem.innerHTML = `
 </div>
 <div id="placeholder-loading-footer">
     <div class="placeholder-logo-container">
-        <img class="placeholder-logo" alt="" aria-hidden="true" src="${logoPath}"><span>CryptPad</span>
+        <img class="placeholder-logo" alt="" aria-hidden="true" src="${logoPath}"><span>LadeVault</span>
     </div>
     <div id="placeholder-loading-status">
         <i data-lucide="lock" aria-hidden="true"></i>
