@@ -2075,7 +2075,7 @@ define([
                         src: '/customize/CryptPad_logo.svg?' + urlArgs,
                         alt: Messages.label_logo
                     }),
-                h('h6', "CryptPad"),
+                h('h6', "LadeVault"),
                 h('span', Pages.versionString)
             ]),
             h('hr'),
@@ -2122,7 +2122,7 @@ define([
                     src: '/customize/CryptPad_logo_grey.svg',
                     "aria-hidden": true,
                 }),
-                h('span.cp-user-menu-logo-text', "CryptPad")
+                h('span.cp-user-menu-logo-text', "LadeVault")
             ]),
         });
         if (config.displayNameCls) {
@@ -2758,7 +2758,7 @@ define([
                         alt: '',
                         'aria-hidden': true
                     }),
-                    h('span', 'CryptPad')
+                    h('span', 'LadeVault')
                 ]),
                 h('div#cp-creation-status', [
                     Icons.get('lock'),
@@ -2780,7 +2780,7 @@ define([
         var newPadH3Title = Messages._getKey('creation_new',[Messages.type[type]]);
 
         var early = common.checkRestrictedApp(type);
-        var domain = Config.httpUnsafeOrigin || 'CryptPad';
+        var domain = Config.httpUnsafeOrigin || 'LadeVault';
         if (/^http/.test(domain)) { domain = domain.replace(/^https?\:\/\//, ''); }
 
         var title = h('div.cp-creation-title', [
