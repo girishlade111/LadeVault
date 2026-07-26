@@ -1,0 +1,152 @@
+/*
+ * SPDX-FileCopyrightText: 2023 XWiki CryptPad Team <contact@cryptpad.org> and contributors
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+@font-face {
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 500;
+    src: url("/customize/fonts/IBMPlexMono-Medium.woff2") format("woff2"), url("/customize/fonts/IBMPlexMono-Medium.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('/components/open-sans-fontface/fonts/Regular/OpenSans-Regular.eot');
+  src: url('/components/open-sans-fontface/fonts/Regular/OpenSans-Regular.eot?#iefix') format('embedded-opentype'),
+       url('/components/open-sans-fontface/fonts/Regular/OpenSans-Regular.woff') format('woff'),
+       url('/components/open-sans-fontface/fonts/Regular/OpenSans-Regular.ttf') format('truetype'),
+       url('/components/open-sans-fontface/fonts/Regular/OpenSans-Regular.svg#OpenSansLight') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+
+.cp-app-noscroll body {
+    background: transparent;
+}
+.cp-app-noscroll #placeholder {
+    z-index: 9999999; /* loading screen -1 */
+    background-color: transparent;
+}
+
+#placeholder {
+    visibility: visible;
+    position: fixed;
+    z-index: -10;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: #EEEEEE; /* @cp_loading-bg */
+    color: #757575; /* grey_600 */
+    font-size: 1.3em;
+    line-height: 120%;
+    opacity: 1;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    font: 20px 'Open Sans', sans-serif !important;
+}
+html #placeholder.dark-theme {
+    background-color: #212121; /* @cp_loading-bg (dark) */
+}
+#placeholder.dark-theme {
+    color: #BDBDBD; /* grey_400 */
+}
+
+#placeholder .placeholder-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #939393;
+}
+#placeholder .placeholder-logo-container img {
+    margin: 0;
+    max-height: 60px;
+}
+#placeholder .placeholder-logo-container span {
+    font-size: 40px;
+    font-family: "IBM Plex Mono";
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    cursor: pointer;
+}
+#placeholder .placeholder-message-container {
+    width: 700px;
+    max-width: 90vw;
+    height: auto;
+    max-height: calc(100vh - 20px);
+    flex-shrink: 0;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    animation: fadein 5s ease 2s forwards;
+}
+#placeholder .placeholder-message-container p {
+    margin-top: 0;
+}
+
+#placeholder-loading-status {
+    font-size: 0.75em;
+    margin-top: 2rem;
+    font-family: "IBM Plex Mono";
+    svg {
+        margin: 0;
+    }
+}
+#placeholder-loading-footer {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+
+    flex: 0 1 auto;
+    min-height: 0;
+    opacity: 0;
+    animation: fadein 5s ease 2s forwards;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@media screen and (max-width: 500px) {
+    #placeholder {
+        font-size: 16px !important;
+    }
+}
+@media screen and (max-width: 300px) {
+    #placeholder .placeholder-logo-container img {
+        max-height: 40px;
+    }
+    #placeholder .placeholder-logo-container span {
+        font-size: 20px;
+    }
+}
+@media screen and (max-height: 600px) {
+    #placeholder {
+        font-size: 16px !important;
+    }
+}
+:is(div, noscript) > p.noscript {
+    font-family: sans-serif;
+    z-index: 999;
+    padding: 15px;
+    font-size: 20px;
+    margin-top: 30px !important;
+    max-width: 800px;
+    margin: auto;
+
+    background-color: #424242;
+    color: #eee;
+    border-radius: 5px;
+}
+
