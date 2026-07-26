@@ -120,9 +120,17 @@ async function renderIcoBuffer(svg) {
     console.log('logos: CryptPad_logo.svg, _hero.svg, _grey.svg');
 
     // 2) Every favicon variant -> same LadeVault mark (main-* and alt-*, all app suffixes).
+    // Skip apps that have dedicated icons built by build-icons.js.
+    const CUSTOM_APPS = new Set(['pad', 'kanban', 'code', 'form', 'diagram', 'slide']);
+    const isCustomApp = (filename) => {
+        for (const app of CUSTOM_APPS) {
+            if (filename.includes(`-${app}.`)) return true;
+        }
+        return false;
+    };
     const files = fs.readdirSync(FAVDIR);
-    const pngTargets = files.filter(f => /^(main|alt)-favicon.*\.png$/.test(f));
-    const icoTargets = files.filter(f => /^(main|alt)-favicon.*\.ico$/.test(f));
+    const pngTargets = files.filter(f => /^(main|alt)-favicon.*\.png$/.test(f) && !isCustomApp(f));
+    const icoTargets = files.filter(f => /^(main|alt)-favicon.*\.ico$/.test(f) && !isCustomApp(f));
     const icoBuf = await renderIcoBuffer(azureSimpleSvg);
     for (const f of pngTargets) {
         await renderPng(azureSvg, 512, path.join(FAVDIR, f));

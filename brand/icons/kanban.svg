@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="grad_kanban" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5F7A52"/>
+      <stop offset="100%" stop-color="#4A6140"/>
+    </linearGradient>
+    <linearGradient id="highlight_kanban" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow_kanban" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="4" dy="6" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <!-- column 1 (back) -->
+  <path d="M130,120 L190,120 Q210,120 210,140 L210,380 Q210,400 190,400 L130,400 Q110,400 110,380 L110,140 Q110,120 130,120 Z" fill="#435539" filter="url(#shadow_kanban)"/>
+  <!-- column 2 (middle, tallest) -->
+  <path d="M240,90 L300,90 Q320,90 320,110 L320,380 Q320,400 300,400 L240,400 Q220,400 220,380 L220,110 Q220,90 240,90 Z" fill="url(#grad_kanban)" filter="url(#shadow_kanban)"/>
+  <!-- column 3 (front) -->
+  <path d="M350,140 L410,140 Q430,140 430,160 L430,380 Q430,400 410,400 L350,400 Q330,400 330,380 L330,160 Q330,140 350,140 Z" fill="#43573a" filter="url(#shadow_kanban)"/>
+  <!-- row indicators on middle card -->
+  <rect x="238" y="130" width="64" height="10" rx="5" fill="#ffffff" fill-opacity="0.3"/>
+  <rect x="238" y="155" width="64" height="10" rx="5" fill="#ffffff" fill-opacity="0.2"/>
+  <rect x="238" y="180" width="64" height="10" rx="5" fill="#ffffff" fill-opacity="0.15"/>
+  <!-- highlight on middle card -->
+  <path d="M240,90 L300,90 Q320,90 320,110 L320,380 Q320,400 300,400 L240,400 Q220,400 220,380 L220,110 Q220,90 240,90 Z" fill="url(#highlight_kanban)"/>
+</svg>
