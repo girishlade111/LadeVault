@@ -44,8 +44,8 @@
         .cp-modal {
             background-color: @cp_alertify-bg;
             color: @cp_alertify-fg;
-            box-shadow: @variables_shadow;
-            border-radius: @variables_radius;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            border-radius: @variables_radius_L;
 
             padding: @variables_padding;
             padding-top: @variables_padding * 2;
@@ -60,6 +60,8 @@
 
             font-family: @colortheme_font;
             text-align: center;
+
+            animation: cp-modal-appear 150ms ease-out;
 
             & > p {
                 margin-bottom: 1em;
@@ -97,6 +99,17 @@
                 cursor: pointer;
             }
         }
+    }
+}
+
+@keyframes cp-modal-appear {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
