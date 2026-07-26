@@ -121,7 +121,7 @@ define([
 
     assert(function (cb, msg) {
         msg.appendChild(h('span', [
-            "CryptPad's sandbox requires that both ",
+            "LadeVault's sandbox requires that both ",
             code('httpUnsafeOrigin'),
             ' and ',
             code('httpSafeOrigin'),
@@ -141,7 +141,7 @@ define([
             ' and ',
             code('httpSafeOrigin'),
             ' are equivalent. ',
-            "In order for CryptPad's security features to be as effective as intended they must be different. ",
+            "In order for LadeVault's security features to be as effective as intended they must be different. ",
             "See ",
             CONFIG_PATH(),
             '. ',
@@ -1202,7 +1202,7 @@ define([
         });
     });
 
-    var POLICY_ADVISORY = " This link will be included in the home page footer and 'About CryptPad' menu. It's advised that you either provide one or disable registration.";
+    var POLICY_ADVISORY = " This link will be included in the home page footer and 'About LadeVault' menu. It's advised that you either provide one or disable registration.";
     var APPCONFIG_DOCS_LINK = function (key, href) {
         return h('span', [
             " See ",
@@ -1211,7 +1211,7 @@ define([
                 target: "_blank",
                 rel: 'noopener noreferrer',
             }, "the relevant documentation"),
-            " about how to customize CryptPad's ",
+            " about how to customize LadeVault's ",
             code(key),
             ' value.',
         ]);
@@ -1304,7 +1304,7 @@ define([
             " This commonly indicates a mismatch between the API server's ",
             code('blobPath'),
             " value and the path that the webserver or reverse proxy is attempting to serve.",
-            " This misconfiguration will cause errors with uploaded files and CryptPad's office editors (sheet, presentation, document).",
+            " This misconfiguration will cause errors with uploaded files and LadeVault's office editors (sheet, presentation, document).",
         ]));
 
         Tools.common_xhr(fullPath, xhr => {
@@ -1358,7 +1358,7 @@ define([
 
     assert(function (cb, msg) {
         msg.appendChild(h('span', [
-            "The CryptPad development team recommends running at least NodeJS ",
+            "The LadeVault development team recommends running at least NodeJS ",
             code("v16.14.2"),
             ". Which can be installed and updated via ",
             h('a', {
