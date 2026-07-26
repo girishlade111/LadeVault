@@ -1724,7 +1724,7 @@ To update from `5.0.0` to `5.1.0`:
 * The behaviour of the long-form text input editor in our form app was not consistent with markdown-editing interfaces on the rest of the platform, so we enabled the same functionality as elsewhere.
 * Administration
   * We found that the quantity of support tickets shown for each category was sometimes inaccurate, so we corrected the way this number was computed.
-  * A change in the internal format of each instance's name, location, and description caused these fields not to be included in telemetry for instances that had opted into the [public instance directory](https://cryptpad.org/instances/). We've corrected this so such instances provide all the necessary information.
+  * A change in the internal format of each instance's name, location, and description caused these fields not to be included in telemetry for instances that had opted into the public instance directory. We've corrected this so such instances provide all the necessary information.
   * We've corrected some logic for displaying configured URLs for privacy policies, terms of service, and similar resources such that relative URLs are considered relative to the top-level domain (rather than the sandbox domain).
   * The "Launch time" value on the admin panel was using a hard-coded rather than the relevant translation, and was not correctly updating when the "Refresh" button was clicked. Both issues have been fixed.
   * Members of editing sessions are correctly informed when administrators archive active channels.
@@ -1741,7 +1741,7 @@ To update from `5.0.0` to `5.1.0`:
 This release was centered around two main goals:
 
 1. Implement a new, more modern and minimalist design with rounded corners and simpler colors
-2. Remove detailed information about the open-source project from the platform itself and instead host it on the recently deployed project site (https://cryptpad.org)
+2. Remove detailed information about the open-source project from the platform itself and instead host it on the recently deployed project site
 
 ## Update notes
 
@@ -1786,7 +1786,7 @@ To update from `4.14.1` to `5.0.0`:
   4. An optional notice to be displayed as a banner.
 * Many of the informational pages have been replaced by a link the project site (cryptpad.org). Links to optional, instance-specific pages like its terms of service, privacy policy, legal notice and contact information are displayed inline, allowing for a smaller footer.
 * The drive's directory tree (also shown in teams) can now be resized by dragging its border.
-* The checkup page features several new tests, including some which only apply to public instances (a description and location are expected if you have opted into the public instance directory (https://cryptpad.org/instances/).
+* The checkup page features several new tests, including some which only apply to public instances (a description and location are expected if you have opted into the public instance directory).
 
 ## Bug fixes
 
@@ -1838,7 +1838,7 @@ To do so:
 
 ## Goals
 
-Our main goal for this release was to follow up on some of the findings of the [Intigriti](https://www.intigriti.com/) bug bounty program that was [sponsored by the European Commission](https://ec.europa.eu/info/news/european-commissions-open-source-programme-office-starts-bug-bounties-2022-jan-19_en). We also aimed to deploy some features that we want to have in place before the deployment of our upcoming 5.0 release and a corresponding update to our project site ([cryptpad.org](https://cryptpad.org)). You can read more about all of this in [our latest blog post](https://blog.cryptpad.org/2022/03/29/March-2022-status-catching-up-on-recent-news/).
+Our main goal for this release was to follow up on some of the findings of the [Intigriti](https://www.intigriti.com/) bug bounty program that was [sponsored by the European Commission](https://ec.europa.eu/info/news/european-commissions-open-source-programme-office-starts-bug-bounties-2022-jan-19_en). We also aimed to deploy some features that we want to have in place before the deployment of our upcoming 5.0 release and a corresponding update to our project site. You can read more about all of this in [our latest blog post](https://blog.cryptpad.org/2022/03/29/March-2022-status-catching-up-on-recent-news/).
 
 ## Update notes
 
