@@ -1434,7 +1434,7 @@ define([
         if (!ApiConfig.listMyInstance) { return void cb(true); }
         msg.appendChild(h('span', [
             "The administrators of this instance have opted in to inclusion in ",
-            link('https://cryptpad.org/instances/', 'the public instance directory'),
+            'the public instance directory',
             ' but have not configured at least one of the expected ',
             code('description'),
             ' or ',
@@ -1519,7 +1519,7 @@ define([
         setWarningClass(msg);
         msg.appendChild(h('span', [
             "The administrators of this instance have opted in to inclusion in ",
-            link('https://cryptpad.org/instances/', 'the public instance directory'),
+            'the public instance directory',
             ' but have disabled registration, which is expected to be open.',
             h('br'),
             h('br'),

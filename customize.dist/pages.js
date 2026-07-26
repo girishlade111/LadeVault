@@ -148,14 +148,9 @@ define([
 
 
     Pages.infopageFooter = function () {
-        var donateButton;
-        if (!ApiConfig.removeDonateButton) {
-            donateButton = footLink('https://opencollective.com/cryptpad/contribute/', 'footer_donate', null, 'donate'); // TODO migrate to forkawesome and use the OpenCollective icon
-        }
-
         return h('footer.cp-footer', [
             h('div.cp-footer-left', [
-                h('a', {href:"https://cryptpad.org", role: 'button'}, [
+                h('a', {href:"/", role: 'button'}, [
                     h('div.cp-logo-foot', [
                         h('img', {
                             src: '/customize/CryptPad_logo.svg',
@@ -168,10 +163,7 @@ define([
                 h('span.cp-footer-version', 'v' + Pages.versionString)
             ]),
             h('div.cp-footer-center', [
-                h('div.cp-logo-btns', [
-                    footLink('https://cryptpad.org', null, Msg.footer_website, 'link'),
-                    donateButton,
-                ])
+                h('div.cp-logo-btns', [])
             ]),
             h('div.cp-footer-right', [
                 h('div.cp-footer-language', [
