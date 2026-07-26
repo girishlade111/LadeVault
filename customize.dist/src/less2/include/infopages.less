@@ -78,16 +78,41 @@ body.html {
         min-height: 75vh;
         max-width: 1200px;
         h1 {
-            font-size: 3em;
+            font-size: @type-h1;
+            font-weight: @type-weight-h1;
+            line-height: @type-lh-heading;
+            letter-spacing: @type-ls-heading;
             margin-bottom: 0.5em;
         }
         h2 {
-            font-size: 1.8em;
+            font-size: @type-h2;
+            font-weight: @type-weight-h2;
+            line-height: @type-lh-heading;
+            letter-spacing: @type-ls-heading;
             margin-top: 20px;
             margin-bottom: 0.5em;
         }
         h3 {
-            font-size: 1.5em;
+            font-size: @type-h3;
+            font-weight: @type-weight-h3;
+            line-height: @type-lh-heading;
+            letter-spacing: @type-ls-heading;
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+        h4 {
+            font-size: @type-h4;
+            font-weight: @type-weight-h4;
+            line-height: @type-lh-heading;
+            letter-spacing: @type-ls-heading;
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+        h5 {
+            font-size: @type-h5;
+            font-weight: @type-weight-h5;
+            line-height: @type-lh-heading;
+            letter-spacing: @type-ls-heading;
             margin-top: 1em;
             margin-bottom: 0.5em;
         }
@@ -100,7 +125,7 @@ body.html {
         }
         .cp-page-title {
             h1 {
-                font-family: "IBM Plex Mono";
+                font-family: "Geist Mono", monospace;
                 color: @cp_static-title;
                 margin: 50px auto;
             }
@@ -198,7 +223,7 @@ body.html {
             }
             .logo-font {
                 display: block;
-                font-family: "IBM Plex Mono";
+                font-family: "Geist Mono", monospace;
                 font-size: 1.5rem;
                 color: @cryptpad_text_col;
                 height: 40px;
@@ -244,7 +269,7 @@ body.html {
         }
         .cp-footer-version {
             padding: 10px;
-            font-family: 'IBM Plex Mono';
+            font-family: 'Geist Mono', monospace;
         }
         // .cp-version-footer {
         //     background-color: @cp_static-footer;
@@ -269,7 +294,7 @@ body.html {
             display: block;
             height: 50px;
             width: 250px;
-            font-family: "IBM Plex Mono";
+            font-family: "Geist Mono", monospace;
             font-size: 1.8em;
             img {
                 max-width: 40px;

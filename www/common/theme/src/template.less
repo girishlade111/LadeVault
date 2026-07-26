@@ -1,15 +1,18 @@
-@gutter-bg: #FAFAF8;
-@gutter-fg: #4B4A48;
+@import (reference) "/customize/src/less2/include/colortheme-all.less";
+@import (reference) "/customize/src/less2/include/font.less";
 
-@cursor-left: #4B4A48;
-@line-number-fg: #9B9A95;
+@gutter-bg: @cp_app-bg;
+@gutter-fg: @cryptpad_text_col;
+
+@cursor-left: @cryptpad_text_col;
+@line-number-fg: @cryptpad_color_grey_500;
 @selected-bg: rgba(113, 130, 110, 0.10);
 
 @comment-fg: #8A8A8A;
 @string-fg: #B66A44;
 @number-fg: #4D7A54;
 @variable-fg: #71826E;
-@variable2-fg: #4B4A48;
+@variable2-fg: @cryptpad_text_col;
 
 @def-fg: #9A6A00;
 @keyword-fg: #71826E;
@@ -22,8 +25,14 @@
       background-color: @gutter-bg !important;
       color: @gutter-fg !important;
       border: none;
+      font-family: "Geist Mono", monospace;
+      font-size: @type-body;
+      line-height: @type-lh-code;
     }
-    .CodeMirror-gutters { color: @gutter-bg; border-right: 1px solid #E3E2D9; }
+    .CodeMirror-gutters {
+        color: @gutter-bg;
+        border-right: 1px solid @cryptpad_color_grey_200;
+    }
     .CodeMirror-cursor { border-left: solid thin @cursor-left; }
 
     .CodeMirror-linenumber { color: @line-number-fg; }
