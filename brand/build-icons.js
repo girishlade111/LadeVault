@@ -443,6 +443,11 @@ function buildIco(entries) {
         fs.writeFileSync(path.join(FAVICON_DIR, `alt-favicon-${name}.png`), pngBuf);
         fs.writeFileSync(path.join(FAVICON_DIR, `main-favicon-${name}.ico`), icoBuf);
         fs.writeFileSync(path.join(FAVICON_DIR, `alt-favicon-${name}.ico`), icoBuf);
+
+        // Also copy master SVG to customize.dist/images/icons/
+        const CUST_ICON_DIR = path.join(__dirname, '..', 'customize.dist', 'images', 'icons');
+        fs.mkdirSync(CUST_ICON_DIR, { recursive: true });
+        fs.writeFileSync(path.join(CUST_ICON_DIR, `${name}.svg`), masterSvg);
     }
 
     console.log('done. All 6 app icons built and installed.');
