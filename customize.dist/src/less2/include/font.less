@@ -8,13 +8,13 @@
     --LessLoader_require: LessLoader_currentFile();
 }
 
-// Inter - Primary body font (weights 400-800)
+// Inter - Primary body font (weights 400-800), self-hosted
 @font-face {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-400-normal.woff2') format('woff2');
+    src: url('/customize/fonts/inter/inter-latin-400-normal.woff2') format('woff2');
 }
 
 @font-face {
@@ -22,7 +22,7 @@
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-500-normal.woff2') format('woff2');
+    src: url('/customize/fonts/inter/inter-latin-500-normal.woff2') format('woff2');
 }
 
 @font-face {
@@ -30,7 +30,7 @@
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-600-normal.woff2') format('woff2');
+    src: url('/customize/fonts/inter/inter-latin-600-normal.woff2') format('woff2');
 }
 
 @font-face {
@@ -38,7 +38,7 @@
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-700-normal.woff2') format('woff2');
+    src: url('/customize/fonts/inter/inter-latin-700-normal.woff2') format('woff2');
 }
 
 @font-face {
@@ -46,25 +46,25 @@
     font-style: normal;
     font-weight: 800;
     font-display: swap;
-    src: url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-800-normal.woff2') format('woff2');
+    src: url('/customize/fonts/inter/inter-latin-800-normal.woff2') format('woff2');
 }
 
-// Geist Sans - Heading/display font (variable font, supports 100-900)
+// Geist Sans - Heading/display font (variable font, supports 100-900), self-hosted
 @font-face {
     font-family: 'Geist Sans';
     font-style: normal;
     font-weight: 100 900;
     font-display: swap;
-    src: url('https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-sans/GeistVF.woff2') format('woff2');
+    src: url('/customize/fonts/geist-sans/GeistVF.woff2') format('woff2');
 }
 
-// Geist Mono - Code/monospace font (variable font, supports 100-900)
+// Geist Mono - Code/monospace font (variable font, supports 100-900), self-hosted
 @font-face {
     font-family: 'Geist Mono';
     font-style: normal;
     font-weight: 100 900;
     font-display: swap;
-    src: url('https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-mono/GeistMonoVF.woff2') format('woff2');
+    src: url('/customize/fonts/geist-mono/GeistMonoVF.woff2') format('woff2');
 }
 
 // Fonts need to go on the global scope
@@ -72,8 +72,6 @@
     font-family: CryptPadTools;
     src: url("/customize/fonts/cryptpadtools.ttf");
 }
-
-@import (once) '/customize/fonts/open-sans.less';
 
 // Typography Scale
 @type-hero: 64px;

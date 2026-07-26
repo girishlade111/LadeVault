@@ -180,12 +180,11 @@ function buildKanbanSvg(icon) {
 
 function buildKanbanSvgSimple(icon) {
     const { name, hi, lo } = icon;
-    const card1 = roundedRect(110, 120, 100, 280, 20);
-    const card2 = roundedRect(220, 90, 100, 310, 20);
-    const card3 = roundedRect(330, 140, 100, 260, 20);
+    // Two wider columns for better legibility at 16px
+    const card1 = roundedRect(100, 110, 150, 290, 24);
+    const card2 = roundedRect(270, 80, 150, 320, 24);
     const content = `  <path d="${card1}" fill="${darken(hi, 0.7)}"/>
-  <path d="${card2}" fill="url(#grad_${name})"/>
-  <path d="${card3}" fill="${darken(lo, 0.9)}"/>`;
+  <path d="${card2}" fill="url(#grad_${name})"/>`;
     return wrapSvgSimple(name, hi, lo, content);
 }
 
