@@ -1,7 +1,7 @@
 version = 1
 SPDX-PackageName = "CryptPad"
 SPDX-PackageSupplier = "XWiki <contact@cryptpad.org>"
-SPDX-PackageDownloadLocation = "https://cryptpad.org"
+SPDX-PackageDownloadLocation = "NONE"
 
 [[annotations]]
 path = "**.png"

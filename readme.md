@@ -58,8 +58,8 @@ is actively maintained and bugs that our safeguards don't catch tend to get fixe
 For this reason it is best to only use instances that are running the most recent version,
 which is currently on a three-month release cycle. It is difficult for a non-expert to
 determine whether an instance is otherwise configured correctly, so we are actively
-working on allowing administrators to opt in to a [public directory of
-servers](https://cryptpad.org/instances/) that
+working on allowing administrators to opt in to a public directory of
+servers that
 meet our strict criteria for safety.
 
 For end users, a [guide](https://blog.cryptpad.org/2024/03/14/Most-Secure-CryptPad-Usage/)
