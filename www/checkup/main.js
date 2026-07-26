@@ -1669,7 +1669,7 @@ define([
         return h('p.cp-notice-version', [
             "This instance is running ",
             h('span.cp-app-checkup-version',[
-                "CryptPad",
+                "LadeVault",
                 ' ',
                 Pages.versionString,
             ]),

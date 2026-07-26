@@ -1128,12 +1128,12 @@ define([
             let labelCurrent = blocks.labelledInput(Messages.admin_colorCurrent, current);
             let preview = blocks.block([
                 blocks.block([
-                    blocks.link('CryptPad', '/admin/#customize'),
+                    blocks.link('LadeVault', '/admin/#customize'),
                     blocks.button('primary', 'save', Messages.settings_save),
                     blocks.button('secondary', 'save', Messages.settings_save)
                 ], 'cp-admin-color-preview-dark cp-sidebar-flex-block'),
                 blocks.block([
-                    blocks.link('CryptPad', '/admin/#customize'),
+                    blocks.link('LadeVault', '/admin/#customize'),
                     blocks.button('primary', 'save', Messages.settings_save),
                     blocks.button('secondary', 'save', Messages.settings_save)
                 ], 'cp-admin-color-preview-light cp-sidebar-flex-block')
