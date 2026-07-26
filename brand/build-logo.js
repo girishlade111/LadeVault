@@ -154,10 +154,6 @@ function buildIco(entries) {
     const p48 = await png(48, path.join(FAVICON_DIR, 'favicon-48.png'), faviconBuf);
     const p32 = await png(32, path.join(FAVICON_DIR, 'favicon-32.png'), faviconBuf);
     const p16 = await png(16, path.join(FAVICON_DIR, 'favicon-16.png'), faviconBuf);
-    // preview strips for review
-    await png(96, path.join(OUT, 'preview-96.png'));
-    await png(32, path.join(OUT, 'preview-fav32.png'), faviconBuf);
-    await png(16, path.join(OUT, 'preview-fav16.png'), faviconBuf);
     const ico = buildIco([
         { size: 16, buf: p16 },
         { size: 32, buf: p32 },
