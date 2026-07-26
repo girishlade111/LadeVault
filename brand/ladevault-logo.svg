@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#33A1FF"/>
+      <stop offset="0.55" stop-color="#0087FF"/>
+      <stop offset="1"    stop-color="#0067CC"/>
+    </linearGradient>
+    <linearGradient id="edgeLight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"    stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="0.30" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.80" stop-color="#003E80" stop-opacity="0"/>
+      <stop offset="1"    stop-color="#003E80" stop-opacity="0.30"/>
+    </linearGradient>
+    <clipPath id="clipFront"><path d="M168,156 Q168,132 192,132 L300,132 L344,176 L344,300 C344,342 322,372 256,398 C190,372 168,342 168,300 Z"/></clipPath>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix"
+        values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0" result="a"/>
+      <feComposite in="a" in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+
+  <!-- back stacked layer (multi-format depth) -->
+  <path d="M168,156 Q168,132 192,132 L300,132 L344,176 L344,300 C344,342 322,372 256,398 C190,372 168,342 168,300 Z" transform="translate(-17,-15)" fill="#0059B8"/>
+
+  <!-- front sheet -->
+  <path d="M168,156 Q168,132 192,132 L300,132 L344,176 L344,300 C344,342 322,372 256,398 C190,372 168,342 168,300 Z" fill="url(#face)"/>
+
+  <!-- inner layer seam -->
+  <path d="M168,252 C168,252 344,252 344,252" fill="none" stroke="#ffffff" stroke-opacity="0.16" stroke-width="6" stroke-linecap="round" clip-path="url(#clipFront)"/>
+
+  <!-- dog-ear flap (document cue) -->
+  <path d="M300,132 L300,176 L344,176 Z" fill="#0061C4"/>
+
+  <!-- fine grain, clipped to the face -->
+  <g clip-path="url(#clipFront)">
+    <rect x="0" y="0" width="512" height="512" filter="url(#grain)" opacity="0.05"/>
+  </g>
+
+  <!-- edge light + inner shadow for dimensionality -->
+  <path d="M168,156 Q168,132 192,132 L300,132 L344,176 L344,300 C344,342 322,372 256,398 C190,372 168,342 168,300 Z" fill="url(#edgeLight)"/>
+</svg>
