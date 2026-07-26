@@ -1547,9 +1547,9 @@ define([
             var setDocumentTitle = function () {
                 var newTitle;
                 if (!currentTabTitle) {
-                    newTitle = currentTitle || 'CryptPad';
+                    newTitle = currentTitle || 'LadeVault';
                 } else {
-                    var title = currentTabTitle.replace(/\{title\}/g, currentTitle || 'CryptPad');
+                    var title = currentTabTitle.replace(/\{title\}/g, currentTitle || 'LadeVault');
                     newTitle = title + ' - ' + titleSuffix;
                 }
                 document.title = newTitle;
