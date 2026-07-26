@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="grad_pad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#71826E"/>
+      <stop offset="100%" stop-color="#556651"/>
+    </linearGradient>
+    <linearGradient id="highlight_pad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="40%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow_pad" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="4" dy="6" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <!-- back page -->
+  <path d="M154,72 L356,72 Q380,72 380,96 L380,368 Q380,392 356,392 L154,392 Q130,392 130,368 L130,96 Q130,72 154,72 Z" fill="#4f5b4d" filter="url(#shadow_pad)"/>
+  <!-- front page -->
+  <path d="M176,100 L378,100 Q402,100 402,124 L402,396 Q402,420 378,420 L176,420 Q152,420 152,396 L152,124 Q152,100 176,100 Z" fill="url(#grad_pad)" filter="url(#shadow_pad)"/>
+  <!-- dog-ear fold -->
+  <path d="M342,100 L402,160 L402,100 Z" fill="#485745"/>
+  <!-- text lines -->
+    <rect x="185" y="180" width="180" height="12" rx="6" fill="#ffffff" fill-opacity="0.25"/>
+    <rect x="185" y="210" width="180" height="12" rx="6" fill="#ffffff" fill-opacity="0.25"/>
+    <rect x="185" y="240" width="180" height="12" rx="6" fill="#ffffff" fill-opacity="0.25"/>
+    <rect x="185" y="270" width="180" height="12" rx="6" fill="#ffffff" fill-opacity="0.25"/>
+    <rect x="185" y="300" width="120" height="12" rx="6" fill="#ffffff" fill-opacity="0.25"/>
+  <!-- highlight overlay -->
+  <path d="M176,100 L378,100 Q402,100 402,124 L402,396 Q402,420 378,420 L176,420 Q152,420 152,396 L152,124 Q152,100 176,100 Z" fill="url(#highlight_pad)"/>
+</svg>
