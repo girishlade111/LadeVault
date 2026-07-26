@@ -76,7 +76,7 @@ define([
                 url: '/common/feedback.html?NO_LOCALSTORAGE=' + (+new Date()),
             });
         });
-        window.alert("CryptPad needs localStorage to work. Try changing your cookie permissions, or using a different browser");
+        window.alert("LadeVault needs localStorage to work. Try changing your cookie permissions, or using a different browser");
     };
 
     window.onerror = function (e) {
@@ -102,7 +102,7 @@ define([
 
     if (typeof(Promise) !== 'function') {
         return void setTimeout(function () {
-            var s = "Internet Explorer is not supported anymore, including by Microsoft.\n\nMost of CryptPad's collaborative functionality requires a modern browser to work.\n\nWe recommend Mozilla Firefox.";
+            var s = "Internet Explorer is not supported anymore, including by Microsoft.\n\nMost of LadeVault's collaborative functionality requires a modern browser to work.\n\nWe recommend Mozilla Firefox.";
             window.alert(s);
         });
     }
