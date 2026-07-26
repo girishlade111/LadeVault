@@ -93,10 +93,29 @@ const SVG = `<?xml version="1.0" encoding="UTF-8"?>
 
 fs.writeFileSync(path.join(OUT, 'ladevault-logo.svg'), SVG);
 
+/* Favicon-optimized variant: same silhouette, no seam/grain (which turn to mud
+ * below ~32px), bolder fold, flatter two-stop gradient. Keeps the mark legible
+ * at 16px per the "no busy detail at small size" requirement. */
+const SVG_FAVICON = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="${C.hi}"/>
+      <stop offset="1" stop-color="${C.lo}"/>
+    </linearGradient>
+  </defs>
+  <path d="${BACK}" transform="translate(-19,-17)" fill="${C.back}"/>
+  <path d="${FRONT}" fill="url(#face)"/>
+  <path d="${FLAP}" fill="${C.fold}"/>
+</svg>`;
+fs.writeFileSync(path.join(OUT, 'ladevault-favicon.svg'), SVG_FAVICON);
+
 // ---------- rasterize ----------
 const svgBuf = Buffer.from(SVG);
-async function png(size, file) {
-    await sharp(svgBuf, { density: Math.max(72, Math.round(size / 512 * 384)) })
+const faviconBuf = Buffer.from(SVG_FAVICON);
+async function png(size, file, source) {
+    const src = source || svgBuf;
+    await sharp(src, { density: Math.max(72, Math.round(size / 512 * 384)) })
         .resize(size, size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
         .png()
         .toFile(file);
@@ -132,11 +151,13 @@ function buildIco(entries) {
 (async () => {
     const master = await png(1024, path.join(OUT, 'ladevault-logo-1024.png'));       // master
     await png(512, path.join(OUT, 'ladevault-app-512.png'));                          // PWA / manifest
-    const p48 = await png(48, path.join(FAVICON_DIR, 'favicon-48.png'));
-    const p32 = await png(32, path.join(FAVICON_DIR, 'favicon-32.png'));
-    const p16 = await png(16, path.join(FAVICON_DIR, 'favicon-16.png'));
-    // preview strip for review
+    const p48 = await png(48, path.join(FAVICON_DIR, 'favicon-48.png'), faviconBuf);
+    const p32 = await png(32, path.join(FAVICON_DIR, 'favicon-32.png'), faviconBuf);
+    const p16 = await png(16, path.join(FAVICON_DIR, 'favicon-16.png'), faviconBuf);
+    // preview strips for review
     await png(96, path.join(OUT, 'preview-96.png'));
+    await png(32, path.join(OUT, 'preview-fav32.png'), faviconBuf);
+    await png(16, path.join(OUT, 'preview-fav16.png'), faviconBuf);
     const ico = buildIco([
         { size: 16, buf: p16 },
         { size: 32, buf: p32 },
