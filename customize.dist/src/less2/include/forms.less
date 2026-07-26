@@ -23,6 +23,11 @@
         border-radius: @variables_radius;
         font-size: 100%;
         padding: @alertify_padding-base;
+        &:focus {
+            border-color: @cryptpad_color_brand;
+            box-shadow: 0 0 0 2px fade(@cryptpad_color_brand, 25%);
+            outline: none;
+        }
         &:not(.tui-full-calendar-content) {
             width: 100%;
         }

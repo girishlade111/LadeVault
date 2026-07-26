@@ -8,12 +8,64 @@
     --LessLoader_require: LessLoader_currentFile();
 }
 
+// Inter - Primary body font (weights 400-800)
 @font-face {
-    font-family: 'IBM Plex Mono';
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
-    src: url("/customize/fonts/IBMPlexMono-Medium.woff2") format("woff2"), url("/customize/fonts/IBMPlexMono-Medium.woff") format("woff"); }
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-500-normal.woff2') format('woff2');
+}
 
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-600-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 800;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5/files/inter-latin-800-normal.woff2') format('woff2');
+}
+
+// Geist Sans - Heading/display font (variable font, supports 100-900)
+@font-face {
+    font-family: 'Geist Sans';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-sans/GeistVF.woff2') format('woff2');
+}
+
+// Geist Mono - Code/monospace font (variable font, supports 100-900)
+@font-face {
+    font-family: 'Geist Mono';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/geist@1/dist/fonts/geist-mono/GeistMonoVF.woff2') format('woff2');
+}
 
 // Fonts need to go on the global scope
 @font-tools {
@@ -23,3 +75,33 @@
 
 @import (once) '/customize/fonts/open-sans.less';
 
+// Typography Scale
+@type-hero: 64px;
+@type-h1: 48px;
+@type-h2: 36px;
+@type-h3: 28px;
+@type-h4: 24px;
+@type-h5: 20px;
+@type-body-lg: 18px;
+@type-body: 16px;
+@type-small: 14px;
+@type-caption: 13px;
+
+// Font Weights
+@type-weight-hero: 700;
+@type-weight-h1: 700;
+@type-weight-h2: 700;
+@type-weight-h3: 600;
+@type-weight-h4: 600;
+@type-weight-h5: 600;
+
+// Line Heights
+@type-lh-heading: 1.1;
+@type-lh-body: 1.7;
+@type-lh-code: 1.6;
+
+// Letter Spacing
+@type-ls-heading: -0.04em;
+@type-ls-body: 0;
+@type-ls-button: 0.01em;
+@type-ls-code: 0;

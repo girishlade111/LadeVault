@@ -677,9 +677,14 @@
             }
             .drive_fileIcon;
             li {
-                border-radius: @variables_radius;
+                border-radius: @variables_radius_M;
+                transition: transform 150ms ease, box-shadow 150ms ease;
                 &.cp-app-drive-element {
                     position: relative;
+                }
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
                 }
                 &.cp-app-drive-element-separator {
                     display: block;

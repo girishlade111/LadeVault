@@ -18,8 +18,8 @@ const FAVDIR = path.join(CUSTOMIZE, 'favicon');
 
 // ---- brand palette (same as build-logo.js) ----
 const C = {
-    hi: '#33A1FF', brand: '#0087FF', lo: '#0067CC',
-    back: '#0059B8', fold: '#0061C4', innerShadow: '#003E80',
+    hi: '#85977F', brand: '#71826E', lo: '#556651',
+    back: '#4A5A47', fold: '#5C6B59', innerShadow: '#3D4D3A',
 };
 
 // ---- glyph geometry (shared with build-logo.js) ----
@@ -72,7 +72,7 @@ function glyphSimple(s) {
 </svg>`;
 }
 
-const GREY = { hi: '#C4C4C4', brand: '#9E9E9E', lo: '#7A7A7A', back: '#6E6E6E', fold: '#767676', innerShadow: '#4A4A4A' };
+const GREY = { hi: '#B8C4B5', brand: '#9CA696', lo: '#7A867A', back: '#6B7A68', fold: '#748070', innerShadow: '#4A5A4A' };
 
 const azureSvg = glyph(C);
 const azureSimpleSvg = glyphSimple(C);

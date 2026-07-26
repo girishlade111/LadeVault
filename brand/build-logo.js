@@ -12,14 +12,14 @@ const OUT = __dirname;
 const FAVICON_DIR = path.join(OUT, 'favicon');
 fs.mkdirSync(FAVICON_DIR, { recursive: true });
 
-// ---- palette (monochrome-ish: brand azure + darker tonal shade) ----
+// ---- palette (monochrome-ish: sage green tonal shade) ----
 const C = {
-    hi:    '#33A1FF', // top light of gradient
-    brand: '#0087FF', // LadeVault brand
-    lo:    '#0067CC', // bottom of gradient
-    back:  '#0059B8', // back stacked layer (darker tone)
-    fold:  '#0061C4', // dog-ear flap
-    innerShadow: '#003E80',
+    hi:    '#85977F', // top light of gradient (lighter sage)
+    brand: '#71826E', // LadeVault brand (primary sage)
+    lo:    '#556651', // bottom of gradient (darker sage)
+    back:  '#4A5A47', // back stacked layer (darkest, behind)
+    fold:  '#5C6B59', // dog-ear flap
+    innerShadow: '#3D4D3A',
 };
 
 /* --- front shield-document outline --------------------------------------
