@@ -69,7 +69,7 @@ const ICONS = [
 
 function defs(id, hi, lo) {
     return `  <defs>
-    <linearGradient id="grad_${id}" x1="0%" y1="0%" x2="100%" y2="100%" gradientTransform="rotate(135, 0.5, 0.5)">
+    <linearGradient id="grad_${id}" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="${hi}"/>
       <stop offset="100%" stop-color="${lo}"/>
     </linearGradient>
@@ -95,7 +95,7 @@ ${content}
 // Simplified version for small sizes (no shadow filter, no highlight overlay)
 function defsSimple(id, hi, lo) {
     return `  <defs>
-    <linearGradient id="grad_${id}" x1="0%" y1="0%" x2="100%" y2="100%" gradientTransform="rotate(135, 0.5, 0.5)">
+    <linearGradient id="grad_${id}" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="${hi}"/>
       <stop offset="100%" stop-color="${lo}"/>
     </linearGradient>
@@ -199,19 +199,7 @@ function buildCodeSvg(icon) {
     // Slash between brackets
     const slash = 'M270,240 L242,340';
 
-    const content = `  <!-- document body -->
-  <path d="${doc}" fill="url(#grad_${name})" filter="url(#shadow_${name})"/>
-  <!-- code brackets -->
-  <path d="${leftBracket}" fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="${rightBracket}" fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="${slash}" fill="none" stroke="#ffffff" stroke-opacity="0.4" stroke-width="14" stroke-linecap="round"/>
-  <!-- back layer peeking out -->
-  <path d="${roundedRect(115, 65, 248, 352, RADIUS * 0.22)}" fill="${darken(hi, 0.65)}" style="z-index:-1"/>
-  <!-- reorder: place back layer first visually -->
-  <!-- highlight -->
-  <path d="${doc}" fill="url(#highlight_${name})"/>`;
-
-    // Reorder so back layer is behind
+    // Build with back layer behind (correct paint order)
     const backLayer = roundedRect(115, 65, 248, 352, RADIUS * 0.22);
     const reordered = `  <!-- back document layer -->
   <path d="${backLayer}" fill="${darken(hi, 0.65)}" filter="url(#shadow_${name})"/>
