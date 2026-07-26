@@ -1,21 +1,21 @@
-@gutter-bg: #282a36;
-@gutter-fg: #f8f8f2;
+@gutter-bg: #FAFAF8;
+@gutter-fg: #4B4A48;
 
-@cursor-left: #f8f8f0;
-@line-number-fg: #6d8a88;
-@selected-bg: rgba(255, 255, 255, 0.10);
+@cursor-left: #4B4A48;
+@line-number-fg: #9B9A95;
+@selected-bg: rgba(113, 130, 110, 0.10);
 
-@comment-fg: #6272a4;
-@string-fg: #f1fa8c;
-@number-fg: #bd93f9;
-@variable-fg: #50fa7b;
-@variable2-fg: white;
+@comment-fg: #8A8A8A;
+@string-fg: #B66A44;
+@number-fg: #4D7A54;
+@variable-fg: #71826E;
+@variable2-fg: #4B4A48;
 
-@def-fg: #ffb86c;
-@keyword-fg: ff79c6;
+@def-fg: #9A6A00;
+@keyword-fg: #71826E;
 
-@variable3-fg: #50fa7b;
-@property-fg: #66d9ef;
+@variable3-fg: #71826E;
+@property-fg: #4F7CA5;
 
 .cm-s-transition {
     &.CodeMirror, .CodeMirror-gutters {
@@ -23,7 +23,7 @@
       color: @gutter-fg !important;
       border: none;
     }
-    .CodeMirror-gutters { color: @gutter-bg; }
+    .CodeMirror-gutters { color: @gutter-bg; border-right: 1px solid #E3E2D9; }
     .CodeMirror-cursor { border-left: solid thin @cursor-left; }
 
     .CodeMirror-linenumber { color: @line-number-fg; }
@@ -61,7 +61,6 @@
     .CodeMirror-activeline-background { background: @selected-bg; }
     .CodeMirror-matchingbracket {
         text-decoration: underline;
-        color: white !important;
+        color: @gutter-fg !important;
     }
 }
-
