@@ -1,123 +1,337 @@
 /*
- * SPDX-FileCopyrightText: 2023 XWiki CryptPad Team <contact@cryptpad.org> and contributors
+ * SPDX-FileCopyrightText: 2024 LadeStack / Girish Lade
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
+ *
+ * LadeVault — Features page styles (redesigned)
+ * Sage-green brand, modern tier cards, Lucide icon circles.
  */
 
 @import (reference) "../include/infopages.less";
 @import (reference) "../include/colortheme-all.less";
+@import (reference) "../include/variables.less";
+@import (reference) "../include/font.less";
 
+// ── Brand tokens ─────────────────────────────────────────────────────────────
+@feat-sage:          #71826E;
+@feat-sage-dark:     #61745E;
+@feat-sage-light:    #C8D0C2;
+@feat-ivory:         #F3F1EB;
+@feat-warm-white:    #FEFEFE;
+@feat-bg:            #F3F1EB;
+@feat-border:        #E3E2D9;
+@feat-text:          #1B1B1B;
+@feat-muted:         #77756F;
+@feat-dark:          #4B4A48;
+
+// ── Font stacks ───────────────────────────────────────────────────────────────
+@feat-font-heading: 'Geist Sans', 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+@feat-font-body:    'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+
+// ── Page shell ────────────────────────────────────────────────────────────────
 &.cp-page-features {
     .infopages_main();
 
-    .cp-features-register {
-        text-align: center;
-        padding: 20px;
-    }
-    .cp-features-register-button {
-        text-decoration: none;
-        text-align: center;
-        background-color: @cp_buttons-primary;
-        color: @cryptpad_text_col_inv;
-        font-size: 20px;
-        margin: 10px 0;
-        border-radius: @infopages-radius;
-        padding: 10px 20px;
-        &:hover, &:focus {
-            background-color:  contrast(@cp_buttons-primary-text, darken(@cp_buttons-primary, 10%), lighten(@cp_buttons-primary, 10%));
-        }
-        &:visited {
-            color: @cryptpad_text_col_inv;
-        }
-    }
-    .cp-features-web {
-        .card {
-            .cp-shadow();
-            border: none;
-            background-color: @cp_static-card-bg;
-            border-radius: @infopages-radius;
-            .title-card {
-                background-color: @cryptpad_color_brand;
-                padding: 20px;
-                border-radius: @infopages-radius @infopages-radius 0 0;
-            }
-            .card-body, .title-card {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-flow: column;
-                padding: 12px;
-                h3 {
-                    margin: 0;
-                }
-                &.cp-pricing {
-                    div {
-                        font-size: 1.2em;
-                        color: @cp_static-link;
-                        a {
-                            text-decoration: underline;
-                        }
-                        &:first-child {
-                            font-weight: bold;
-                        }
-                        &:last-child {
-                            font-size: 1em;
-                        }
-                    }
-                }
-                &:last-child {
-                    border-top: 1px solid fade(@cryptpad_text_col, 30%);
-                }
-            }
-        }
-        h3 {
-            color: @cryptpad_color_white;
-        }
-        .list-group {
-            li {
-                display: flex;
-                align-items: center;
-                padding-left: 0;
-                padding-right: 5px;
-                svg {
-                    width: 30px;
-                    color: @cryptpad_color_brand;
-                }
-            }
-            div {
-                &.cp-content {
-                    flex: 1;
-                    display: flex;
-                    flex-flow: column;
-                }
-                &.cp-feature {
-                    font-weight: bold;
-                }
-            }
-        }
-        div.cp-note {
-            font-size: 0.8em;
-        }
-        .list-group-item {
-            background-color: transparent;
-            &:first-child {
-                border-top: 1px solid fade(@cryptpad_text_col, 30%);
-            }
-            &:not(:last-child) {
-                border-bottom: 1px solid fade(@cryptpad_text_col, 30%);
-            }
+    background-color: @feat-bg;
+    color: @feat-dark;
+    font-family: @feat-font-body;
+
+    // ── Main layout ──────────────────────────────────────────────────────────
+    .lv-features-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: @sp-64 @sp-24 @sp-80;
+
+        @media (max-width: 640px) {
+            padding: @sp-40 @sp-16 @sp-64;
         }
     }
 
-    .cp-regis-user {
-        @media (max-width:575px) {
-            margin-top: 3em;
+    // ── Hero ─────────────────────────────────────────────────────────────────
+    .lv-hero {
+        text-align: center;
+        margin-bottom: @sp-48;
+        max-width: 640px;
+        width: 100%;
+
+        @media (max-width: 640px) {
+            margin-bottom: @sp-32;
         }
     }
-    .cp-premium-user {
-        @media (max-width:575px) {
-            margin-top: 3em;
+
+    .lv-hero-heading {
+        font-family: @feat-font-heading;
+        font-weight: 700;
+        font-size: 60px;
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        color: @feat-sage;
+        margin: 0 0 @sp-16;
+
+        @media (max-width: 640px) {
+            font-size: 40px;
+        }
+    }
+
+    .lv-hero-sub {
+        font-family: @feat-font-body;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 1.6;
+        color: @feat-dark;
+        margin: 0;
+
+        @media (max-width: 640px) {
+            font-size: 16px;
+        }
+    }
+
+    // ── Two-column tier grid ──────────────────────────────────────────────────
+    .lv-tier-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: @sp-24;
+        width: 100%;
+        max-width: 920px;
+        align-items: start;
+
+        @media (max-width: 700px) {
+            grid-template-columns: 1fr;
+            max-width: 480px;
+        }
+    }
+
+    // ── Individual card ───────────────────────────────────────────────────────
+    .lv-tier-card {
+        background-color: @feat-warm-white;
+        border: 1px solid @feat-border;
+        border-radius: 20px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition: transform 150ms ease, box-shadow 150ms ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.09);
+        }
+
+        &.lv-tier-card--recommended {
+            // Slightly deeper border on the recommended card
+            border-color: @feat-sage-light;
+        }
+    }
+
+    // ── Card header band ─────────────────────────────────────────────────────
+    // Subtle diagonal gradient: sage → sage-dark
+    .lv-card-header {
+        background: linear-gradient(135deg, @feat-sage 0%, @feat-sage-dark 100%);
+        border-radius: 20px 20px 0 0;
+        padding: @sp-20 @sp-24;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: @sp-12;
+        position: relative;
+    }
+
+    .lv-card-title {
+        font-family: @feat-font-heading;
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 1.1;
+        color: #ffffff;
+        margin: 0;
+    }
+
+    // ── "Recommended" ribbon badge ────────────────────────────────────────────
+    .lv-card-badge {
+        display: inline-flex;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.22);
+        color: #ffffff;
+        font-family: @feat-font-body;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding: 3px 10px;
+        border-radius: 20px;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        flex-shrink: 0;
+    }
+
+    // ── Price row ─────────────────────────────────────────────────────────────
+    .lv-card-pricing {
+        padding: @sp-20 @sp-24 @sp-16;
+        display: flex;
+        align-items: baseline;
+        gap: @sp-8;
+        border-bottom: 1px solid @feat-border;
+    }
+
+    .lv-card-price {
+        font-family: @feat-font-heading;
+        font-weight: 700;
+        font-size: 32px;
+        line-height: 1;
+        color: @feat-sage;
+    }
+
+    .lv-card-price-sub {
+        font-family: @feat-font-body;
+        font-weight: 400;
+        font-size: 14px;
+        color: @feat-muted;
+    }
+
+    // ── Feature list ──────────────────────────────────────────────────────────
+    .lv-feat-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        flex: 1;
+    }
+
+    .lv-feat-row {
+        display: flex;
+        align-items: flex-start;
+        gap: @sp-16;
+        padding: @sp-20 @sp-24;
+        border-bottom: 1px solid @feat-border;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    // ── Icon circle ───────────────────────────────────────────────────────────
+    .lv-icon-circle {
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: @feat-ivory;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: @feat-sage;
+        // Slight border for definition against white card bg
+        border: 1px solid @feat-border;
+
+        &.lv-icon-circle--deep {
+            // Registered tier: slightly deeper icon tone
+            color: @feat-sage-dark;
+            background-color: darken(@feat-ivory, 3%);
+        }
+    }
+
+    .lv-feat-icon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        display: block;
+    }
+
+    // ── Feature text ─────────────────────────────────────────────────────────
+    .lv-feat-text {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        padding-top: 2px; // optical alignment with icon circle
+    }
+
+    .lv-feat-title {
+        font-family: @feat-font-body;
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 1.4;
+        color: @feat-text;
+    }
+
+    .lv-feat-note {
+        font-family: @feat-font-body;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 1.55;
+        color: @feat-muted;
+    }
+
+    // ── CTA area ──────────────────────────────────────────────────────────────
+    .lv-card-cta {
+        padding: @sp-20 @sp-24 @sp-24;
+        border-top: 1px solid @feat-border;
+    }
+
+    .lv-register-btn {
+        display: block;
+        width: 100%;
+        height: 48px;
+        line-height: 48px;
+        text-align: center;
+        background-color: @feat-sage;
+        color: #ffffff;
+        font-family: @feat-font-body;
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 0.01em;
+        text-decoration: none;
+        border-radius: 12px;
+        transition: background-color 150ms ease;
+
+        &:hover, &:focus {
+            background-color: @feat-sage-dark;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        &:visited {
+            color: #ffffff;
+        }
+        &:focus-visible {
+            outline: 2px solid @feat-sage;
+            outline-offset: 3px;
+        }
+    }
+
+    // ── Footer contact strip ─────────────────────────────────────────────────
+    .lv-contact-wrap {
+        margin-top: @sp-40;
+        padding-top: @sp-32;
+        border-top: 1px solid @feat-border;
+        width: 100%;
+        max-width: 920px;
+        text-align: center;
+
+        @media (max-width: 640px) {
+            margin-top: @sp-32;
+            padding-top: @sp-24;
+        }
+    }
+
+    .lv-contact-strip {
+        font-family: @feat-font-body;
+        font-weight: 400;
+        font-size: 15px;
+        color: @feat-muted;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .lv-contact-link {
+        color: @feat-sage;
+        text-decoration: none;
+        font-weight: 500;
+
+        &:hover, &:focus-visible {
+            color: @feat-sage-dark;
+            text-decoration: underline;
+        }
+        &:visited {
+            color: @feat-sage;
         }
     }
 }
-
