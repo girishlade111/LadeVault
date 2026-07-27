@@ -4,7 +4,29 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
  * LadeVault — Contact page styles
- * Brand tokens: sage-green palette, Geist Sans / Inter typography.
+ *
+ * Icon system references
+ * ──────────────────────────────────────────────────────────────────────────
+ *  Lucide          https://lucide.dev              MIT
+ *    Rendered via <i data-lucide="…"> + MutationObserver (common-icons.js).
+ *    Hydrated into <svg class="lucide lucide-{name}"> at runtime.
+ *    Sizing: force width/height on the hydrated SVG via .lucide selector
+ *    (the bundle's defaultAttributes set 24×24 but our badge needs 20×20).
+ *
+ *  Simple Icons    https://simpleicons.org          CC0
+ *    Inline <svg class="cp-contact-si-icon"> with official fill paths.
+ *    Colour applied via `color: …` on the badge; SVG inherits via fill:currentColor.
+ *
+ *  Phosphor Icons  https://phosphoricons.com        MIT   — badge-size reference
+ *  Heroicons       https://heroicons.com            MIT   — envelope-style reference
+ * ──────────────────────────────────────────────────────────────────────────
+ *
+ * Brand palette (official)
+ *   GitHub     #181717   badge bg  #EAEAEA
+ *   LinkedIn   #0A66C2   badge bg  #E8F0F8
+ *   Instagram  #E4405F   badge bg  #FCEEF5
+ *   Mail       #71826E   badge bg  fade(#71826E, 16%)
+ *   Bug        #5D4A1A   badge bg  #FEF3E2  (warm amber — universal bug/warning tone)
  */
 
 @import (reference) "../include/infopages.less";
@@ -12,39 +34,47 @@
 @import (reference) "../include/variables.less";
 @import (reference) "../include/font.less";
 
-// ── Brand tokens ──────────────────────────────────────────────────────────────
-@contact-sage:          #71826E;   // Sage Primary
-@contact-sage-dark:     #61745E;   // hover state
-@contact-sage-light:    #C8D0C2;   // Brand Light — hover border
-@contact-rich-black:    #1B1B1B;   // subheading
-@contact-dark-gray:     #4B4A48;   // supporting text / card value
-@contact-card-bg:       #FFFFFF;
-@contact-card-border:   #E3E2D9;
-@contact-page-bg:       #F3F1EB;   // matches @cryptpad_color_grey_100
+// ── Design tokens ─────────────────────────────────────────────────────────────
+@c-sage:          #71826E;
+@c-sage-dark:     #61745E;
+@c-sage-light:    #C8D0C2;    // hover-border
+@c-rich-black:    #1B1B1B;
+@c-dark-gray:     #4B4A48;
+@c-card-bg:       #FFFFFF;
+@c-card-border:   #E3E2D9;
+@c-page-bg:       #F3F1EB;    // @cryptpad_color_grey_100
 
-// ── Per-brand icon badge backgrounds ─────────────────────────────────────────
-@contact-badge-mail:      fade(@contact-sage, 16%);
-@contact-badge-github:    #EAE6D9;
-@contact-badge-linkedin:  #E8F0F8;
-@contact-badge-instagram: #FCEEF5;
+// Badge backgrounds (tinted / neutral — never alter brand hue)
+@c-badge-mail:      fade(@c-sage, 16%);
+@c-badge-bug:       #FEF3E2;
+@c-badge-github:    #EAEAEA;
+@c-badge-linkedin:  #E8F0F8;
+@c-badge-instagram: #FCEEF5;
 
-// ── Per-brand icon colors ─────────────────────────────────────────────────────
-@contact-icon-mail:      @contact-sage;
-@contact-icon-github:    #1B1B1B;   // GitHub standard
-@contact-icon-linkedin:  #0A66C2;   // LinkedIn official blue
-@contact-icon-instagram: #E1306C;   // Instagram gradient center-ish, solid fallback
+// Badge icon colours (official brand / brand-matched)
+@c-icon-mail:      @c-sage;
+@c-icon-bug:       #92400E;   // amber-800 — legible on #FEF3E2
+@c-icon-github:    #181717;
+@c-icon-linkedin:  #0A66C2;
+@c-icon-instagram: #E4405F;
 
-// ── Fonts ──────────────────────────────────────────────────────────────────────
-@contact-font-heading: 'Geist Sans', 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
-@contact-font-body:    'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+// Typography
+@c-font-heading: 'Geist Sans', 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+@c-font-body:    'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+
+// ── Shared icon-in-badge sizes ─────────────────────────────────────────────────
+// Badge is 44×44px; icon is 20×20px (≈45 % of badge — Phosphor's recommended
+// ratio for 40-48px circular badges).
+@badge-size:  44px;
+@icon-size:   20px;
 
 // ── Page scope ────────────────────────────────────────────────────────────────
 &.cp-page-contact {
     .infopages_main();
 
-    background-color: @contact-page-bg;
-    color: @contact-dark-gray;
-    font-family: @contact-font-body;
+    background-color: @c-page-bg;
+    color: @c-dark-gray;
+    font-family: @c-font-body;
 
     // ── Main area ────────────────────────────────────────────────────────────
     .cp-contact-main {
@@ -54,75 +84,56 @@
         align-items: center;
         padding: @sp-80 @sp-24 @sp-96;
 
-        @media (max-width: 768px) {
-            padding: @sp-64 @sp-16 @sp-80;
-        }
-        @media (max-width: 480px) {
-            padding: @sp-48 @sp-16 @sp-64;
-        }
+        @media (max-width: 768px) { padding: @sp-64 @sp-16 @sp-80; }
+        @media (max-width: 480px) { padding: @sp-48 @sp-16 @sp-64; }
     }
 
-    // ── Hero block ───────────────────────────────────────────────────────────
+    // ── Hero ─────────────────────────────────────────────────────────────────
     .cp-contact-hero {
         text-align: center;
         max-width: 560px;
         margin-bottom: @sp-64;
 
-        @media (max-width: 768px) {
-            margin-bottom: @sp-48;
-        }
-        @media (max-width: 480px) {
-            margin-bottom: @sp-40;
-        }
+        @media (max-width: 768px) { margin-bottom: @sp-48; }
+        @media (max-width: 480px) { margin-bottom: @sp-40; }
     }
 
     .cp-contact-heading {
-        font-family: @contact-font-heading;
+        font-family: @c-font-heading;
         font-weight: 700;
         font-size: 60px;
         line-height: 1.05;
         letter-spacing: -0.04em;
         margin: 0 0 @sp-24;
-        color: @contact-sage;
+        color: @c-sage;
 
-        @media (max-width: 768px) {
-            font-size: 48px;
-        }
-        @media (max-width: 480px) {
-            font-size: 40px;
-            margin-bottom: @sp-16;
-        }
+        @media (max-width: 768px) { font-size: 48px; }
+        @media (max-width: 480px) { font-size: 40px; margin-bottom: @sp-16; }
     }
 
     .cp-contact-subheading {
-        font-family: @contact-font-heading;
+        font-family: @c-font-heading;
         font-weight: 700;
         font-size: 34px;
         line-height: 1.15;
         letter-spacing: -0.02em;
         margin: 0 0 @sp-16;
-        color: @contact-rich-black;
+        color: @c-rich-black;
 
-        @media (max-width: 768px) {
-            font-size: 28px;
-        }
-        @media (max-width: 480px) {
-            font-size: 24px;
-        }
+        @media (max-width: 768px) { font-size: 28px; }
+        @media (max-width: 480px) { font-size: 24px; }
     }
 
     .cp-contact-hint {
-        font-family: @contact-font-body;
+        font-family: @c-font-body;
         font-weight: 400;
         font-size: 18px;
         line-height: 1.6;
         margin: 0 auto;
-        color: @contact-dark-gray;
-        max-width: 560px;
+        color: @c-dark-gray;
+        max-width: 520px;
 
-        @media (max-width: 480px) {
-            font-size: 16px;
-        }
+        @media (max-width: 480px) { font-size: 16px; }
     }
 
     // ── Cards grid ───────────────────────────────────────────────────────────
@@ -132,11 +143,9 @@
         gap: @sp-20;
         justify-content: center;
         width: 100%;
-        max-width: 960px;
+        max-width: 980px;
 
-        @media (max-width: 600px) {
-            gap: @sp-16;
-        }
+        @media (max-width: 600px) { gap: @sp-16; }
     }
 
     // ── Single card ──────────────────────────────────────────────────────────
@@ -144,110 +153,145 @@
         display: flex;
         align-items: center;
         gap: @sp-16;
-        background-color: @contact-card-bg;
-        border: 1px solid @contact-card-border;
-        border-radius: @variables_radius_M;
+        background-color: @c-card-bg;
+        border: 1px solid @c-card-border;
+        border-radius: @variables_radius_M;    // 16px
         padding: @sp-20 @sp-24;
-        min-width: 220px;
         flex: 1 1 200px;
+        min-width: 220px;
         max-width: 280px;
         text-decoration: none;
         color: inherit;
         box-shadow: 0 2px 6px rgba(0, 0, 0, .04);
-        transition: transform 150ms ease,
-                    box-shadow 150ms ease,
-                    border-color 150ms ease;
+        transition:
+            transform      150ms ease,
+            box-shadow     150ms ease,
+            border-color   150ms ease;
 
         &:hover, &:focus-visible {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, .05);
-            border-color: @contact-sage-light;
+            transform:    translateY(-2px);
+            box-shadow:   0 6px 18px rgba(0, 0, 0, .06);
+            border-color: @c-sage-light;
             text-decoration: none;
             color: inherit;
         }
 
         &:focus-visible {
-            outline: 2px solid @contact-sage;
+            outline:        2px solid @c-sage;
             outline-offset: 3px;
+            border-radius:  @variables_radius_M;
         }
 
-        // Tablet: 2-column grid
+        // Tablet: 2-up
         @media (max-width: 768px) {
-            flex: 1 1 calc(50% - @sp-16);
+            flex:      1 1 calc(50% - @sp-16);
             max-width: calc(50% - @sp-16);
         }
 
         // Mobile: single column
         @media (max-width: 480px) {
-            flex: 1 1 100%;
+            flex:      1 1 100%;
             max-width: 100%;
         }
     }
 
-    // ── Icon badge ───────────────────────────────────────────────────────────
-    .cp-contact-icon-badge {
+    // ── Icon badge  (circular container) ─────────────────────────────────────
+    // Default colours — overridden per brand via BEM modifiers below.
+    .cp-contact-badge {
         flex-shrink: 0;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
+        width:           @badge-size;
+        height:          @badge-size;
+        border-radius:   50%;
+        display:         flex;
+        align-items:     center;
         justify-content: center;
-        // Default (mail fallback)
-        background-color: @contact-badge-mail;
-        color: @contact-icon-mail;
+        background-color: @c-badge-mail;
+        color:            @c-icon-mail;
+        // Subtle inner ring that reinforces the circular shape at a glance
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .06);
 
-        // Brand overrides applied via extra classes
-        &.cp-contact-icon-mail {
-            background-color: @contact-badge-mail;
-            color: @contact-icon-mail;
+        // ── Lucide icons hydrated by common-icons.js  ──────────────────────
+        // The Lucide MutationObserver replaces <i data-lucide="…"> with
+        // <svg class="lucide lucide-{name}"> at runtime.
+        // We override the bundle's default 24×24 to our @icon-size here.
+        svg.lucide,
+        svg[class^="lucide"] {
+            width:  @icon-size;
+            height: @icon-size;
+            display: block;
+            flex-shrink: 0;
+            // stroke inherits from the parent `color` via stroke="currentColor"
         }
-        &.cp-contact-icon-github {
-            background-color: @contact-badge-github;
-            color: @contact-icon-github;
-        }
-        &.cp-contact-icon-linkedin {
-            background-color: @contact-badge-linkedin;
-            color: @contact-icon-linkedin;
-        }
-        &.cp-contact-icon-instagram {
-            background-color: @contact-badge-instagram;
-            color: @contact-icon-instagram;
-        }
-    }
 
-    .cp-contact-icon-svg {
-        width: 20px;
-        height: 20px;
-        display: block;
-        flex-shrink: 0;
+        // ── Simple Icons SVGs ───────────────────────────────────────────────
+        // fill="currentColor" on the SVG, so `color` on the badge controls it.
+        .cp-contact-si-icon {
+            width:  @icon-size;
+            height: @icon-size;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        // ── Brand modifier classes ──────────────────────────────────────────
+        // Mail  — Sage Primary  (Lucide "mail")
+        &.cp-contact-badge--mail {
+            background-color: @c-badge-mail;
+            color:            @c-icon-mail;
+        }
+
+        // Bug report  — Warm amber  (Lucide "bug")
+        // Amber conveys "warning / issue" universally; avoids red (danger) or
+        // blue (info) which would misread the intent of a bug-report action.
+        &.cp-contact-badge--bug {
+            background-color: @c-badge-bug;
+            color:            @c-icon-bug;
+        }
+
+        // GitHub  —  near-black on light grey
+        // Official GitHub brand colour: #181717 on white/light.
+        &.cp-contact-badge--github {
+            background-color: @c-badge-github;
+            color:            @c-icon-github;
+        }
+
+        // LinkedIn  —  official #0A66C2 on ice-blue bg
+        &.cp-contact-badge--linkedin {
+            background-color: @c-badge-linkedin;
+            color:            @c-icon-linkedin;
+        }
+
+        // Instagram  —  official #E4405F on blush bg
+        &.cp-contact-badge--instagram {
+            background-color: @c-badge-instagram;
+            color:            @c-icon-instagram;
+        }
     }
 
     // ── Card text block ───────────────────────────────────────────────────────
     .cp-contact-card-text {
-        display: flex;
+        display:       flex;
         flex-direction: column;
-        gap: 2px;
-        min-width: 0; // prevent overflow
+        gap:           3px;
+        min-width:     0;   // allow text-overflow to work
     }
 
     .cp-contact-card-label {
-        font-family: @contact-font-body;
+        font-family: @c-font-body;
         font-weight: 500;
-        font-size: 16px;
-        line-height: 1.3;
-        color: @contact-rich-black;
+        font-size:   16px;
+        line-height: 1.25;
+        color:       @c-rich-black;
         white-space: nowrap;
     }
 
     .cp-contact-card-value {
-        font-family: @contact-font-body;
-        font-weight: 400;
-        font-size: 13px;
-        line-height: 1.4;
-        color: @contact-dark-gray;
-        white-space: nowrap;
-        overflow: hidden;
+        font-family:   @c-font-body;
+        font-weight:   400;
+        font-size:     13px;
+        line-height:   1.4;
+        color:         @c-dark-gray;
+        white-space:   nowrap;
+        overflow:      hidden;
         text-overflow: ellipsis;
     }
 }
