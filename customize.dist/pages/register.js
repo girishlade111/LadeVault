@@ -47,33 +47,50 @@ define([
             $('body').addClass('cp-register-closed');
         }
 
+        // ── LadeVault: password-toggle helper (purely visual, type-only flip) ──
+        var pwToggle = function (targetId) {
+            return h('button.lv-pw-toggle', {
+                type: 'button',
+                'aria-label': 'Toggle password visibility',
+                'data-target': targetId,
+            }, [
+                h('i.lv-eye-show', { 'data-lucide': 'eye', 'aria-hidden': 'true' }),
+                h('i.lv-eye-hide', { 'data-lucide': 'eye-off', 'aria-hidden': 'true' }),
+            ]);
+        };
 
         return frame([
             h('div.cp-restricted-registration', [
                 h('p', Msg.register_registrationIsClosed),
             ]),
             h('div.row.cp-register-det', [
-                h('div#data.hidden.col-md-6', [
+                // ── Left column: important notes ──
+                h('div#data.hidden.col-md-6.lv-notes-col', [
                     h('h2', Msg.register_notes_title),
                     h('div.cp-register-notes', [
                         h('ul.cp-notes-list', [
-                            h('li', [
-                                Icons.get('alert'),
-                                Msg.password_note1,
-                                h('span.red', Msg.password_note2)
+                            h('li.lv-note-item', [
+                                h('span.lv-note-icon', [Icons.get('alert')]),
+                                h('span.lv-note-text', [
+                                    Msg.password_note1,
+                                    h('span.red', Msg.password_note2)
+                                ]),
                             ]),
-                            h('li', [
-                                Icons.get('alert'),
-                                Pages.setHTML(h('span'), Msg._getKey('computer_note', ['<span class="red">','</span>']))
+                            h('li.lv-note-item', [
+                                h('span.lv-note-icon', [Icons.get('alert')]),
+                                h('span.lv-note-text', [
+                                    Pages.setHTML(h('span'), Msg._getKey('computer_note', ['<span class="red">','</span>']))
+                                ]),
                             ]),
-                            h('li', [
-                                Icons.get('alert'),
-                                Msg.import_note
-                            ])
+                            h('li.lv-note-item', [
+                                h('span.lv-note-icon', [Icons.get('alert')]),
+                                h('span.lv-note-text', [Msg.import_note]),
+                            ]),
                         ])
                     ])
                 ]),
                 h('div.col-md-3.cp-closed-filler'+ssoEnabled, h('div')),
+                // ── Right column: registration form card ──
                 h('div.cp-reg-form.col-md-6', [
                     h('div#userForm.form-group'+ssoEnforced, [
                         h('div.cp-register-instance', [
@@ -84,8 +101,10 @@ define([
                             }, Msg.register_whyRegister)
                         ]),
                         h('div.big-container', [
-                            h('div.input-container', [
+                            // Username field with icon
+                            h('div.input-container.lv-input-wrap', [
                                 h('label.cp-register-label', { for: 'username' }, Msg.login_username),
+                                h('span.lv-field-icon', [Icons.get('user-account')]),
                                 h('input.form-control#username', {
                                     type: 'text',
                                     autocomplete: 'off',
@@ -96,21 +115,27 @@ define([
                                     autofocus: true,
                                 }),
                             ]),
-                            h('div.input-container', [
+                            // Password field with icon + toggle
+                            h('div.input-container.lv-input-wrap', [
                                 h('label.cp-register-label', { for: 'password' }, Msg.login_password),
+                                h('span.lv-field-icon', [Icons.get('lock')]),
                                 h('input.form-control#password', {
                                     type: 'password',
                                     placeholder: Msg.login_password,
-                                    autocomplete: "new-password"
+                                    autocomplete: 'new-password'
                                 }),
+                                pwToggle('password'),
                             ]),
-                            h('div.input-container', [
+                            // Confirm password with icon + toggle
+                            h('div.input-container.lv-input-wrap', [
                                 h('label.cp-register-label', { for: 'password-confirm' }, Msg.login_confirm),
+                                h('span.lv-field-icon', [Icons.get('lock')]),
                                 h('input.form-control#password-confirm', {
                                     type: 'password',
                                     placeholder: Msg.login_confirm,
-                                    autocomplete: "new-password"
+                                    autocomplete: 'new-password'
                                 }),
+                                pwToggle('password-confirm'),
                             ]),
                         ]),
                         h('div.checkbox-container', [
