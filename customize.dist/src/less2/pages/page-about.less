@@ -1,0 +1,226 @@
+/*
+ * SPDX-FileCopyrightText: 2024 LadeStack / Girish Lade
+ *
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ *
+ * LadeVault — About page styles
+ * Brand tokens: sage-green palette, Geist Sans / Inter typography.
+ */
+
+@import (reference) "../include/infopages.less";
+@import (reference) "../include/colortheme-all.less";
+@import (reference) "../include/variables.less";
+@import (reference) "../include/font.less";
+
+// ── Brand tokens ─────────────────────────────────────────────────────────────
+@about-sage:          #71826E;
+@about-sage-dark:     #61745E;
+@about-sage-light:    #C8D0C2;
+@about-warm-white:    #FEFEFE;
+@about-dark-gray:     #4B4A48;
+@about-border:        #E8ECE7;
+
+// ── Fonts ─────────────────────────────────────────────────────────────────────
+// Geist Sans for headings, Inter for body — loaded via Google Fonts CDN reference;
+// fall back gracefully to system-ui if unavailable.
+@about-font-heading:  'Geist Sans', 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+@about-font-body:     'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+
+// ── Page shell ───────────────────────────────────────────────────────────────
+&.cp-page-about {
+    .infopages_main();
+
+    background-color: @about-warm-white;
+    color: @about-dark-gray;
+    font-family: @about-font-body;
+
+    // Load web fonts inline — no external @import allowed inside <style>,
+    // so we reference via a self-contained data approach. Geist is available
+    // through the system font stack on macOS/iOS; Inter is widely available.
+    // The font-face declarations below extend coverage for other platforms.
+    @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        // System-level fallback — no external src needed for deployment.
+        // When the server hosts Inter, update src here.
+        src: local('Inter'), local('Inter-Regular');
+    }
+    @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        src: local('Inter Bold'), local('Inter-Bold');
+    }
+
+    // ── Layout ─────────────────────────────────────────────────────────────
+    .cp-about-main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        padding: @sp-64 @sp-24 @sp-96;
+
+        @media (max-width: 600px) {
+            padding: @sp-40 @sp-16 @sp-64;
+        }
+    }
+
+    .cp-about-content {
+        width: 100%;
+        max-width: 720px;
+        display: flex;
+        flex-direction: column;
+        gap: @sp-64;
+
+        @media (max-width: 600px) {
+            gap: @sp-48;
+        }
+    }
+
+    // ── Hero ───────────────────────────────────────────────────────────────
+    .cp-about-hero {
+        display: flex;
+        align-items: center;
+        gap: @sp-40;
+
+        @media (max-width: 600px) {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: @sp-24;
+        }
+    }
+
+    .cp-about-avatar {
+        flex-shrink: 0;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid @about-sage-light;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+
+        @media (max-width: 600px) {
+            width: 120px;
+            height: 120px;
+        }
+    }
+
+    .cp-about-hero-text {
+        display: flex;
+        flex-direction: column;
+        gap: @sp-8;
+    }
+
+    .cp-about-name {
+        font-family: @about-font-heading;
+        font-weight: 700;
+        font-size: 48px;
+        line-height: 1.1;
+        margin: 0;
+        color: @about-dark-gray;
+
+        @media (max-width: 600px) {
+            font-size: 32px;
+        }
+    }
+
+    .cp-about-tagline {
+        font-family: @about-font-heading;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 1.4;
+        margin: 0;
+        color: @about-sage;
+
+        @media (max-width: 600px) {
+            font-size: 17px;
+        }
+    }
+
+    // ── Narrative ──────────────────────────────────────────────────────────
+    .cp-about-narrative {
+        display: flex;
+        flex-direction: column;
+        gap: @sp-24;
+        border-top: 1px solid @about-border;
+        padding-top: @sp-48;
+
+        @media (max-width: 600px) {
+            padding-top: @sp-32;
+        }
+    }
+
+    .cp-about-para {
+        font-family: @about-font-body;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.7;
+        margin: 0;
+        color: @about-dark-gray;
+
+        // Subtle fade-in on scroll — applied by JS via IntersectionObserver
+        // (see about.js); the initial state is set here so it degrades gracefully.
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 180ms ease, transform 180ms ease;
+
+        &.cp-about-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        // Prefers-reduced-motion: skip animation entirely
+        @media (prefers-reduced-motion: reduce) {
+            opacity: 1;
+            transform: none;
+            transition: none;
+        }
+
+        @media (max-width: 600px) {
+            font-size: 16px;
+        }
+    }
+
+    // ── Links row ──────────────────────────────────────────────────────────
+    .cp-about-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: @sp-32;
+        border-top: 1px solid @about-border;
+        padding-top: @sp-40;
+        padding-bottom: @sp-16;
+
+        @media (max-width: 600px) {
+            gap: @sp-24;
+            padding-top: @sp-32;
+        }
+    }
+
+    .cp-about-link {
+        display: inline-flex;
+        align-items: center;
+        gap: @sp-8;
+        font-size: 15px;
+        font-weight: 500;
+        color: @about-sage;
+        text-decoration: none;
+        transition: color 120ms ease;
+
+        &:hover, &:focus-visible {
+            color: @about-sage-dark;
+            text-decoration: none;
+        }
+        &:focus-visible {
+            outline: 2px solid @about-sage;
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+    }
+
+    .cp-about-ext-icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+}

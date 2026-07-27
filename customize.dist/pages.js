@@ -219,12 +219,18 @@ define([
             return true;
         });
 
+        var isAbout = /^\/about\.html/.test(window.location.pathname);
+
         return h('nav.navbar.navbar-expand-lg',
             [
                 !isHome? homeLink: undefined,
                 h('a.nav-item.nav-link', { href: '/features.html', role: 'button'}, [
                     Icons.get('properties'),
                     pricingName
+                ]),
+                h('a.nav-item.nav-link' + (isAbout ? '.active' : ''), { href: '/about.html', role: 'button'}, [
+                    Icons.get('user-profile'),
+                    'About'
                 ]),
             ].concat(rightLinks)
         );
