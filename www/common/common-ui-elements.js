@@ -2065,7 +2065,6 @@ define([
 
         var legalLine = template(Messages.info_imprintFlavour, Pages.imprintLink);
         var privacyLine = template(Messages.info_privacyFlavour, Pages.privacyLink);
-        var faqLine = template(Messages.help_genericMore, Pages.docsLink);
         var termsLine = template(Messages.info_termsFlavour, Pages.termsLink);
         var sourceLine = template(Messages.info_sourceFlavour, Pages.sourceLink);
 
@@ -2081,7 +2080,6 @@ define([
             h('hr'),
             h('p', Pages.hostDescription),
             h('hr'),
-            faqLine,
             termsLine,
             privacyLine,
             legalLine,
@@ -2245,15 +2243,6 @@ define([
                 },
             });
         }
-        options.push({
-            tag: 'a',
-            attributes: {
-                'target': '_blank',
-                'rel': 'noopener',
-                'href': 'https://docs.cryptpad.org',
-            },
-            content: h('span', [Icons.get('documentation')], Messages.docs_link)
-        });
         if (padType !== 'support' && accountName && Config.supportMailboxKey) {
             options.push({
                 tag: 'a',
