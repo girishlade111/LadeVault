@@ -191,6 +191,7 @@ define([
         "code": "code-xml",
         "qr-code": "qr-code",
         "lock": "lock",
+        "shield-alert": "shield-alert",
         "unlocked": "lock-open",
         "help": "info",
         "expand-menu": "chevron-right",
