@@ -71,13 +71,10 @@ define([
             para('This is a solo-built project, continuously improved. If it saves you time or earns a place in your workflow, that\'s the win. Follow the journey at ladestack.in or drop me a message on the Contact page.'),
         ]);
 
-        // ── Hero ─────────────────────────────────────────────────────────────
         var hero = h('div.cp-about-hero', [
             h('img.cp-about-avatar', {
                 src: '/customize/images/profile.png',
                 alt: 'Girish Lade — profile photo',
-                width: '160',
-                height: '160',
             }),
             h('div.cp-about-hero-text', [
                 h('h1.cp-about-name', 'Girish Lade'),
