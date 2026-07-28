@@ -3,8 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
- * LadeVault — About page styles
- * Brand tokens: sage-green palette, Geist Sans / Inter typography.
+ * LadeVault — Modern Artistic About page styles
  */
 
 @import (reference) "../include/infopages.less";
@@ -14,37 +13,55 @@
 
 // ── Brand tokens ─────────────────────────────────────────────────────────────
 @about-sage:          #71826E;
-@about-sage-dark:     #61745E;
+@about-sage-dark:     #4A5A48;
 @about-sage-light:    #C8D0C2;
-@about-warm-white:    #FEFEFE;
-@about-dark-gray:     #4B4A48;
-@about-border:        #E8ECE7;
+@about-sage-glow:     rgba(113, 130, 110, 0.15);
+@about-warm-white:    #FAFBFA;
+@about-dark-gray:     #2D2C2A;
+@about-text-muted:    #5A5957;
+@about-border:        rgba(200, 208, 194, 0.4);
+@about-glass-bg:      rgba(255, 255, 255, 0.65);
 
 // ── Fonts ─────────────────────────────────────────────────────────────────────
-// Geist Sans for headings, Inter for body — loaded via Google Fonts CDN reference;
-// fall back gracefully to system-ui if unavailable.
 @about-font-heading:  'Geist Sans', 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
 @about-font-body:     'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+
+// ── Keyframes ─────────────────────────────────────────────────────────────────
+@keyframes cpAboutFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-12px); }
+}
+
+@keyframes cpAboutBlobPulse {
+    0% { transform: scale(1) translate(0, 0) rotate(0deg); opacity: 0.7; }
+    33% { transform: scale(1.05) translate(10px, -15px) rotate(5deg); opacity: 0.9; }
+    66% { transform: scale(0.95) translate(-10px, 15px) rotate(-5deg); opacity: 0.6; }
+    100% { transform: scale(1) translate(0, 0) rotate(0deg); opacity: 0.7; }
+}
 
 // ── Page shell ───────────────────────────────────────────────────────────────
 &.cp-page-about {
     .infopages_main();
 
     background-color: @about-warm-white;
+    background-image: 
+        radial-gradient(circle at 15% 20%, rgba(200, 208, 194, 0.3) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(200, 208, 194, 0.2) 0%, transparent 40%);
+    background-attachment: fixed;
     color: @about-dark-gray;
     font-family: @about-font-body;
 
-    // Load web fonts inline — no external @import allowed inside <style>,
-    // so we reference via a self-contained data approach. Geist is available
-    // through the system font stack on macOS/iOS; Inter is widely available.
-    // The font-face declarations below extend coverage for other platforms.
     @font-face {
         font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
-        // System-level fallback — no external src needed for deployment.
-        // When the server hosts Inter, update src here.
         src: local('Inter'), local('Inter-Regular');
+    }
+    @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 500;
+        src: local('Inter Medium'), local('Inter-Medium');
     }
     @font-face {
         font-family: 'Inter';
@@ -60,93 +77,198 @@
         justify-content: center;
         padding: @sp-64 @sp-24 @sp-96;
 
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
             padding: @sp-40 @sp-16 @sp-64;
         }
     }
 
-    .cp-about-content {
+    .cp-about-container {
         width: 100%;
-        max-width: 720px;
-        display: flex;
-        flex-direction: column;
-        gap: @sp-64;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
 
-        @media (max-width: 600px) {
-            gap: @sp-48;
+    .cp-about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.6fr;
+        gap: 80px;
+        align-items: start;
+
+        @media (max-width: 900px) {
+            grid-template-columns: 1fr;
+            gap: 48px;
         }
     }
 
-    // ── Hero ───────────────────────────────────────────────────────────────
-    .cp-about-hero {
+    // ── Left Column (Sticky) ───────────────────────────────────────────────
+    .cp-about-left-col {
+        position: sticky;
+        top: 120px;
         display: flex;
-        align-items: center;
-        gap: @sp-40;
+        flex-direction: column;
+        gap: 32px;
 
-        @media (max-width: 600px) {
-            flex-direction: column;
+        @media (max-width: 900px) {
+            position: relative;
+            top: 0;
             align-items: center;
             text-align: center;
-            gap: @sp-24;
         }
+    }
+
+    // ── Hero Image with Artistic Blob ──────────────────────────────────────
+    .cp-about-hero-image-wrapper {
+        position: relative;
+        width: 220px;
+        margin-bottom: 16px;
+        animation: cpAboutFloat 6s ease-in-out infinite alternate;
+
+        @media (max-width: 900px) {
+            width: 180px;
+            margin: 0 auto 16px;
+        }
+    }
+
+    .cp-about-blob-bg {
+        position: absolute;
+        top: -15%;
+        left: -15%;
+        right: -15%;
+        bottom: -15%;
+        background: linear-gradient(135deg, @about-sage-light, @about-sage);
+        filter: blur(30px);
+        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+        z-index: 0;
+        animation: cpAboutBlobPulse 12s infinite ease-in-out;
+        opacity: 0.6;
+    }
+
+    .cp-about-avatar-container {
+        position: relative;
+        z-index: 1;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+        background: #fff;
     }
 
     .cp-about-avatar {
-        flex-shrink: 0;
-        width: 160px;
-        height: auto;
-        border-radius: 16px;
-        border: 3px solid @about-sage-light;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+        display: block;
+        width: 100%;
+        height: auto; // Preserves aspect ratio beautifully
+        object-fit: cover;
+        transition: transform 0.5s ease;
 
-        @media (max-width: 600px) {
-            width: 120px;
-            height: auto;
+        &:hover {
+            transform: scale(1.03);
         }
     }
 
+    // ── Hero Text ──────────────────────────────────────────────────────────
     .cp-about-hero-text {
         display: flex;
         flex-direction: column;
-        gap: @sp-8;
+        gap: 12px;
     }
 
     .cp-about-name {
         font-family: @about-font-heading;
         font-weight: 700;
-        font-size: 48px;
-        line-height: 1.1;
+        font-size: 56px;
+        letter-spacing: -1.5px;
+        line-height: 1.05;
         margin: 0;
         color: @about-dark-gray;
+        background: linear-gradient(135deg, #111, @about-sage-dark);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
 
-        @media (max-width: 600px) {
-            font-size: 32px;
+        @media (max-width: 900px) {
+            font-size: 44px;
         }
     }
 
     .cp-about-tagline {
         font-family: @about-font-heading;
-        font-weight: 400;
-        font-size: 24px;
-        line-height: 1.4;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 1.5;
         margin: 0;
         color: @about-sage;
 
-        @media (max-width: 600px) {
-            font-size: 17px;
+        @media (max-width: 900px) {
+            font-size: 18px;
         }
     }
 
-    // ── Narrative ──────────────────────────────────────────────────────────
-    .cp-about-narrative {
+    // ── Links ──────────────────────────────────────────────────────────────
+    .cp-about-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 8px;
+
+        @media (max-width: 900px) {
+            justify-content: center;
+        }
+    }
+
+    .cp-about-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 15px;
+        font-weight: 500;
+        color: @about-sage-dark;
+        text-decoration: none;
+        padding: 10px 16px;
+        border-radius: 100px;
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        transition: all 200ms ease;
+
+        &:hover, &:focus-visible {
+            background: #fff;
+            color: @about-sage;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px @about-sage-glow;
+        }
+        
+        &:focus-visible {
+            outline: 2px solid @about-sage;
+            outline-offset: 2px;
+        }
+    }
+
+    .cp-about-ext-icon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+    }
+
+    // ── Right Column (Narrative) ───────────────────────────────────────────
+    .cp-about-right-col {
         display: flex;
         flex-direction: column;
-        gap: @sp-24;
-        border-top: 1px solid @about-border;
-        padding-top: @sp-48;
+    }
 
-        @media (max-width: 600px) {
-            padding-top: @sp-32;
+    .cp-about-narrative-card {
+        background: @about-glass-bg;
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        border-radius: 32px;
+        padding: 56px;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.02);
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+
+        @media (max-width: 900px) {
+            padding: 32px 24px;
+            border-radius: 24px;
         }
     }
 
@@ -154,72 +276,34 @@
         font-family: @about-font-body;
         font-size: 18px;
         font-weight: 400;
-        line-height: 1.7;
+        line-height: 1.8;
         margin: 0;
-        color: @about-dark-gray;
+        color: @about-text-muted;
 
-        // Subtle fade-in on scroll — applied by JS via IntersectionObserver
-        // (see about.js); the initial state is set here so it degrades gracefully.
+        // Subtle cascade fade-in
         opacity: 0;
-        transform: translateY(12px);
-        transition: opacity 180ms ease, transform 180ms ease;
+        transform: translateY(16px);
+        transition: opacity 400ms ease-out, transform 400ms ease-out;
+
+        strong {
+            color: @about-dark-gray;
+            font-weight: 500;
+        }
 
         &.cp-about-visible {
             opacity: 1;
             transform: none;
         }
 
-        // Prefers-reduced-motion: skip animation entirely
         @media (prefers-reduced-motion: reduce) {
             opacity: 1;
             transform: none;
-            transition: none;
+            transition: none !important;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
             font-size: 16px;
+            line-height: 1.7;
         }
-    }
-
-    // ── Links row ──────────────────────────────────────────────────────────
-    .cp-about-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: @sp-32;
-        border-top: 1px solid @about-border;
-        padding-top: @sp-40;
-        padding-bottom: @sp-16;
-
-        @media (max-width: 600px) {
-            gap: @sp-24;
-            padding-top: @sp-32;
-        }
-    }
-
-    .cp-about-link {
-        display: inline-flex;
-        align-items: center;
-        gap: @sp-8;
-        font-size: 15px;
-        font-weight: 500;
-        color: @about-sage;
-        text-decoration: none;
-        transition: color 120ms ease;
-
-        &:hover, &:focus-visible {
-            color: @about-sage-dark;
-            text-decoration: none;
-        }
-        &:focus-visible {
-            outline: 2px solid @about-sage;
-            outline-offset: 3px;
-            border-radius: 4px;
-        }
-    }
-
-    .cp-about-ext-icon {
-        width: 24px;
-        height: 24px;
-        flex-shrink: 0;
     }
 }
