@@ -61,8 +61,8 @@ define([
                     this.classList.toggle('lv-revealed');
                 },
             }, [
-                h('i.lv-eye-show', { 'data-lucide': 'eye', 'aria-hidden': 'true' }),
-                h('i.lv-eye-hide', { 'data-lucide': 'eye-off', 'aria-hidden': 'true' }),
+                h('span.lv-eye-show', [Icons.get('password-reveal')]),
+                h('span.lv-eye-hide', [Icons.get('password-hide')]),
             ]);
         };
 
