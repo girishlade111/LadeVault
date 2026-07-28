@@ -276,21 +276,24 @@ define([
             var lib = LIBRARIES[libKey] || LIBRARIES.lucide;
             var paths = lib.icons[key] || LIBRARIES.lucide.icons[key] || LIBRARIES.lucide.icons.anon;
 
-            var children = (Array.isArray(paths) ? paths : [paths]).map(function (d) {
-                return h('path', { d: d });
-            });
+            var pathString = (Array.isArray(paths) ? paths : [paths]).map(function (d) {
+                return '<path d="' + d + '"></path>';
+            }).join('');
 
-            return h('svg.lv-feat-icon' + (extraClass ? '.' + extraClass : ''), {
-                xmlns: 'http://www.w3.org/2000/svg',
-                viewBox: '0 0 24 24',
-                fill: 'none',
-                stroke: 'currentColor',
-                'stroke-width': lib.strokeWidth || '1.75',
-                'stroke-linecap': 'round',
-                'stroke-linejoin': 'round',
-                'aria-hidden': 'true',
-                'data-icon-key': key,
-            }, children);
+            var svgHtml = '<svg class="lv-feat-icon' + (extraClass ? ' ' + extraClass : '') + '" ' +
+                'xmlns="http://www.w3.org/2000/svg" ' +
+                'viewBox="0 0 24 24" ' +
+                'fill="none" ' +
+                'stroke="currentColor" ' +
+                'stroke-width="' + (lib.strokeWidth || '1.75') + '" ' +
+                'stroke-linecap="round" ' +
+                'stroke-linejoin="round" ' +
+                'aria-hidden="true" ' +
+                'data-icon-key="' + key + '">' +
+                pathString +
+                '</svg>';
+
+            return Pages.setHTML(h('span.lv-icon-svg-wrap'), svgHtml);
         };
 
         // ── Icon circle wrapper ────────────────────────────────────────────────
@@ -480,10 +483,6 @@ define([
         };
 
         var librarySelectorBar = h('div.lv-lib-bar', [
-            h('div.lv-lib-bar-header', [
-                h('span.lv-lib-title', 'Icon Design Style'),
-                h('span.lv-lib-sub', 'Crafted using premier open-source UI icon systems')
-            ]),
             h('div.lv-lib-pills', [
                 makeLibTab('lucide'),
                 makeLibTab('heroicons'),

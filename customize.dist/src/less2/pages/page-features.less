@@ -115,47 +115,12 @@
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(113, 130, 110, 0.2);
-        border-radius: 16px;
-        padding: 16px 20px;
+        border-radius: 28px;
+        padding: 8px 12px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-        display: flex;
-        flex-direction: column;
+        display: inline-flex;
         align-items: center;
-        gap: 12px;
-    }
-
-    .lv-lib-bar-header {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
         justify-content: center;
-    }
-
-    .lv-lib-title {
-        font-family: @feat-font-heading;
-        font-weight: 700;
-        font-size: 13px;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: @feat-sage-dark;
-    }
-
-    .lv-lib-sub {
-        font-family: @feat-font-body;
-        font-weight: 400;
-        font-size: 13px;
-        color: @feat-muted;
-
-        &::before {
-            content: "•";
-            margin-right: 8px;
-            color: @feat-sage-light;
-        }
-
-        @media (max-width: 520px) {
-            display: none;
-        }
     }
 
     .lv-lib-pills {
@@ -408,6 +373,14 @@
             transform: scale(0.7) rotate(12deg);
             opacity: 0.2;
         }
+    }
+
+    .lv-icon-svg-wrap {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
     }
 
     .lv-feat-icon {
