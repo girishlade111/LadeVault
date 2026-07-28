@@ -119,10 +119,10 @@ define([
                 ariaLabel: 'Send an email to admin@ladestack.in',
             }),
 
-            // 2 · Bug report  —  Lucide "bug"  (insect silhouette — universally recognised)
+            // 2 · Bug report  —  GitHub (Issues)
             makeCard({
-                iconNode:  Icons.get('bug'),
-                iconClass: 'cp-contact-badge--bug',
+                iconNode:  siGithub(),
+                iconClass: 'cp-contact-badge--github',
                 label:     'Bug report',
                 value:     'github.com/girishlade111/LadeVault',
                 href:      'https://github.com/girishlade111/LadeVault/issues',
