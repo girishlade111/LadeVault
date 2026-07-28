@@ -263,6 +263,12 @@ try {
         title: getKey('og_contact', [instance]),
     },
     {
+        src: './customize.dist/about.html',
+        dest: './www/about.html',
+        url: '/about.html',
+        title: getKey('og_default'),
+    },
+    {
         src: './customize.dist/features.html',
         dest: './www/features.html',
         url: '/features.html',
