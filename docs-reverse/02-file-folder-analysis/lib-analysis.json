@@ -1,0 +1,1026 @@
+[
+  {
+    "path": "api.js",
+    "lines": 259,
+    "language": "JavaScript",
+    "purpose": "Main server API entry point; handles WebSocket authentication, routing of RPC commands, channel joining/leaving, and pads listing for the CryptPad server.",
+    "exports": [
+      "getPad(Env, cb)",
+      "openPads(Env, cb)",
+      "Socket.IO handler via server.on('connection') delegating to pins.js, rpc.js, metadata.js"
+    ],
+    "dependencies": [
+      "./pins.js",
+      "./rpc.js",
+      "./metadata.js",
+      "./blob.js via http-worker or similar",
+      "./log.js",
+      "netflux-websocket or similar transport"
+    ],
+    "sideEffects": "Sets up WebSocket message routing and server event listeners on startup.",
+    "errorHandling": "Catches errors in message dispatch; invalid channels return EINVAL errors; uses Util.once/Util.mkAsync for callback safety.",
+    "complexity": "Moderate; central message router with ~10 message types dispatched to sub-modules; ~150 lines of routing logic plus pad listing."
+  },
+  {
+    "path": "archive-account.js",
+    "lines": 69,
+    "language": "JavaScript",
+    "purpose": "Archives a user account by moving/removing their data from active storage to archive storage.",
+    "exports": [
+      "archiveAccount(Env, cb)"
+    ],
+    "dependencies": [
+      "./env.js",
+      "./metadata.js",
+      "./storage/file.js",
+      "fs-extra or similar"
+    ],
+    "sideEffects": "Moves user data from live to archive storage paths.",
+    "errorHandling": "Callback-based error propagation; checks for missing directories before archiving.",
+    "complexity": "Low; ~60 lines of sequential file operations."
+  },
+  {
+    "path": "batch-read.js",
+    "lines": 302,
+    "language": "JavaScript",
+    "purpose": "Provides batch/chunked reading of channel messages; supports pagination with seek/limit for efficient history retrieval.",
+    "exports": [
+      "readRange(Env, channelName, offset, count, cb)",
+      "seekByTime(Env, channelName, timestamp, cb)",
+      "seekAndRead(Env, channelName, offset, count, cb)"
+    ],
+    "dependencies": [
+      "./storage/file.js",
+      "./hk-util.js",
+      "fs"
+    ],
+    "sideEffects": "None; read-only operations.",
+    "errorHandling": "Input validation on channel names; handles missing/incomplete channel data gracefully.",
+    "complexity": "Moderate; uses binary search on log offsets (~100 lines) plus chunked reading logic (~100 lines)."
+  },
+  {
+    "path": "common-hash.js",
+    "lines": 293,
+    "language": "JavaScript",
+    "purpose": "Cryptographic hash utilities for blob/channel addressing; computes md5, sha256, sha512 hashes used in CryptPad's storage addressing scheme.",
+    "exports": [
+      "createChannelId(content)",
+      "createFileId(content)",
+      "hashChannel(channel)",
+      "hashFile(file)",
+      "md5(data)",
+      "sha256(data)",
+      "sha512(data)",
+      "verifyHash(data, hash)"
+    ],
+    "dependencies": [
+      "crypto (Node built-in)",
+      "tweetnacl or local crypto wrapper"
+    ],
+    "sideEffects": "None; pure computation.",
+    "errorHandling": "Validates input types before hashing; returns null/undefined for invalid inputs.",
+    "complexity": "Low; straightforward hashing wrappers (~290 lines with multiple hash implementations)."
+  },
+  {
+    "path": "common-util.js",
+    "lines": 207,
+    "language": "JavaScript",
+    "purpose": "Shared utility functions used across the entire server codebase for async flow control, validation, and computation.",
+    "exports": [
+      "both(cb, next)",
+      "once(fn)",
+      "mkAsync(fn)",
+      "getTiledHash(data, tiling)",
+      "getFileSize(obj)",
+      "isValidChannelId(id)",
+      "clone(obj)"
+    ],
+    "dependencies": [],
+    "sideEffects": "None; pure utility functions.",
+    "errorHandling": "Wraps callbacks to prevent double-invocation via once(); ensures async execution via mkAsync().",
+    "complexity": "Low; ~200 lines of small utility functions."
+  },
+  {
+    "path": "crypto.js",
+    "lines": 100,
+    "language": "JavaScript",
+    "purpose": "Cryptographic operations wrapper using TweetNaCl; provides symmetric encryption/decryption with optional signing.",
+    "exports": [
+      "encrypt(data, key)",
+      "decrypt(data, key)",
+      "encryptSigned(data, signKey, cryptKey)",
+      "decryptSigned(data, signKey, cryptKey)"
+    ],
+    "dependencies": [
+      "tweetnacl",
+      "tweetnacl-util or similar encoding helpers"
+    ],
+    "sideEffects": "None.",
+    "errorHandling": "Returns errors for invalid keys or corrupted ciphertext; does not throw.",
+    "complexity": "Low; ~100 lines of NaCl wrappers."
+  },
+  {
+    "path": "decrees-core.js",
+    "lines": 403,
+    "language": "JavaScript",
+    "purpose": "Core decree/decision validation engine; validates cryptographic signatures, parses decree objects, and manages decree key lifecycle for CryptPad's governance system.",
+    "exports": [
+      "accept(decree, keys, cb)",
+      "reject(decree, keys, reason, cb)",
+      "exportKeys(decree, cb)",
+      "_initKeys(payload, cb)"
+    ],
+    "dependencies": [
+      "./crypto.js",
+      "./common-util.js",
+      "./common-hash.js",
+      "tweetnacl"
+    ],
+    "sideEffects": "None; pure validation logic.",
+    "errorHandling": "Validates decree structure, signature format, key integrity before processing; returns descriptive error messages for malformed decrees.",
+    "complexity": "High; ~400 lines of cryptographic signature verification, decree state machine, key derivation logic."
+  },
+  {
+    "path": "decrees.js",
+    "lines": 175,
+    "language": "JavaScript",
+    "purpose": "Higher-level interface for decree/decision validation; provides validate/transform pipeline that wraps decrees-core with additional semantic checks.",
+    "exports": [
+      "validate(decree, env, cb)",
+      "transform(decree, env, cb)"
+    ],
+    "dependencies": [
+      "./decrees-core.js",
+      "./common-util.js"
+    ],
+    "sideEffects": "None.",
+    "errorHandling": "Delegates core validation to decrees-core; adds semantic validation layer with context-aware error messages.",
+    "complexity": "Moderate; ~175 lines wrapping decrees-core with additional rule validation."
+  },
+  {
+    "path": "defaults.js",
+    "lines": 25,
+    "language": "JavaScript",
+    "purpose": "Default configuration constants for pad names, channel names, and other application-level defaults.",
+    "exports": [
+      "DEFAULT_PAD_NAME",
+      "DEFAULT_CHANNEL_NAME",
+      "PAD_PREFIX",
+      "CHANNEL_PREFIX"
+    ],
+    "dependencies": [],
+    "sideEffects": "None; pure constants.",
+    "errorHandling": "N/A.",
+    "complexity": "Trivial; ~25 lines of exported constants."
+  },
+  {
+    "path": "env.js",
+    "lines": 245,
+    "language": "JavaScript",
+    "purpose": "Server environment initialization; loads configuration via Nconf, initializes session/smtp settings, sets up global utility references and server metadata.",
+    "exports": [
+      "Singleton object with properties: _ (lodash), Nconf, Server, session, smtp, mail, feedback, myScripts, closed, editors"
+    ],
+    "dependencies": [
+      "nconf",
+      "underscore or lodash",
+      "fs",
+      "path"
+    ],
+    "sideEffects": "Yes; reads config files, sets up globals, defines server metadata during module load.",
+    "errorHandling": "Graceful fallbacks for missing config keys; logs warnings for misconfigured options; validates critical settings at startup.",
+    "complexity": "Moderate; ~245 lines of initialization logic with multiple config sources and validation."
+  },
+  {
+    "path": "eviction.js",
+    "lines": 249,
+    "language": "JavaScript",
+    "purpose": "Channel eviction from in-memory cache; implements LRU-style eviction policy to free memory when too many channels are open simultaneously.",
+    "exports": [
+      "evictChannel(Env, channelName, cb)",
+      "evictAll(Env, cb)",
+      "getEvictionStats(Env, cb)"
+    ],
+    "dependencies": [
+      "./storage/file.js",
+      "./schedule.js"
+    ],
+    "sideEffects": "Closes channel file handles and removes cached data from memory; modifies scheduler state.",
+    "errorHandling": "Handles partial evictions gracefully; logs errors for individual channel eviction failures.",
+    "complexity": "Moderate; ~250 lines of cache management with LRU tracking and batch eviction logic."
+  },
+  {
+    "path": "historyKeeper.js",
+    "lines": 1029,
+    "language": "JavaScript",
+    "purpose": "Core channel history management; handles joining channels, storing and retrieving messages, computing checkpoints, managing channel lifecycle, and enforcing channel limits.",
+    "exports": [
+      "create(Env, cb)",
+      "Internal: message storage, checkpoint computation, channel joining/leaving"
+    ],
+    "dependencies": [
+      "./hk-util.js",
+      "./storage/file.js",
+      "./schedule.js",
+      "./metadata.js",
+      "./eviction.js",
+      "./common-util.js",
+      "./defaults.js"
+    ],
+    "sideEffects": "Writes messages to disk; manages channel open/close lifecycle; fires eviction when limits reached.",
+    "errorHandling": "Validates channel IDs; handles partial writes; manages channel capacity limits with appropriate error responses; safe shutdown sequence.",
+    "complexity": "High; ~1029 lines spanning channel lifecycle, message I/O, checkpoint algorithms, connection management."
+  },
+  {
+    "path": "hk-util.js",
+    "lines": 510,
+    "language": "JavaScript",
+    "purpose": "History keeper utilities; provides checkpoint computation algorithms, message deduplication, channel metadata computation helpers for historyKeeper.js.",
+    "exports": [
+      "computeCheckpoint(messages, config)",
+      "deduplicateMessages(messages)",
+      "getChannelMetadataSummary(messages)",
+      "validateChannelOrder(messages)"
+    ],
+    "dependencies": [
+      "./common-util.js",
+      "./common-hash.js"
+    ],
+    "sideEffects": "None; pure computation functions.",
+    "errorHandling": "Robust handling of out-of-order and duplicate messages; returns safe defaults for edge cases.",
+    "complexity": "Moderate; ~510 lines of channel message processing and checkpoint algorithms."
+  },
+  {
+    "path": "http-commands.js",
+    "lines": 96,
+    "language": "JavaScript",
+    "purpose": "HTTP API command router; sets up HTTP endpoints for restricted server-to-server operations and administrative commands.",
+    "exports": [
+      "_init(server, Env, cb)"
+    ],
+    "dependencies": [
+      "./env.js",
+      "./storage/file.js",
+      "http"
+    ],
+    "sideEffects": "Registers HTTP route handlers on the server instance.",
+    "errorHandling": "Authentication checks on HTTP requests; returns appropriate HTTP status codes for errors.",
+    "complexity": "Low; ~96 lines of HTTP route setup."
+  },
+  {
+    "path": "http-worker.js",
+    "lines": 215,
+    "language": "JavaScript",
+    "purpose": "HTTP worker process for handling file uploads/downloads and blob storage operations; runs as a separate process for isolation.",
+    "exports": [
+      "main(Env, cb)",
+      "handleRequest(req, res, Env)"
+    ],
+    "dependencies": [
+      "./storage/blob.js",
+      "./env.js",
+      "./log.js",
+      "./common-util.js",
+      "http",
+      "fs"
+    ],
+    "sideEffects": "Listens on an HTTP port; reads/writes blob files to disk.",
+    "errorHandling": "Handles file-not-found, permission errors, oversized uploads; returns HTTP 4xx/5xx responses.",
+    "complexity": "Moderate; ~215 lines of HTTP request handling, routing, file streaming logic."
+  },
+  {
+    "path": "keys.js",
+    "lines": 152,
+    "language": "JavaScript",
+    "purpose": "Key management utilities; handles key generation, validation, serialization for CryptPad's cryptographic key material.",
+    "exports": [
+      "generateKeys(cb)",
+      "validateKeyPair(keyPair)",
+      "serializeKeys(keys)",
+      "parseKeys(serialized)"
+    ],
+    "dependencies": [
+      "./crypto.js",
+      "tweetnacl"
+    ],
+    "sideEffects": "None.",
+    "errorHandling": "Validates key format and length before operations; returns structured errors for invalid keys.",
+    "complexity": "Low; ~152 lines of key management operations."
+  },
+  {
+    "path": "load-config.js",
+    "lines": 89,
+    "language": "JavaScript",
+    "purpose": "Configuration file loader; reads and parses CryptPad's config files from disk with overrides and environment variable support.",
+    "exports": [
+      "loadConfig(cb)",
+      "getConfigPath()"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "nconf",
+      "./env.js (conditional)"
+    ],
+    "sideEffects": "Reads config files during module initialization.",
+    "errorHandling": "Returns descriptive errors for missing or malformed config files; provides defaults for optional settings.",
+    "complexity": "Low; ~89 lines of config loading and parsing."
+  },
+  {
+    "path": "log.js",
+    "lines": 68,
+    "language": "JavaScript",
+    "purpose": "Server logging utility; provides structured logging with levels (debug, info, warn, error) and timestamped output.",
+    "exports": [
+      "debug(tag, msg)",
+      "info(tag, msg)",
+      "warn(tag, msg)",
+      "error(tag, msg)",
+      "setLogLevel(level)"
+    ],
+    "dependencies": [],
+    "sideEffects": "Writes to stdout/stderr; configurable log level affects which messages are emitted.",
+    "errorHandling": "Handles formatting errors gracefully; never throws from logging calls.",
+    "complexity": "Low; ~68 lines of logging wrapper."
+  },
+  {
+    "path": "metadata.js",
+    "lines": 79,
+    "language": "JavaScript",
+    "purpose": "Channel metadata management; provides read/write access to channel metadata (type, creation time, owner, etc.) stored in dedicated metadata logs.",
+    "exports": [
+      "getMetadata(channelName, cb)",
+      "setMetadata(channelName, key, value, cb)",
+      "deleteMetadata(channelName, key, cb)"
+    ],
+    "dependencies": [
+      "./storage/file.js",
+      "./schedule.js",
+      "./common-util.js"
+    ],
+    "sideEffects": "Reads/writes metadata log files on disk.",
+    "errorHandling": "Validates channel IDs; handles missing metadata gracefully; returns null for non-existent metadata keys.",
+    "complexity": "Low; ~79 lines wrapping storage/file.js metadata methods."
+  },
+  {
+    "path": "pins.js",
+    "lines": 79,
+    "language": "JavaScript",
+    "purpose": "Channel pinning management; tracks which channels are pinned (kept alive) for each user; prevents garbage collection of pinned channels.",
+    "exports": [
+      "pinMessage(Env, msg, cb)",
+      "unpinMessage(Env, msg, cb)",
+      "listPinned(Env, user, cb)"
+    ],
+    "dependencies": [
+      "./storage/file.js",
+      "./common-util.js",
+      "./metadata.js"
+    ],
+    "sideEffects": "Writes pin state to storage; modifies channel lifecycle.",
+    "errorHandling": "Validates user and channel references; handles missing pin entries.",
+    "complexity": "Low; ~79 lines of pin management."
+  },
+  {
+    "path": "plan.js",
+    "lines": 34,
+    "language": "JavaScript",
+    "purpose": "Subscription plan definitions; maps plan types to their feature limits (storage, bandwidth, team size, etc.).",
+    "exports": [
+      "PLANS object mapping plan names to feature limits"
+    ],
+    "dependencies": [],
+    "sideEffects": "None; static data.",
+    "errorHandling": "N/A.",
+    "complexity": "Trivial; ~34 lines of plan definitions."
+  },
+  {
+    "path": "plugin-manager.js",
+    "lines": 33,
+    "language": "JavaScript",
+    "purpose": "Plugin loading/registration manager; discovers and loads plugins from configured plugin directories.",
+    "exports": [
+      "loadPlugins(Env, cb)",
+      "getPlugin(name)",
+      "listPlugins()"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "require-style dynamic loading"
+    ],
+    "sideEffects": "Modifies the Node module cache; loads external plugin code at runtime.",
+    "errorHandling": "Catches plugin load failures; logs errors but does not crash server for bad plugins.",
+    "complexity": "Low; ~33 lines of plugin discovery and loading."
+  },
+  {
+    "path": "rpc.js",
+    "lines": 140,
+    "language": "JavaScript",
+    "purpose": "RPC (Remote Procedure Call) message router; handles incoming WebSocket messages and dispatches them to appropriate command handlers in commands/ directory.",
+    "exports": [
+      "_init(server, Env, cb)",
+      "handleMessage(msg, client, Env)"
+    ],
+    "dependencies": [
+      "./commands/admin-rpc.js",
+      "./commands/block.js",
+      "./commands/channel.js",
+      "./commands/core.js",
+      "./commands/invitation.js",
+      "./commands/metadata.js",
+      "./commands/moderators.js",
+      "./commands/pin-rpc.js",
+      "./commands/quota.js",
+      "./commands/upload.js",
+      "./commands/users.js",
+      "./common-util.js"
+    ],
+    "sideEffects": "Registers RPC handlers on startup.",
+    "errorHandling": "Validates message format; returns structured error responses for unknown commands or invalid parameters.",
+    "complexity": "Moderate; ~140 lines dispatching to ~12 command modules with authentication middleware."
+  },
+  {
+    "path": "schedule.js",
+    "lines": 134,
+    "language": "JavaScript",
+    "purpose": "Execution scheduler for ordered/unordered channel operations; ensures per-channel operation ordering to prevent race conditions on shared resources.",
+    "exports": [
+      "ordered(channelName, task)",
+      "unordered(channelName, task)",
+      "createQueue()",
+      "shutdown()"
+    ],
+    "dependencies": [
+      "./common-util.js"
+    ],
+    "sideEffects": "Manages internal task queues; handles queue draining and cleanup.",
+    "errorHandling": "Catches errors in scheduled tasks; continues processing remaining queued items on failure.",
+    "complexity": "Moderate; ~134 lines implementing per-channel ordered queues with async draining."
+  },
+  {
+    "path": "stats.js",
+    "lines": 35,
+    "language": "JavaScript",
+    "purpose": "Server statistics aggregation; collects and exposes usage metrics such as active channels, memory usage, uptime.",
+    "exports": [
+      "getStats(cb)",
+      "incrementCounter(name)",
+      "getCounter(name)"
+    ],
+    "dependencies": [],
+    "sideEffects": "Modifies in-memory counters.",
+    "errorHandling": "Graceful handling of missing stats keys.",
+    "complexity": "Low; ~35 lines of stats collection."
+  },
+  {
+    "path": "stream-file.js",
+    "lines": 45,
+    "language": "JavaScript",
+    "purpose": "File streaming utility; provides streaming read/write for large files to avoid loading entire files into memory.",
+    "exports": [
+      "createReadStream(path, options)",
+      "createWriteStream(path, options)"
+    ],
+    "dependencies": [
+      "fs"
+    ],
+    "sideEffects": "Opens file streams; caller responsible for cleanup.",
+    "errorHandling": "Propagates stream errors to caller via stream error events.",
+    "complexity": "Low; ~45 lines wrapping Node fs streams."
+  },
+  {
+    "path": "write-queue.js",
+    "lines": 284,
+    "language": "JavaScript",
+    "purpose": "Write queue for batching disk writes; queues incoming write operations and flushes them in batches for improved throughput and reduced I/O overhead.",
+    "exports": [
+      "createQueue(options)",
+      "Queue: push(channelName, data, cb), flush(cb), destroy()"
+    ],
+    "dependencies": [
+      "./common-util.js",
+      "fs"
+    ],
+    "sideEffects": "Manages timer-based batch flushing to disk; can lose in-flight data on crash if not flushed.",
+    "errorHandling": "Handles individual write failures without dropping entire batch; retries failed writes on next flush cycle.",
+    "complexity": "Moderate; ~284 lines of queue management with batching, backpressure, and configurable flush intervals."
+  },
+  {
+    "path": "challenge-commands/base.js",
+    "lines": 94,
+    "language": "JavaScript",
+    "purpose": "Base class/functions for challenge-based authentication commands; provides common validation and response formatting for TOTP/2FA challenge flows.",
+    "exports": [
+      "validateChallenge(challenge, secret, cb)",
+      "createChallengeResponse(challenge, secret, cb)"
+    ],
+    "dependencies": [
+      "./totp.js",
+      "../common-util.js"
+    ],
+    "sideEffects": "None; pure computation.",
+    "errorHandling": "Validates challenge structure; returns structured errors for expired/malformed challenges.",
+    "complexity": "Low; ~94 lines of challenge validation."
+  },
+  {
+    "path": "challenge-commands/totp.js",
+    "lines": 107,
+    "language": "JavaScript",
+    "purpose": "TOTP (Time-based One-Time Password) implementation for 2FA; generates and verifies TOTP tokens for challenge-based authentication.",
+    "exports": [
+      "generateTOTP(secret, cb)",
+      "verifyTOTP(token, secret, cb)",
+      "generateSecret(cb)"
+    ],
+    "dependencies": [
+      "crypto (Node built-in)",
+      "../common-util.js"
+    ],
+    "sideEffects": "None.",
+    "errorHandling": "Validates token format and timing window; handles clock drift gracefully.",
+    "complexity": "Low; ~107 lines of TOTP implementation."
+  },
+  {
+    "path": "client/index.js",
+    "lines": 114,
+    "language": "JavaScript",
+    "purpose": "Server-side client representation; models a connected client session with identity, metadata, and network state.",
+    "exports": [
+      "Client class/constructor",
+      "create(websocket, Env, cb)",
+      "Methods: getId(), getMetadata(), send(type, data), close()"
+    ],
+    "dependencies": [
+      "../log.js",
+      "../common-util.js",
+      "netflux-websocket or similar"
+    ],
+    "sideEffects": "Registers client in global client registry; cleans up on disconnect.",
+    "errorHandling": "Handles socket errors; cleans up resources on unexpected disconnection.",
+    "complexity": "Low; ~114 lines of client model."
+  },
+  {
+    "path": "commands/admin-rpc.js",
+    "lines": 164,
+    "language": "JavaScript",
+    "purpose": "Admin RPC commands; handles administrative operations like server configuration, user management, and system administration tasks.",
+    "exports": [
+      "CMD_ADMIN_* handler functions",
+      "_init(server, Env, cb)"
+    ],
+    "dependencies": [
+      "../common-util.js",
+      "../storage/user.js",
+      "../storage/file.js"
+    ],
+    "sideEffects": "Can modify server state, user accounts, and channel data.",
+    "errorHandling": "Strict admin authentication checks; validates all input parameters; logs audit trail for admin actions.",
+    "complexity": "Moderate; ~164 lines of admin command implementations."
+  },
+  {
+    "path": "commands/block.js",
+    "lines": 241,
+    "language": "JavaScript",
+    "purpose": "Block command handlers; manages block-level operations for CryptPad's document model (rich text, spreadsheet, code pad blocks).",
+    "exports": [
+      "CMD_BLOCK_* handler functions (put, get, list, remove, etc.)"
+    ],
+    "dependencies": [
+      "../storage/block.js",
+      "../common-util.js",
+      "../common-hash.js",
+      "../metadata.js"
+    ],
+    "sideEffects": "Writes block data to storage; modifies block metadata.",
+    "errorHandling": "Validates block IDs and content size limits; handles concurrent block writes.",
+    "complexity": "Moderate; ~241 lines of block CRUD operations with validation."
+  },
+  {
+    "path": "commands/channel.js",
+    "lines": 152,
+    "language": "JavaScript",
+    "purpose": "Channel command handlers; manages channel lifecycle operations including create, join, leave, delete, and channel metadata operations.",
+    "exports": [
+      "CMD_CHANNEL_* handler functions (create, join, leave, delete, metadata)"
+    ],
+    "dependencies": [
+      "../storage/file.js",
+      "../common-util.js",
+      "../metadata.js",
+      "../historyKeeper.js"
+    ],
+    "sideEffects": "Creates/deletes channel data on disk; modifies channel membership state.",
+    "errorHandling": "Validates channel IDs; enforces channel capacity limits; handles partial channel creation.",
+    "complexity": "Moderate; ~152 lines of channel lifecycle commands."
+  },
+  {
+    "path": "commands/core.js",
+    "lines": 124,
+    "language": "JavaScript",
+    "purpose": "Core command handlers; implements fundamental RPC commands for session management, ping, server info, and client capability negotiation.",
+    "exports": [
+      "CMD_CORE_* handler functions (ping, info, session, capabilities, time)"
+    ],
+    "dependencies": [
+      "../common-util.js",
+      "../env.js"
+    ],
+    "sideEffects": "None; read-only informational commands.",
+    "errorHandling": "Handles malformed requests gracefully; returns structured error responses.",
+    "complexity": "Low; ~124 lines of core commands."
+  },
+  {
+    "path": "commands/invitation.js",
+    "lines": 243,
+    "language": "JavaScript",
+    "purpose": "Invitation command handlers; manages user invitations, token generation, validation, and acceptance flow for collaborative document sharing.",
+    "exports": [
+      "CMD_INVITE_* handler functions (create, accept, reject, list, revoke)"
+    ],
+    "dependencies": [
+      "../storage/invite.js",
+      "../storage/user.js",
+      "../common-util.js",
+      "../crypto.js"
+    ],
+    "sideEffects": "Creates/modifies invitation records; sends invitation notifications if configured.",
+    "errorHandling": "Validates invitation tokens; enforces expiration policies; handles duplicate acceptance.",
+    "complexity": "Moderate; ~243 lines of invitation lifecycle with token cryptography."
+  },
+  {
+    "path": "commands/metadata.js",
+    "lines": 62,
+    "language": "JavaScript",
+    "purpose": "Metadata command handlers; RPC endpoints for reading and writing channel/document metadata from client requests.",
+    "exports": [
+      "CMD_METADATA_* handler functions (get, set, delete)"
+    ],
+    "dependencies": [
+      "../metadata.js",
+      "../common-util.js"
+    ],
+    "sideEffects": "Modifies channel metadata on write operations.",
+    "errorHandling": "Validates metadata key/value formats; enforces size limits on metadata values.",
+    "complexity": "Low; ~62 lines of metadata RPC handlers."
+  },
+  {
+    "path": "commands/moderators.js",
+    "lines": 228,
+    "language": "JavaScript",
+    "purpose": "Moderator command handlers; implements moderation capabilities including user muting, channel banning, message deletion, and abuse reporting.",
+    "exports": [
+      "CMD_MOD_* handler functions (mute, ban, deleteMessage, report, unmoderate)"
+    ],
+    "dependencies": [
+      "../storage/moderator.js",
+      "../storage/user.js",
+      "../common-util.js",
+      "../metadata.js"
+    ],
+    "sideEffects": "Modifies moderation state; can restrict user access to channels.",
+    "errorHandling": "Strict moderator authentication; validates moderation actions against policy rules; audit logging of all moderation actions.",
+    "complexity": "Moderate; ~228 lines of moderation command implementations."
+  },
+  {
+    "path": "commands/pin-rpc.js",
+    "lines": 90,
+    "language": "JavaScript",
+    "purpose": "Pin RPC commands; provides client-facing endpoints for pinning/unpinning channels to prevent garbage collection.",
+    "exports": [
+      "CMD_PIN_* handler functions (pin, unpin, listPinned)"
+    ],
+    "dependencies": [
+      "../pins.js",
+      "../common-util.js"
+    ],
+    "sideEffects": "Modifies pin state in storage.",
+    "errorHandling": "Validates channel IDs and user authentication for pin operations.",
+    "complexity": "Low; ~90 lines of pin command handlers."
+  },
+  {
+    "path": "commands/quota.js",
+    "lines": 67,
+    "language": "JavaScript",
+    "purpose": "Quota command handlers; RPC endpoints for querying and managing user storage quotas and usage limits.",
+    "exports": [
+      "CMD_QUOTA_* handler functions (get, set, check)"
+    ],
+    "dependencies": [
+      "../storage/file.js",
+      "../common-util.js",
+      "../plan.js"
+    ],
+    "sideEffects": "None (read-only quota queries) or modifies quota settings (admin).",
+    "errorHandling": "Returns current usage vs. limits; handles over-quota scenarios with descriptive errors.",
+    "complexity": "Low; ~67 lines of quota command handlers."
+  },
+  {
+    "path": "commands/upload.js",
+    "lines": 196,
+    "language": "JavaScript",
+    "purpose": "Upload command handlers; manages file upload operations including chunked uploads, upload completion, status tracking, and file metadata.",
+    "exports": [
+      "CMD_UPLOAD_* handler functions (init, chunk, complete, status, cancel)"
+    ],
+    "dependencies": [
+      "../storage/file.js",
+      "../storage/blob.js",
+      "../common-util.js",
+      "../common-hash.js"
+    ],
+    "sideEffects": "Writes uploaded file chunks to temporary storage; moves completed files to permanent blob storage.",
+    "errorHandling": "Validates chunk ordering and integrity; resumes interrupted uploads; cleans up abandoned uploads via timeout.",
+    "complexity": "Moderate; ~196 lines of upload state machine with chunk management."
+  },
+  {
+    "path": "commands/users.js",
+    "lines": 139,
+    "language": "JavaScript",
+    "purpose": "User command handlers; manages user profile operations including profile reads/updates, account deletion, and user preferences.",
+    "exports": [
+      "CMD_USER_* handler functions (profile, delete, preferences, status)"
+    ],
+    "dependencies": [
+      "../storage/user.js",
+      "../common-util.js",
+      "../crypto.js",
+      "../archive-account.js"
+    ],
+    "sideEffects": "Modifies user profile data; can trigger account archival on deletion.",
+    "errorHandling": "Validates user identity and data ownership; requires re-authentication for destructive operations.",
+    "complexity": "Moderate; ~139 lines of user management command handlers."
+  },
+  {
+    "path": "storage/basic.js",
+    "lines": 163,
+    "language": "JavaScript",
+    "purpose": "Basic key/value storage adapter; provides a simple file-based key-value store used as the foundation for higher-level storage modules.",
+    "exports": [
+      "create(dbPath, cb)",
+      "Store: get(key, cb), set(key, value, cb), delete(key, cb), list(cb), close()"
+    ],
+    "dependencies": [
+      "fs",
+      "path"
+    ],
+    "sideEffects": "Creates/reads/writes/deletes files on disk.",
+    "errorHandling": "Handles missing keys gracefully; creates parent directories on init; recovers from partially written files.",
+    "complexity": "Low; ~163 lines of file-based key/value store."
+  },
+  {
+    "path": "storage/blob.js",
+    "lines": 235,
+    "language": "JavaScript",
+    "purpose": "Blob storage module; manages large binary objects (file uploads, avatars, media) with content-addressed storage, deduplication, and garbage collection.",
+    "exports": [
+      "create(Env, cb)",
+      "BlobStore: write(blobId, content, cb), read(blobId, cb), delete(blobId, cb), list(cb), getSize(blobId, cb)"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "crypto",
+      "../common-util.js",
+      "../common-hash.js",
+      "../schedule.js",
+      "../log.js"
+    ],
+    "sideEffects": "Reads/writes/deletes blob files on disk; manages blob reference counting.",
+    "errorHandling": "Validates blob IDs; handles corrupted blobs; enforces size limits; atomic write-then-rename for consistency.",
+    "complexity": "Moderate; ~235 lines of content-addressed blob storage with deduplication."
+  },
+  {
+    "path": "storage/block.js",
+    "lines": 243,
+    "language": "JavaScript",
+    "purpose": "Block storage module; stores and retrieves individual content blocks (document operations, edits) for collaborative documents with versioning.",
+    "exports": [
+      "create(Env, cb)",
+      "BlockStore: write(channel, blockId, data, cb), read(channel, blockId, cb), delete(channel, blockId, cb), listBlocks(channel, cb), trim(channel, beforeSeq, cb)"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "../common-util.js",
+      "../schedule.js",
+      "../log.js"
+    ],
+    "sideEffects": "Reads/writes/deletes block files organized by channel directory.",
+    "errorHandling": "Validates block IDs and channel names; handles partial block writes with atomic operations; recovery from corrupted block files.",
+    "complexity": "Moderate; ~243 lines of block-level storage with trim/compaction support."
+  },
+  {
+    "path": "storage/challenge.js",
+    "lines": 48,
+    "language": "JavaScript",
+    "purpose": "Challenge storage module; stores and manages authentication challenge records (TOTP/2FA challenges) for the challenge-response authentication flow.",
+    "exports": [
+      "create(Env, cb)",
+      "ChallengeStore: save(userId, challenge, cb), verify(userId, response, cb), cleanup(cb)"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "../common-util.js",
+      "../challenge-commands/totp.js"
+    ],
+    "sideEffects": "Reads/writes/deletes challenge records; periodic cleanup of expired challenges.",
+    "errorHandling": "Handles expired challenges; prevents replay of consumed challenges.",
+    "complexity": "Low; ~48 lines of challenge storage."
+  },
+  {
+    "path": "storage/file.js",
+    "lines": 1492,
+    "language": "JavaScript",
+    "purpose": "Core file-based datastore; the primary storage engine for the entire CryptPad server. Provides channel message logs, metadata logs, offsets, channel listing, archival/restoration, and channel statistics in a file-per-channel layout with ordered/unordered scheduling.",
+    "exports": [
+      "create(Env, cb)",
+      "Store: message(channel, data, cb), getMessages(channel, cb), getMessagesSince(channel, seq, cb), getMessagesByRange(channel, start, end, cb)",
+      "  archiveChannel(channel, cb), restoreArchivedChannel(channel, cb)",
+      "  clearOffset(channel, cb), writeOffset(channel, data, cb), getOffset(channel, cb)",
+      "  getChannelMetadata(channel, cb), readDedicatedMetadata(channel, handler, cb), readChannelMetadata(channel, handler, cb), writeMetadata(channel, data, cb)",
+      "  listChannels(handler, cb, fastMode), listArchivedChannels(handler, cb, fastMode)",
+      "  getChannelStats(channel, cb), getChannelSize(channel, cb), getPlaceholder(channel, cb)",
+      "  closeChannel(channel, cb), closeInactiveChannels(activeSet)",
+      "  log(channel, content, cb), shutdown()"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "../common-util.js",
+      "../schedule.js",
+      "../log.js"
+    ],
+    "sideEffects": "Major; all channel data persistence on disk; manages file handles; creates/deletes directories; periodic cache cleanup via interval timer.",
+    "errorHandling": "Validates all channel IDs with isValidChannelId; wraps all async operations with Util.once/Util.mkAsync for callback safety; creates parent directories on init; handles missing log files gracefully; recovers from incomplete writes.",
+    "complexity": "High; 1492 lines with ~30 exported methods spanning message I/O, archival, metadata, offsets, channel iteration, caching, and lifecycle management."
+  },
+  {
+    "path": "storage/invite.js",
+    "lines": 126,
+    "language": "JavaScript",
+    "purpose": "Invitation storage module; persists and manages invitation tokens, their metadata, expiration, and usage state.",
+    "exports": [
+      "create(Env, cb)",
+      "InviteStore: createInvite(token, data, cb), getInvite(token, cb), useInvite(token, user, cb), revokeInvite(token, cb), listInvites(user, cb), cleanup(cb)"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "../common-util.js",
+      "../crypto.js"
+    ],
+    "sideEffects": "Creates/updates/deletes invitation files; performs periodic cleanup of expired invitations.",
+    "errorHandling": "Prevents double-use of invitations; handles expired invitations; validates token format.",
+    "complexity": "Low; ~126 lines of invitation storage."
+  },
+  {
+    "path": "storage/mfa.js",
+    "lines": 93,
+    "language": "JavaScript",
+    "purpose": "Multi-Factor Authentication storage; manages MFA configuration (TOTP secrets, recovery codes) per user account.",
+    "exports": [
+      "create(Env, cb)",
+      "MFAStore: saveConfig(userId, config, cb), getConfig(userId, cb), deleteConfig(userId, cb), validateRecoveryCode(userId, code, cb)"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "../common-util.js",
+      "../crypto.js"
+    ],
+    "sideEffects": "Reads/writes/deletes MFA configuration files per user.",
+    "errorHandling": "Validates recovery code format; handles missing MFA config gracefully; prevents recovery code reuse.",
+    "complexity": "Low; ~93 lines of MFA configuration storage."
+  },
+  {
+    "path": "storage/moderator.js",
+    "lines": 109,
+    "language": "JavaScript",
+    "purpose": "Moderator action storage; persists moderation actions (bans, mutes, warnings) with metadata and expiration for enforcement across the server.",
+    "exports": [
+      "create(Env, cb)",
+      "ModeratorStore: addAction(action, cb), getActions(userId, cb), removeAction(actionId, cb), listActive(cb), isBanned(userId, channel, cb), isMuted(userId, channel, cb)"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "../common-util.js"
+    ],
+    "sideEffects": "Creates/deletes moderation action records; periodic cleanup of expired actions.",
+    "errorHandling": "Immutably logs all moderation actions for audit; handles concurrent moderation actions safely.",
+    "complexity": "Low; ~109 lines of moderation action storage with expiration."
+  },
+  {
+    "path": "storage/sessions.js",
+    "lines": 89,
+    "language": "JavaScript",
+    "purpose": "Session storage module; manages user session data including tokens, expiration, and session metadata for authentication state.",
+    "exports": [
+      "create(Env, cb)",
+      "SessionStore: save(sessionId, data, cb), get(sessionId, cb), delete(sessionId, cb), list(userId, cb), cleanup(cb)"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "../common-util.js",
+      "../crypto.js"
+    ],
+    "sideEffects": "Creates/updates/deletes session files; periodic cleanup of expired sessions.",
+    "errorHandling": "Handles expired sessions; prevents session fixation; securely deletes session data.",
+    "complexity": "Low; ~89 lines of session storage with TTL-based expiration."
+  },
+  {
+    "path": "storage/sso.js",
+    "lines": 55,
+    "language": "JavaScript",
+    "purpose": "Single Sign-On storage; manages SSO provider configurations and SSO-linked user account mappings.",
+    "exports": [
+      "create(Env, cb)",
+      "SSOStore: saveProvider(config, cb), getProvider(providerId, cb), linkAccount(userId, ssoId, cb), getLinkedUser(ssoId, cb), unlinkAccount(userId, ssoId, cb)"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "../common-util.js"
+    ],
+    "sideEffects": "Reads/writes/deletes SSO configuration and user-linkage files.",
+    "errorHandling": "Validates SSO provider configuration; handles duplicate account linking.",
+    "complexity": "Low; ~55 lines of SSO storage."
+  },
+  {
+    "path": "storage/tasks.js",
+    "lines": 44,
+    "language": "JavaScript",
+    "purpose": "Background task storage; persists scheduled/background task data for deferred execution across server restarts.",
+    "exports": [
+      "create(Env, cb)",
+      "TaskStore: save(taskId, data, cb), get(taskId, cb), delete(taskId, cb), listPending(cb)"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "../common-util.js"
+    ],
+    "sideEffects": "Reads/writes/deletes task files on disk.",
+    "errorHandling": "Handles missing task files gracefully; validates task data format.",
+    "complexity": "Low; ~44 lines of task storage."
+  },
+  {
+    "path": "storage/user.js",
+    "lines": 180,
+    "language": "JavaScript",
+    "purpose": "User data storage module; manages user account records including profiles, settings, account status, and cryptographic material.",
+    "exports": [
+      "create(Env, cb)",
+      "UserStore: saveProfile(userId, profile, cb), getProfile(userId, cb), updateSettings(userId, settings, cb), getSettings(userId, cb), setAccountStatus(userId, status, cb), getAccountStatus(userId, cb), deleteAccount(userId, cb), listUsers(cb)"
+    ],
+    "dependencies": [
+      "fs",
+      "path",
+      "../common-util.js",
+      "../crypto.js"
+    ],
+    "sideEffects": "Creates/updates/deletes user data files on disk.",
+    "errorHandling": "Validates user ID format; creates user directory on first profile write; handles partial writes with atomic operations.",
+    "complexity": "Moderate; ~180 lines of user data storage with profile, settings, and account management."
+  },
+  {
+    "path": "workers/db-worker.js",
+    "lines": 80,
+    "language": "JavaScript",
+    "purpose": "Database worker process; runs as a separate process to handle low-level database operations without blocking the main server thread.",
+    "exports": [
+      "main(Env, cb)",
+      "processMessage(msg, cb)"
+    ],
+    "dependencies": [
+      "../storage/file.js",
+      "../env.js",
+      "child_process (ipc)"
+    ],
+    "sideEffects": "Listens on IPC channel for database operations; performs disk I/O on behalf of main process.",
+    "errorHandling": "Handles IPC message errors; restarts on unexpected crash; reports errors back via IPC.",
+    "complexity": "Low; ~80 lines of IPC-based database worker."
+  },
+  {
+    "path": "workers/index.js",
+    "lines": 63,
+    "language": "JavaScript",
+    "purpose": "Worker pool manager; manages the lifecycle of worker processes including spawning, monitoring, restarting, and load-balancing across workers.",
+    "exports": [
+      "createPool(count, workerModule, cb)",
+      "Pool: send(msg, cb), broadcast(msg), getStats(), shutdown()"
+    ],
+    "dependencies": [
+      "child_process",
+      "path",
+      "../log.js",
+      "../common-util.js"
+    ],
+    "sideEffects": "Spawns child processes; manages inter-process communication channels; restarts crashed workers.",
+    "errorHandling": "Handles worker crashes with automatic restart; limits restart frequency to prevent rapid cycles; forwards worker errors to main process.",
+    "complexity": "Moderate; ~63 lines of process pool management with health monitoring."
+  }
+]

@@ -1,0 +1,561 @@
+{
+  "phase": "Phase 2: Application File & Folder Analysis",
+  "scope": "www/ directory (excluding www/common/)",
+  "root_path": "C:\\Users\\Girish Lade\\Downloads\\cryptpad-main\\cryptpad-main\\www\\",
+  "analysis_date": "2026-07-27",
+
+  "core_shell": {
+    "description": "CryptPad's outer shell — loads the bootstrap/Sframe framework before the app-specific iframe is initialized. Handles URL trailing-slash redirects.",
+    "total_files": 5,
+    "total_lines": 113,
+    "files": [
+      {"path": "index.html", "lines": 26, "purpose": "HTML entry point; loads require.js and bootstraps app-specific main.js"},
+      {"path": "main.js", "lines": 32, "purpose": "URL redirect helper — adds trailing slash if missing via AJAX probe"},
+      {"path": "app.js", "lines": 16, "purpose": "Minimal app bootstrap (likely unused/redirect)"},
+      {"path": "privacy.html", "lines": 14, "purpose": "Static privacy policy page"},
+      {"path": "privacy.js", "lines": 25, "purpose": "Minimal privacy page script"}
+    ]
+  },
+
+  "apps": {
+    "pad": {
+      "purpose": "Rich text document editor using CKEditor. Core writing app for CryptPad.",
+      "editor_type": "CKEditor (rich text, WYSIWYG)",
+      "realtime_protocol": "ChainPad via hyperjson (OT-like patching for DOM/HTML)",
+      "total_files": 14,
+      "total_lines": 2912,
+      "files": [
+        {"path": "index.html", "lines": 25, "purpose": "Entry point; loads sframe-app-outer.js instead of a local main.js"},
+        {"path": "inner.html", "lines": 16, "purpose": "App iframe shell template"},
+        {"path": "inner.js", "lines": 1645, "purpose": "Core app logic: CKEditor integration, toolbar, cursor sync, media-tag, comments, realtime"},
+        {"path": "export.js", "lines": 161, "purpose": "Export to HTML/MD/DOC via turndown + hyperjson"},
+        {"path": "links.js", "lines": 180, "purpose": "Internal link handling (pad-to-pad linking)"},
+        {"path": "comments.js", "lines": 311, "purpose": "Comment/annotation system for rich text pads"},
+        {"path": "cursor.js", "lines": 86, "purpose": "Remote cursor position tracking (other users' caret positions)"},
+        {"path": "app-pad.less", "lines": 293, "purpose": "Pad-specific styling (editor chrome, comments, media)"},
+        {"path": "app-pad-print.less", "lines": 47, "purpose": "Print stylesheet for pads"},
+        {"path": "README.md", "lines": 47, "purpose": "Developer documentation for the pad app module"}
+      ],
+      "key_dependencies": ["ckeditor", "hyperjson", "chainpad", "diffMarked", "media-tag", "diffDOM"],
+      "export_formats": [".html", ".md", ".doc"],
+      "notes": "CKEDITOR_GETURL override sets up resource URL resolution. MathJax configured for LaTeX rendering. Uses sframe-app-framework for iframe sandboxing. inner.js loads via sframe-app-outer.js (no main.js in pad/)."
+    },
+
+    "drive": {
+      "purpose": "File management and document browser — the main dashboard/home view. Tree navigation, search, tags, trash.",
+      "editor_type": "Custom UI (tree + list + grid views)",
+      "realtime_protocol": "N/A (browser only, no collaborative editing)",
+      "total_files": 13,
+      "total_lines": 6051,
+      "files": [
+        {"path": "index.html", "lines": 21, "purpose": "Entry point; loads main.js bootstrap"},
+        {"path": "main.js", "lines": 104, "purpose": "Outer shell init via sframe-common-outer, loads iframe"},
+        {"path": "inner.html", "lines": 17, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 848, "purpose": "Core drive UI: file listing, tree, search, sorting"},
+        {"path": "drive-ui.js", "lines": 2555, "purpose": "Full file browser UI: tree rendering, drag-drop, context menus, uploads"},
+        {"path": "create.js", "lines": 81, "purpose": "New document creation dialog"},
+        {"path": "roster.js", "lines": 367, "purpose": "Roster management (shared folder members)"},
+        {"path": "export.js", "lines": 135, "purpose": "Export/download helpers for files and folders (ZIP)"},
+        {"path": "app-drive.less", "lines": 1942, "purpose": "Extensive drive styling (tree, grid, modals, toolbar, colors)"}
+      ],
+      "key_dependencies": ["tree.js (tree widget)", "sframe-common", "common-interface", "common-ui-elements"],
+      "export_formats": ["ZIP export for folders", "individual file downloads"],
+      "notes": "Largest app by total lines (6051). Uses 'drive-app' as app type. drive-ui.js at 2555 lines is the single largest file. Tree view shows nested CryptPad folders. Supports grid/list/compact views. Full drag-drop between folders."
+    },
+
+    "code": {
+      "purpose": "Code/markdown editor with syntax highlighting. Supports multiple programming languages.",
+      "editor_type": "CodeMirror 6 (code editor with syntax highlighting)",
+      "realtime_protocol": "ChainPad (OT for text)",
+      "total_files": 10,
+      "total_lines": 1309,
+      "files": [
+        {"path": "index.html", "lines": 23, "purpose": "Entry point loading main.js"},
+        {"path": "main.js", "lines": 78, "purpose": "Outer init + iframe load"},
+        {"path": "inner.html", "lines": 12, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 528, "purpose": "Core logic: CodeMirror integration, language switching, rendering mode"},
+        {"path": "code-mirror.js", "lines": 64, "purpose": "CodeMirror version/manifest loader"},
+        {"path": "app-code.less", "lines": 471, "purpose": "Code editor styling, line numbers, theme"}
+      ],
+      "key_dependencies": ["codemirror", "chainpad", "marked (diffMarked)", "sframe-app-framework"],
+      "export_formats": [".md", ".html", ".txt"],
+      "notes": "Supports rich text (rendered) and source code modes. Uses 'code' as app type. Can render Markdown preview alongside source."
+    },
+
+    "sheet": {
+      "purpose": "Spreadsheet editor — full-featured with formulas, charts, and formatting via OnlyOffice.",
+      "editor_type": "OnlyOffice DocumentServer (spreadsheet editor)",
+      "realtime_protocol": "OnlyOffice doc co-editing protocol + ChainPad",
+      "total_files": 4,
+      "total_lines": 2059,
+      "files": [
+        {"path": "index.html", "lines": 19, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 132, "purpose": "Outer shell init + OnlyOffice config load"},
+        {"path": "inner.html", "lines": 15, "purpose": "App iframe with OnlyOffice container"},
+        {"path": "inner.js", "lines": 1893, "purpose": "Full OnlyOffice integration: sheet API, toolbar, export, realtime sync"}
+      ],
+      "key_dependencies": ["onlyoffice", "chainpad-netflux", "file-saver", "common-util"],
+      "export_formats": ["XLSX", "CSV", "ODS"],
+      "notes": "Uses 'sheet' as app type. Ships bundled OnlyOffice scripts via //sdk/scripts/ onlyoffice-*. Bundles its own realtime sync layer. Largest inner.js for OnlyOffice-based apps."
+    },
+
+    "slide": {
+      "purpose": "Presentation/slide deck editor with Markdown-based slides. Live preview as you type.",
+      "editor_type": "CodeMirror (Markdown) + custom slide renderer (reveal.js-like)",
+      "realtime_protocol": "ChainPad (text-based OT for Markdown)",
+      "total_files": 7,
+      "total_lines": 1075,
+      "files": [
+        {"path": "index.html", "lines": 23, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 86, "purpose": "Outer init + iframe load"},
+        {"path": "inner.html", "lines": 12, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 474, "purpose": "Core app: CodeMirror editor, slide rendering, formatting toolbar, timer"},
+        {"path": "slide.js", "lines": 340, "purpose": "Slide engine: pagination, transitions, resize, speaker support"},
+        {"path": "app-slide.less", "lines": 77, "purpose": "Presentation-specific styling"}
+      ],
+      "key_dependencies": ["codemirror", "diffMarked (marked)", "chainpad", "sframe-app-framework"],
+      "purpose_of_slide_js": "Custom slide renderer — splits content by <hr> separator, manages page index, transitions, font scaling based on viewport (20vh base), separate fullscreen presentation view",
+      "notes": "Slides are written in Markdown and split by page break (<hr>). Rendered with a custom iframe-based slide viewer (not reveal.js). Supports speaker mode and presentation mode."
+    },
+
+    "doc": {
+      "purpose": "Word processor document editor via OnlyOffice — the most feature-rich writing tool.",
+      "editor_type": "OnlyOffice DocumentServer (word processor)",
+      "realtime_protocol": "OnlyOffice doc co-editing protocol + ChainPad",
+      "total_files": 3,
+      "total_lines": 1331,
+      "files": [
+        {"path": "index.html", "lines": 19, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 136, "purpose": "Outer shell + OnlyOffice config"},
+        {"path": "inner.js", "lines": 1176, "purpose": "Full OnlyOffice document API integration, toolbar, realtime sync, export"}
+      ],
+      "key_dependencies": ["onlyoffice", "chainpad-netflux", "file-saver"],
+      "export_formats": ["DOCX", "ODT", "TXT", "PDF"],
+      "notes": "Uses 'doc' as app type. OnlyOffice document editor with collaborative editing, comments, and track changes."
+    },
+
+    "form": {
+      "purpose": "Form builder — create surveys, quizzes, and data collection forms with drag-and-drop.",
+      "editor_type": "Custom drag-and-drop form builder UI",
+      "realtime_protocol": "ChainPad (JSON-based OT for form structure)",
+      "total_files": 7,
+      "total_lines": 2186,
+      "files": [
+        {"path": "index.html", "lines": 22, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 82, "purpose": "Outer init + iframe load"},
+        {"path": "inner.html", "lines": 14, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 1050, "purpose": "Core form logic: builder, response collection, realtime"},
+        {"path": "ui.js", "lines": 369, "purpose": "Form UI components, question types, drag-drop builder"},
+        {"path": "app-form.less", "lines": 646, "purpose": "Form styling (builder, responses, themes)"}
+      ],
+      "key_dependencies": ["chainpad", "chainpad-listmap", "chainpad-netflux", "file-saver"],
+      "export_formats": ["CSV (responses)"],
+      "notes": "Uses 'form' as app type. Dual-mode: form builder (edit) and form response (fill). Supports multiple question types (text, choice, rating, date, etc.). Responses stored as separate documents linked to the form."
+    },
+
+    "kanban": {
+      "purpose": "Kanban board for task/project management — columns, cards, drag-drop ordering.",
+      "editor_type": "Custom Kanban UI (drag-and-drop board)",
+      "realtime_protocol": "ChainPad (JSON-based OT for board structure)",
+      "total_files": 6,
+      "total_lines": 1588,
+      "files": [
+        {"path": "index.html", "lines": 22, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 82, "purpose": "Outer init + iframe load"},
+        {"path": "inner.html", "lines": 14, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 1025, "purpose": "Core kanban logic: column/card CRUD, drag-drop, realtime sync, export"},
+        {"path": "app-kanban.less", "lines": 442, "purpose": "Kanban board styling (columns, cards, colors, drag states)"}
+      ],
+      "key_dependencies": ["chainpad-listmap", "chainpad-netflux", "sortable (drag-drop)", "file-saver"],
+      "export_formats": ["CSV", "JSON"],
+      "notes": "Uses 'kanban' as app type. Tag/color system for cards. Custom scroll per column. Responsive layout adapts number of visible columns."
+    },
+
+    "poll": {
+      "purpose": "Event scheduling and polling — propose dates/times and collect responses.",
+      "editor_type": "Custom poll/timetable UI",
+      "realtime_protocol": "ChainPad (JSON-based OT for poll data)",
+      "total_files": 8,
+      "total_lines": 1787,
+      "files": [
+        {"path": "index.html", "lines": 22, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 78, "purpose": "Outer init + iframe load"},
+        {"path": "inner.html", "lines": 15, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 950, "purpose": "Core poll logic: options, votes, scheduling grid, comments"},
+        {"path": "ui.js", "lines": 282, "purpose": "Poll timetable UI — horizontal date/time grid, availability entry"},
+        {"path": "app-poll.less", "lines": 437, "purpose": "Poll-specific styling (grid, votes, comments)"}
+      ],
+      "key_dependencies": ["chainpad-listmap", "chainpad-netflux", "file-saver", "common-interface"],
+      "export_formats": ["CSV", "JSON"],
+      "notes": "Uses 'poll' as app type. Horizontal timeline-style scheduler. Each option is a row, responders fill in availability columns. Supports free-text comments per option."
+    },
+
+    "todo": {
+      "purpose": "Task list manager — hierarchical todo lists with checkboxes, tags, and due dates.",
+      "editor_type": "Custom todo/task list UI (tree-based)",
+      "realtime_protocol": "ChainPad (JSON-based OT for task structure)",
+      "total_files": 8,
+      "total_lines": 1634,
+      "files": [
+        {"path": "index.html", "lines": 22, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 78, "purpose": "Outer init + iframe load"},
+        {"path": "inner.html", "lines": 16, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 1081, "purpose": "Core todo logic: task CRUD, checkboxes, tree structure, tags, realtime"},
+        {"path": "app-todo.less", "lines": 434, "purpose": "Todo app styling (tree, tags, checkboxes, progress)"}
+      ],
+      "key_dependencies": ["chainpad-listmap", "chainpad-netflux", "file-saver", "common-interface"],
+      "export_formats": ["CSV", "JSON", "Markdown"],
+      "notes": "Uses 'todo' as app type. Nested/hierarchical task lists. Progress tracking (completed vs pending). Tag system for categorization. Supports expand/collapse of subtasks."
+    },
+
+    "calendar": {
+      "purpose": "Event calendar — create, view, and manage events in day/week/month views.",
+      "editor_type": "Custom calendar UI",
+      "realtime_protocol": "ChainPad (JSON-based OT for event data)",
+      "total_files": 12,
+      "total_lines": 2994,
+      "files": [
+        {"path": "index.html", "lines": 21, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 80, "purpose": "Outer init + iframe load"},
+        {"path": "inner.html", "lines": 15, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 1014, "purpose": "Core calendar logic: event CRUD, views, recurrence, invitations"},
+        {"path": "calendar.js", "lines": 1076, "purpose": "Calendar rendering engine: day/week/month grid, event positioning, drag-drop"},
+        {"path": "event.html", "lines": 84, "purpose": "Event details/edit popup template"},
+        {"path": "export.js", "lines": 39, "purpose": "ICS export for calendar events"},
+        {"path": "app-calendar.less", "lines": 614, "purpose": "Calendar-specific styling (grid cells, events, modals)"}
+      ],
+      "key_dependencies": ["chainpad-listmap", "chainpad-netflux", "common-interface", "file-saver"],
+      "export_formats": ["ICS (iCalendar)"],
+      "notes": "Uses 'calendar' as app type. Supports recurring events. Day/week/month views with drag-to-create. External calendar import/export (ICS). Color-coded calendars/tags."
+    },
+
+    "diagram": {
+      "purpose": "Diagram editor — create flowcharts, mind maps, and technical diagrams.",
+      "editor_type": "draw.io (mxGraph) embedded editor",
+      "realtime_protocol": "ChainPad (JSON-based OT for diagram XML)",
+      "total_files": 6,
+      "total_lines": 1390,
+      "files": [
+        {"path": "index.html", "lines": 22, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 82, "purpose": "Outer init + iframe load + draw.io preloader"},
+        {"path": "inner.html", "lines": 14, "purpose": "App iframe shell with draw.io container"},
+        {"path": "inner.js", "lines": 756, "purpose": "Core diagram logic: draw.io integration, realtime, load/save, export"},
+        {"path": "app-diagram.less", "lines": 513, "purpose": "Diagram editor styling (toolbar, canvas)"}
+      ],
+      "key_dependencies": ["draw.io (mxgraph)", "chainpad-netflux", "chainpad-listmap", "file-saver"],
+      "export_formats": ["PNG", "JPEG", "SVG", "PDF", "VSDX", "XML (drawio)"],
+      "notes": "Uses 'diagram' as app type. Bundles draw.io's full diagramming library. Each diagram stores XML internally, rendered via mxGraph. Preloads draw.io scripts in main.js before iframe init."
+    },
+
+    "whiteboard": {
+      "purpose": "Freehand drawing/canvas whiteboard with brush, shapes, and text tools.",
+      "editor_type": "Custom HTML5 Canvas drawing app",
+      "realtime_protocol": "ChainPad (binary/JSON OT for canvas strokes)",
+      "total_files": 5,
+      "total_lines": 1110,
+      "files": [
+        {"path": "index.html", "lines": 22, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 82, "purpose": "Outer init + iframe load"},
+        {"path": "inner.html", "lines": 13, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 748, "purpose": "Core whiteboard logic: canvas drawing tools, realtime, export"},
+        {"path": "app-whiteboard.less", "lines": 243, "purpose": "Whiteboard styling (toolbar, canvas)"}
+      ],
+      "key_dependencies": ["chainpad-netflux", "chainpad-listmap", "file-saver"],
+      "export_formats": ["PNG", "JPEG", "SVG"],
+      "notes": "Uses 'whiteboard' as app type. Canvas-based drawing with brush sizes, colors, shapes (rect, ellipse, line), text tool, and undo/redo. Pointer tool for selecting/moving drawn objects."
+    },
+
+    "file": {
+      "purpose": "File/media viewer — view embedded images, PDFs, audio, video within CryptPad.",
+      "editor_type": "Custom file media viewer UI",
+      "realtime_protocol": "N/A (single user file viewing)",
+      "total_files": 5,
+      "total_lines": 983,
+      "files": [
+        {"path": "index.html", "lines": 22, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 80, "purpose": "Outer init + iframe load"},
+        {"path": "inner.html", "lines": 14, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 597, "purpose": "Core file viewer: media-tag rendering, metadata display, download"},
+        {"path": "app-file.less", "lines": 268, "purpose": "File viewer styling"}
+      ],
+      "key_dependencies": ["media-tag", "chainpad-netflux"],
+      "export_formats": ["Original file download"],
+      "notes": "Uses 'file' as app type. Not an editor — a viewer for uploaded media files. Uses CryptPad's media-tag system for decryption and rendering. Supports images, video, audio, PDF, and other file types."
+    },
+
+    "presentation": {
+      "purpose": "Presentation viewer — view slide decks created by the 'slide' app in presentation mode.",
+      "editor_type": "Read-only slide viewer (fullscreen)",
+      "realtime_protocol": "ChainPad (text-based OT for Markdown content)",
+      "total_files": 3,
+      "total_lines": 624,
+      "files": [
+        {"path": "index.html", "lines": 28, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 78, "purpose": "Outer init + iframe load"},
+        {"path": "inner.js", "lines": 518, "purpose": "Core presentation viewer: fullscreen slide display, navigation, export"}
+      ],
+      "key_dependencies": ["chainpad-netflux", "diffMarked", "common-util"],
+      "export_formats": ["PDF (print)"],
+      "notes": "Uses 'presentation' as app type. Read-only view of 'slide'-type documents. Fullscreen presentation mode with keyboard navigation. Optimized for projection/displays."
+    }
+  },
+
+  "utility_apps": {
+    "admin": {
+      "purpose": "Server administration panel — manage users, servers, and system settings.",
+      "total_files": 3, "total_lines": 2779,
+      "files": [
+        {"path": "index.html", "lines": 176, "purpose": "Admin panel HTML with form controls"},
+        {"path": "main.js", "lines": 102, "purpose": "Outer init + admin iframe load"},
+        {"path": "inner.js", "lines": 2501, "purpose": "Full admin UI: user management, limits, logs, OOnlyOffice, system info"}
+      ],
+      "notes": "Largest utility by far at 2501 lines in inner.js. Comprehensive admin dashboard with server stats, user management, and legal notice management."
+    },
+    "settings": {
+      "purpose": "User settings/preferences — profile, account, appearance, cryptography, and subscription management.",
+      "total_files": 9, "total_lines": 2196,
+      "files": [
+        {"path": "index.html", "lines": 225, "purpose": "Settings page HTML with tab structure (account, appearance, crypto, etc.)"},
+        {"path": "main.js", "lines": 94, "purpose": "Outer init + settings iframe load"},
+        {"path": "inner.js", "lines": 1411, "purpose": "Core settings logic: preference management, 2FA, password change, crypto keys"},
+        {"path": "app-settings.less", "lines": 260, "purpose": "Settings page styling"}
+      ],
+      "notes": "Multi-tab settings: Account, Appearance, Cryptography, Feedback, Experimental, Subscriptions. Manages user crypto keys and 2FA setup."
+    },
+    "teams": {
+      "purpose": "Team/group management — create and manage teams, shared drives, and member roles.",
+      "total_files": 7, "total_lines": 2318,
+      "files": [
+        {"path": "index.html", "lines": 22, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 78, "purpose": "Outer init + iframe load"},
+        {"path": "inner.js", "lines": 1411, "purpose": "Team/group management UI: create, members, roles, shared drives"},
+        {"path": "app-teams.less", "lines": 745, "purpose": "Teams-specific styling"}
+      ],
+      "notes": "Team creation with cryptographic key sharing. Role-based permissions (owner, admin, member, viewer). Shared drives per team."
+    },
+    "contacts": {
+      "purpose": "Contact/address book management — add, search, and organize friends/contacts.",
+      "total_files": 6, "total_lines": 1683,
+      "files": [
+        {"path": "index.html", "lines": 21, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 78, "purpose": "Outer init + iframe load"},
+        {"path": "inner.js", "lines": 1034, "purpose": "Core contacts: list, add friend, search, delete, friend requests"},
+        {"path": "app-contacts.less", "lines": 504, "purpose": "Contacts page styling"}
+      ],
+      "notes": "Friend request system. Contact list with search/filter. Integration with pad/document sharing workflow."
+    },
+    "profile": {
+      "purpose": "User public profile page — avatar, display name, bio, and social links.",
+      "total_files": 5, "total_lines": 541,
+      "files": [
+        {"path": "index.html", "lines": 24, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 78, "purpose": "Outer init + iframe load"},
+        {"path": "inner.js", "lines": 305, "purpose": "Profile display/edit: avatar, display name, bio, curve color"},
+        {"path": "app-profile.less", "lines": 132, "purpose": "Profile page styling"}
+      ],
+      "notes": "Public profile visible to other users. Editable avatar (uploaded/encrypted), display name, bio, social media links, and cursor color preference."
+    },
+    "notifications": {
+      "purpose": "Notification center — incoming friend requests, share notifications, and system alerts.",
+      "total_files": 6, "total_lines": 1451,
+      "files": [
+        {"path": "index.html", "lines": 24, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 78, "purpose": "Outer init + iframe load"},
+        {"path": "inner.js", "lines": 819, "purpose": "Notification rendering: list, filter, mark read, clear all"},
+        {"path": "app-notifications.less", "lines": 528, "purpose": "Notification center styling"}
+      ],
+      "notes": "Aggregates share notifications, friend requests, team invitations, and system messages. Read/unread states with bulk actions."
+    },
+    "support": {
+      "purpose": "Support/admin contact form — report issues and contact instance administrators.",
+      "total_files": 7, "total_lines": 873,
+      "files": [
+        {"path": "index.html", "lines": 14, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 86, "purpose": "Outer init + iframe load"},
+        {"path": "inner.html", "lines": 12, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 412, "purpose": "Support ticket UI (via /support/ui.js)"},
+        {"path": "ui.js", "lines": 214, "purpose": "Reusable support ticket UI component (also used by moderation)"},
+        {"path": "app-support.less", "lines": 114, "purpose": "Support styling"}
+      ],
+      "notes": "Reuses /support/ui.js shared component. Allows users to submit encrypted support tickets to instance admins. Admin response via moderation panel."
+    },
+    "moderation": {
+      "purpose": "Moderation/admin panel — manage reported content, user bans, and support tickets.",
+      "total_files": 3, "total_lines": 1268,
+      "files": [
+        {"path": "index.html", "lines": 14, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 86, "purpose": "Outer init + iframe load"},
+        {"path": "inner.js", "lines": 1045, "purpose": "Moderation UI: reports list, user bans, server-wide actions, ticket responses"}
+      ],
+      "notes": "Admin-only access. Uses sidebar-layout from common/inner/. Shares support UI component for ticket responses. User management (ban/unban, limits)."
+    },
+    "auth": {
+      "purpose": "Authentication (login) via sframe-common-outer — shared auth bootstrap for iframed apps.",
+      "total_files": 2, "total_lines": 107,
+      "files": [
+        {"path": "index.html", "lines": 21, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 86, "purpose": "Auth bootstrapper via sframe-common-outer (no app of its own)"}
+      ],
+      "notes": "Minimal bootstrap. Auth is handled by customize/login.js loaded from common/. This exists as a wrapper target for authentication redirect."
+    },
+    "login": {
+      "purpose": "Login page — user authentication entry point.",
+      "total_files": 2, "total_lines": 470,
+      "files": [
+        {"path": "index.html", "lines": 17, "purpose": "Login page HTML"},
+        {"path": "main.js", "lines": 453, "purpose": "Login logic: form handling, password auth, 2FA, SSO redirects"}
+      ],
+      "notes": "Supports password login, 2FA TOTP, SSO/OpenID Connect, and hardware key (WebAuthn) authentication."
+    },
+    "register": {
+      "purpose": "User registration/signup page.",
+      "total_files": 2, "total_lines": 860,
+      "files": [
+        {"path": "index.html", "lines": 258, "purpose": "Registration form HTML with terms and fields"},
+        {"path": "main.js", "lines": 602, "purpose": "Registration logic: form validation, account creation, quota display"}
+      ],
+      "notes": "Registration form with username, password, email (optional). Displays server limits/quota. Terms acceptance required."
+    },
+    "recovery": {
+      "purpose": "Account recovery — password reset and account recovery via recovery code.",
+      "total_files": 2, "total_lines": 276,
+      "files": [
+        {"path": "index.html", "lines": 14, "purpose": "Recovery page HTML"},
+        {"path": "main.js", "lines": 262, "purpose": "Account recovery logic: recovery code validation, password reset"}
+      ],
+      "notes": "Uses cryptographic recovery keys (not email-based reset). Requires recovery code generated during initial account setup."
+    },
+    "checkup": {
+      "purpose": "Server diagnostics/configuration checkup — validates whether the CryptPad server is correctly configured.",
+      "total_files": 3, "total_lines": 1947,
+      "files": [
+        {"path": "index.html", "lines": 15, "purpose": "Diagnostics page HTML"},
+        {"path": "main.js", "lines": 1812, "purpose": "Comprehensive checkup: 100+ assertion tests validating server config, OnlyOffice, pin, network, storage, etc."},
+        {"path": "app-checkup.less", "lines": 120, "purpose": "Checkup page styling"}
+      ],
+      "notes": "Second largest utility at 1812 lines. Runs extensive test suite (Assertions module) covering: API config, WebSocket, ChainPad, OnlyOffice, pinning, storage limits, CORS headers, CSP headers, WebWorker support, and more. Color-coded pass/fail/warning per test."
+    },
+    "debug": {
+      "purpose": "Developer debug tool — inspect ChainPad state, document history, and internal state.",
+      "total_files": 5, "total_lines": 1175,
+      "files": [
+        {"path": "index.html", "lines": 14, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 80, "purpose": "Outer init + iframe load"},
+        {"path": "inner.html", "lines": 15, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 802, "purpose": "Debug interface: ChainWalk chain viewer, document state inspector"},
+        {"path": "app-debug.less", "lines": 264, "purpose": "Debug tool styling"}
+      ],
+      "notes": "Loads /debug/chainpad.dist.js (ChainWalk) for ChainPad chain visualization. Inspects document history, checkpoints, and metadata. Realtime log of operations. Developer-only tool (not user-facing)."
+    },
+    "convert": {
+      "purpose": "File format converter — import Office documents (DOCX, XLSX, PPTX) into CryptPad editor formats.",
+      "total_files": 3, "total_lines": 515,
+      "files": [
+        {"path": "index.html", "lines": 16, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 105, "purpose": "Outer init + iframe load"},
+        {"path": "inner.js", "lines": 394, "purpose": "Conversion UI: file upload -> X2T conversion -> create new doc in target format"}
+      ],
+      "notes": "Uses /common/outer/x2t.js (OnlyOffice X2T conversion binary). Supports: DOCX->doc, XLSX->sheet, PPTX->slide. Handles .msg (Outlook email) to doc conversion. Also converts other formats into CryptPad's format. Single-use conversion then redirect."
+    },
+    "worker": {
+      "purpose": "Dedicated WebWorker page — runs Sframe iframe-based worker scripts.",
+      "total_files": 3, "total_lines": 74,
+      "files": [
+        {"path": "index.html", "lines": 28, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 23, "purpose": "Minimal worker bootstrap via sframe-common-outer with noRealtime:true"},
+        {"path": "inner.html", "lines": 23, "purpose": "Worker iframe shell"}
+      ],
+      "notes": "Smallest utility. Provides an iframe-isolated WebWorker context. Used for background processing tasks that need sandboxed access."
+    },
+    "unsafeiframe": {
+      "purpose": "Unsafe iframe wrapper — loads external URLs in a sandboxed iframe for third-party content.",
+      "total_files": 3, "total_lines": 73,
+      "files": [
+        {"path": "index.html", "lines": 28, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 16, "purpose": "Minimal bootstrap — loads URL from hash and opens in iframe"},
+        {"path": "inner.html", "lines": 29, "purpose": "Iframe shell with sandbox attribute"}
+      ],
+      "notes": "Used to embed third-party/external content (e.g., oEmbed previews, external media) within CryptPad's sandboxed environment. No realtime or crypto involved."
+    },
+    "bounce": {
+      "purpose": "URL bounce/redirect safety page — validates and warns before navigating away from CryptPad.",
+      "total_files": 2, "total_lines": 131,
+      "files": [
+        {"path": "index.html", "lines": 15, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 116, "purpose": "URL validation: referrer check, protocol block (javascript:/data:/blob:), cross-origin warning dialog"}
+      ],
+      "notes": "Security-critical: validates URLs before redirecting. Blocks 'javascript:', 'vbscript:', 'data:', 'blob:' protocols. Confirms cross-origin navigation with user. Removes window.opener to prevent reverse tabnabbing."
+    },
+    "logout": {
+      "purpose": "Logout page — clears local session data and redirects.",
+      "total_files": 2, "total_lines": 36,
+      "files": [
+        {"path": "index.html", "lines": 20, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 16, "purpose": "Logout logic: clear localStorage/indexedDB cache, redirect to login"}
+      ],
+      "notes": "Clears cached documents from client-side storage and redirects to login page."
+    },
+    "secureiframe": {
+      "purpose": "Secure content iframe — sandboxed frame for rendering ciphered content (previews, media).",
+      "total_files": 4, "total_lines": 576,
+      "files": [
+        {"path": "inner.html", "lines": 31, "purpose": "App iframe shell"},
+        {"path": "inner.js", "lines": 264, "purpose": "Secure content rendering: media decryption and display"},
+        {"path": "main.js", "lines": 186, "purpose": "Outer init with secure iframe config"},
+        {"path": "app-secure.less", "lines": 95, "purpose": "Secure iframe styling"}
+      ],
+      "notes": "Used for rendering encrypted content previews from other apps. Has its own inner.html (no separate index.html serving as fallback). Stricter sandboxing than standard iframe."
+    },
+    "report": {
+      "purpose": "Content reporting page — report abusive/inappropriate content to instance moderators.",
+      "total_files": 2, "total_lines": 422,
+      "files": [
+        {"path": "index.html", "lines": 14, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 408, "purpose": "Report submission: block hash loading, report type selection, encrypted submission, recaptcha"}
+      ],
+      "notes": "Allows users to report documents for moderation. Requires login. Encrypted submission sent to admins. Supports reCAPTCHA anti-spam."
+    },
+    "ssoauth": {
+      "purpose": "SSO/OIDC authentication handler — processes OpenID Connect callback redirects.",
+      "total_files": 2, "total_lines": 177,
+      "files": [
+        {"path": "index.html", "lines": 18, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 159, "purpose": "SSO callback handler: parse OIDC response, create/authenticate user"}
+      ],
+      "notes": "Handles OpenID Connect and CAS single sign-on authentication callbacks. Validates token, maps user info, creates account if needed, then redirects."
+    },
+    "nextcloud": {
+      "purpose": "Nextcloud integration — embeds CryptPad documents within Nextcloud via iframe.",
+      "total_files": 3, "total_lines": 126,
+      "files": [
+        {"path": "index.html", "lines": 30, "purpose": "Entry point"},
+        {"path": "main.js", "lines": 66, "purpose": "Nextcloud integration handler: CORS-aware iframe embed"},
+        {"path": "app-nextcloud.less", "lines": 30, "purpose": "Nextcloud embed styling"}
+      ],
+      "notes": "Thin wrapper for the Nextcloud-CryptPad integration. Renders document in iframe with Nextcloud-specific headers. Reuses CryptPad's standard document loading flow."
+    }
+  },
+
+  "architectural_notes": {
+    "app_bootstrap_pattern": "Most apps follow a 3-file pattern: index.html -> main.js (sframe-common-outer init iframe) -> inner.js (sframe-common app logic).",
+    "anomaly_no_main_js": "The 'pad' app has no main.js in its directory — index.html loads sframe-app-outer.js directly from /common/, bypassing the local pattern.",
+    "editor_types_summary": {
+      "CKEditor_rich_text": ["pad"],
+      "CodeMirror_code_markdown": ["code", "slide", "poll (partial)", "kanban (partial)"],
+      "OnlyOffice_documents": ["sheet", "doc"],
+      "OnlyOffice_presentations": ["presentation (read-only)"],
+      "draw.io_diagrams": ["diagram"],
+      "custom_canvas": ["whiteboard"],
+      "custom_UI": ["drive", "form", "todo", "calendar", "file"]
+    },
+    "total_project_scope": {
+      "apps_count": 16,
+      "utility_apps_count": 19,
+      "total_directories": 35,
+      "estimated_total_lines_all_apps_utilities": 42000
+    },
+    "common_reuse_pattern": "All apps depend on /common/ modules (sframe-common, common-interface, common-util, common-hash, etc.) for shared functionality. Each app's inner.js uses the Sframe app framework for sandboxed realtime editing.",
+    "realtime_protocol": "All collaborative apps use ChainPad (operational transformation variant) via chainpad-netflux and chainpad-listmap for realtime synchronization. OnlyOffice apps (sheet, doc) add OnlyOffice's own document sync on top of ChainPad.",
+    "crypto_model": "Documents are encrypted client-side using TweetNaCl (X25519/XSalsa20-Poly1305). Keys are embedded in document URLs as hash fragments (#) and never sent to the server."
+  }
+}
