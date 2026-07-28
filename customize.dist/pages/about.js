@@ -23,26 +23,14 @@ define([
 
         // Lucide Icon Wrapper (Stroked)
         var lucideIcon = function (pathData) {
-            return h('svg.cp-about-ext-icon', {
-                xmlns: 'http://www.w3.org/2000/svg',
-                viewBox: '0 0 24 24',
-                fill: 'none',
-                stroke: 'currentColor',
-                'stroke-width': '2',
-                'stroke-linecap': 'round',
-                'stroke-linejoin': 'round',
-                'aria-hidden': 'true',
-            }, [h('path', { d: pathData })]);
+            var svgString = '<svg class="cp-about-ext-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + pathData + '"></path></svg>';
+            return Pages.setHTML(h('span.cp-about-ext-icon-wrapper'), svgString);
         };
 
         // Simple Icons Wrapper (Filled)
         var brandIcon = function (pathData) {
-            return h('svg.cp-about-ext-icon', {
-                xmlns: 'http://www.w3.org/2000/svg',
-                viewBox: '0 0 24 24',
-                fill: 'currentColor',
-                'aria-hidden': 'true',
-            }, [h('path', { d: pathData })]);
+            var svgString = '<svg class="cp-about-ext-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="' + pathData + '"></path></svg>';
+            return Pages.setHTML(h('span.cp-about-ext-icon-wrapper'), svgString);
         };
 
         var ICON_GLOBE = 'M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z M2 12h20 M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z';
