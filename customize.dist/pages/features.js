@@ -3,7 +3,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
 // LadeVault — Features page (redesigned)
-// Sage-green brand, modern two-column tier cards, Lucide icons, footer contact strip.
+// Sage-green brand, modern two-column tier cards, inline Lucide SVG icons,
+// "Recommended" badge on registered card, scroll-reveal animation, footer contact strip.
 
 define([
     'jquery',
@@ -39,7 +40,7 @@ define([
             }, children);
         };
 
-        // Lucide path data for each semantic feature
+        // ── Lucide path data keyed by semantic feature name ────────────────────
         var ICONS = {
             // LayoutGrid — "access to all apps"
             apps: [
@@ -207,7 +208,7 @@ define([
         var guestCard = makeCard({
             tier: Msg.features_anon,   // "Guest"
             price: '0€',
-            subtext: Msg.features_noData, // "No personal information required"
+            subtext: Msg.features_noData || 'No personal information required',
             rows: [
                 rowFor('apps'),
                 rowFor('file0'),
@@ -222,12 +223,13 @@ define([
         // ── Registered card ───────────────────────────────────────────────────
         var registerBtn = h('a.lv-register-btn', {
             href: '/register/',
-        }, Msg.features_f_register); // "Register for free"
+            id: 'lv-register-cta',
+        }, Msg.features_f_register || 'Register for free');
 
         var registeredCard = makeCard({
-            tier: Msg.features_registered, // "Registered"
+            tier: Msg.features_registered || 'Registered',
             price: '0€',
-            subtext: Msg.features_noData,
+            subtext: Msg.features_noData || 'No personal information required',
             rows: [
                 rowFor('anon',       true),
                 rowFor('social',     true),
@@ -245,7 +247,6 @@ define([
 
         Extensions.getExtensionsSync('EXTRA_PRICING').forEach(function (ext) {
             if (!ext.getContent) { return; }
-            // Extension cards won't have the new design but won't break the page
             availableCards.push(h('div.lv-tier-card', [ext.getContent(function (title, note) {
                 return featureRow('anon', title, note, false);
             })]));
@@ -267,7 +268,7 @@ define([
         ]);
 
         // ── Full page ─────────────────────────────────────────────────────────
-        return h('div#cp-main', [
+        var root = h('div#cp-main', [
             Pages.infopageTopbar(),
             h('main.lv-features-main', [
                 // Hero
@@ -283,5 +284,40 @@ define([
             ]),
             Pages.infopageFooter(),
         ]);
+
+        // ── Scroll-reveal animation for tier cards ────────────────────────────
+        setTimeout(function () {
+            var cards = document.querySelectorAll('.lv-tier-card');
+            if (!cards.length) { return; }
+
+            var prefersReduced = window.matchMedia &&
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReduced) {
+                cards.forEach(function (c) { c.classList.add('lv-card-visible'); });
+                return;
+            }
+
+            if (!window.IntersectionObserver) {
+                cards.forEach(function (c) { c.classList.add('lv-card-visible'); });
+                return;
+            }
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('lv-card-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.08 });
+
+            cards.forEach(function (c, i) {
+                // Stagger the reveal slightly for visual rhythm
+                c.style.transitionDelay = (i * 80) + 'ms';
+                observer.observe(c);
+            });
+        }, 0);
+
+        return root;
     };
 });
