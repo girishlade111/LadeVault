@@ -59,49 +59,65 @@ define([
             ]),
         ]);
 
-        // ── Narrative paragraphs ─────────────────────────────────────────────
+        // ── Left Column (Profile & Identity) ─────────────────────────────────
+        var heroImage = h('div.cp-about-hero-image-wrapper', [
+            h('div.cp-about-blob-bg'),
+            h('div.cp-about-avatar-container', [
+                h('img.cp-about-avatar', {
+                    src: '/customize/images/profile.png',
+                    alt: 'Girish Lade — profile photo',
+                })
+            ])
+        ]);
+
+        var heroText = h('div.cp-about-hero-text', [
+            h('h1.cp-about-name', 'Girish Lade'),
+            h('h3.cp-about-tagline', 'Founder, LadeStack — building free, privacy-first developer tools'),
+        ]);
+
+        var leftCol = h('div.cp-about-left-col', [
+            heroImage,
+            heroText,
+            linksRow
+        ]);
+
+        // ── Right Column (Narrative Card) ────────────────────────────────────
         var para = function (text) {
             return h('p.cp-about-para', text);
         };
 
-        var narrative = h('div.cp-about-narrative', [
+        var narrativeCard = h('div.cp-about-narrative-card', [
             para('LadeVault exists as part of LadeStack — a founder-led suite of free, no-login, AI-powered developer tools. The goal is simple: give developers the software they need without paywalls, accounts, or surveillance. Every tool in the ecosystem is built to be genuinely useful from the first second you open it.'),
             para('I\'m Girish Lade — a mechanical engineer who crossed into software engineering and never looked back. LadeStack is my way of building in public: each tool is a real product I\'d want to use myself, progressively refined and shipped as part of one coherent ecosystem rooted at ladestack.in.'),
-            para('LadeVault is built on CryptPad\'s open-source foundation and hardened with privacy-first principles. It\'s 100 % free with no account required to start. Everything runs in your browser — nothing is tracked, nothing is sold. Your documents stay yours. Six formats live in one place: rich text, kanban boards, code pads, forms, diagrams, and slides — so you can do serious collaborative work without juggling five different apps.'),
+            para('LadeVault is built on CryptPad\'s open-source foundation and hardened with privacy-first principles. It\'s 100% free with no account required to start. Everything runs in your browser — nothing is tracked, nothing is sold. Your documents stay yours. Six formats live in one place: rich text, kanban boards, code pads, forms, diagrams, and slides — so you can do serious collaborative work without juggling five different apps.'),
             para('This is a solo-built project, continuously improved. If it saves you time or earns a place in your workflow, that\'s the win. Follow the journey at ladestack.in or drop me a message on the Contact page.'),
         ]);
 
-        var hero = h('div.cp-about-hero', [
-            h('img.cp-about-avatar', {
-                src: '/customize/images/profile.png',
-                alt: 'Girish Lade — profile photo',
-            }),
-            h('div.cp-about-hero-text', [
-                h('h1.cp-about-name', 'Girish Lade'),
-                h('h3.cp-about-tagline', 'Founder, LadeStack — building free, privacy-first developer tools'),
-            ]),
+        var rightCol = h('div.cp-about-right-col', [
+            narrativeCard
         ]);
 
-        // ── Full page ────────────────────────────────────────────────────────
+        // ── Full page layout ─────────────────────────────────────────────────
+        var gridLayout = h('div.cp-about-grid', [
+            leftCol,
+            rightCol
+        ]);
+
         var root = h('div#cp-main', [
             Pages.infopageTopbar(),
             h('main.cp-about-main', [
-                h('div.cp-about-content', [
-                    hero,
-                    narrative,
-                    linksRow,
+                h('div.cp-about-container', [
+                    gridLayout
                 ]),
             ]),
             Pages.infopageFooter(),
         ]);
 
         // ── Scroll-fade for narrative paragraphs ─────────────────────────────
-        // Run after the element is added to the DOM via a short defer.
         setTimeout(function () {
             var paras = document.querySelectorAll('.cp-about-para');
             if (!paras.length) { return; }
 
-            // Skip animation if user prefers reduced motion
             var prefersReduced = window.matchMedia &&
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             if (prefersReduced) {
@@ -110,7 +126,6 @@ define([
             }
 
             if (!window.IntersectionObserver) {
-                // Fallback: show everything immediately
                 paras.forEach(function (p) { p.classList.add('cp-about-visible'); });
                 return;
             }
@@ -124,7 +139,11 @@ define([
                 });
             }, { threshold: 0.12 });
 
-            paras.forEach(function (p) { observer.observe(p); });
+            paras.forEach(function (p, index) {
+                // Add a staggered delay based on index for a cascading effect
+                p.style.transitionDelay = (index * 80) + 'ms';
+                observer.observe(p);
+            });
         }, 0);
 
         return root;
