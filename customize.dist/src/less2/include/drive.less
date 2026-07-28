@@ -110,6 +110,18 @@
             svg {
                 font-size: 55px; //temporary XXX
             }
+            // Fluent-style app icons (pad, kanban, code, form, diagram, slide)
+            // have viewBox="0 0 512 512" but no intrinsic width/height, so they
+            // render at full container size and overflow the 140×140px grid card.
+            // Constrain them to a fixed square that fits within the card's icon area.
+            svg.cp-fluent-icon {
+                width: 72px;
+                height: 72px;
+                max-width: 100%;
+                max-height: 100%;
+                display: block;
+                margin: 12px auto;
+            }
 
             &.cp-app-hidden {
                 display: none !important;
