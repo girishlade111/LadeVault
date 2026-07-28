@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
  * LadeVault — Features page styles (redesigned)
- * Sage-green brand, modern tier cards, Lucide icon circles.
+ * Sage-green brand, modern tier cards with gradient headers, Lucide icon circles,
+ * "Recommended" badge, scroll-reveal animation, footer contact strip.
  */
 
 @import (reference) "../include/infopages.less";
@@ -53,11 +54,29 @@
     .lv-hero {
         text-align: center;
         margin-bottom: @sp-48;
-        max-width: 640px;
+        max-width: 680px;
         width: 100%;
+
+        // Fade-in on load
+        opacity: 0;
+        transform: translateY(16px);
+        animation: lv-hero-fadein 0.45s ease 0.05s forwards;
+
+        @media (prefers-reduced-motion: reduce) {
+            opacity: 1;
+            transform: none;
+            animation: none;
+        }
 
         @media (max-width: 640px) {
             margin-bottom: @sp-32;
+        }
+    }
+
+    @keyframes lv-hero-fadein {
+        to {
+            opacity: 1;
+            transform: none;
         }
     }
 
@@ -79,7 +98,7 @@
         font-family: @feat-font-body;
         font-weight: 400;
         font-size: 18px;
-        line-height: 1.6;
+        line-height: 1.65;
         color: @feat-dark;
         margin: 0;
 
@@ -94,7 +113,7 @@
         grid-template-columns: 1fr 1fr;
         gap: @sp-24;
         width: 100%;
-        max-width: 920px;
+        max-width: 940px;
         align-items: start;
 
         @media (max-width: 700px) {
@@ -112,16 +131,38 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        transition: transform 150ms ease, box-shadow 150ms ease;
+        // Base transition for hover and scroll-reveal
+        transition: transform 150ms ease, box-shadow 150ms ease, opacity 0.4s ease, translate 0s;
+
+        // Scroll-reveal: initially hidden
+        opacity: 0;
+        transform: translateY(20px);
+
+        &.lv-card-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.09);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        // When revealed AND hovered, keep hover effect
+        &.lv-card-visible:hover {
+            transform: translateY(-3px);
         }
 
         &.lv-tier-card--recommended {
-            // Slightly deeper border on the recommended card
             border-color: @feat-sage-light;
+            // Slightly elevated shadow to signal hierarchy
+            box-shadow: 0 8px 24px rgba(113, 130, 110, 0.12);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            opacity: 1;
+            transform: none;
+            animation: none;
         }
     }
 
@@ -156,12 +197,12 @@
         font-family: @feat-font-body;
         font-size: 11px;
         font-weight: 600;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
-        padding: 3px 10px;
+        padding: 4px 11px;
         border-radius: 20px;
         white-space: nowrap;
-        border: 1px solid rgba(255, 255, 255, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.38);
         flex-shrink: 0;
     }
 
@@ -241,14 +282,15 @@
     .lv-feat-text {
         display: flex;
         flex-direction: column;
-        gap: 3px;
+        gap: 4px;
         padding-top: 2px; // optical alignment with icon circle
+        min-width: 0;     // allow text wrapping in narrow columns
     }
 
     .lv-feat-title {
         font-family: @feat-font-body;
         font-weight: 600;
-        font-size: 15px;
+        font-size: 16px;
         line-height: 1.4;
         color: @feat-text;
     }
@@ -256,7 +298,7 @@
     .lv-feat-note {
         font-family: @feat-font-body;
         font-weight: 400;
-        font-size: 13px;
+        font-size: 14px;
         line-height: 1.55;
         color: @feat-muted;
     }
@@ -265,6 +307,7 @@
     .lv-card-cta {
         padding: @sp-20 @sp-24 @sp-24;
         border-top: 1px solid @feat-border;
+        margin-top: auto;
     }
 
     .lv-register-btn {
@@ -281,12 +324,13 @@
         letter-spacing: 0.01em;
         text-decoration: none;
         border-radius: 12px;
-        transition: background-color 150ms ease;
+        transition: background-color 150ms ease, box-shadow 150ms ease;
 
         &:hover, &:focus {
             background-color: @feat-sage-dark;
             color: #ffffff;
             text-decoration: none;
+            box-shadow: 0 4px 12px rgba(113, 130, 110, 0.35);
         }
         &:visited {
             color: #ffffff;
@@ -303,7 +347,7 @@
         padding-top: @sp-32;
         border-top: 1px solid @feat-border;
         width: 100%;
-        max-width: 920px;
+        max-width: 940px;
         text-align: center;
 
         @media (max-width: 640px) {
@@ -318,7 +362,7 @@
         font-size: 15px;
         color: @feat-muted;
         margin: 0;
-        line-height: 1.6;
+        line-height: 1.65;
     }
 
     .lv-contact-link {
