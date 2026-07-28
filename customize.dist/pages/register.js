@@ -53,6 +53,13 @@ define([
                 type: 'button',
                 'aria-label': 'Toggle password visibility',
                 'data-target': targetId,
+                onclick: function () {
+                    // purely visual — only flips input type attribute
+                    var inp = document.getElementById(targetId);
+                    if (!inp) { return; }
+                    inp.type = (inp.type === 'password') ? 'text' : 'password';
+                    this.classList.toggle('lv-revealed');
+                },
             }, [
                 h('i.lv-eye-show', { 'data-lucide': 'eye', 'aria-hidden': 'true' }),
                 h('i.lv-eye-hide', { 'data-lucide': 'eye-off', 'aria-hidden': 'true' }),

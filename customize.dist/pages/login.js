@@ -8,7 +8,8 @@ define([
     '/customize/messages.js',
     '/customize/pages.js',
     '/api/config',
-], function (h, UI, Msg, Pages, Config) {
+    '/common/common-icons.js',
+], function (h, UI, Msg, Pages, Config, Icons) {
     return function () {
         document.title = Msg.login_login;
 
@@ -21,6 +22,25 @@ define([
             // skip login page
             return;
         }
+
+        // ── LadeVault: password-toggle helper (purely visual, type-only flip) ──
+        var pwToggle = function (targetId) {
+            return h('button.lv-pw-toggle', {
+                type: 'button',
+                'aria-label': 'Toggle password visibility',
+                onclick: function () {
+                    // purely visual — only flips input type attribute
+                    var inp = document.getElementById(targetId);
+                    if (!inp) { return; }
+                    inp.type = (inp.type === 'password') ? 'text' : 'password';
+                    this.classList.toggle('lv-revealed');
+                },
+            }, [
+                h('span.lv-eye-show', [Icons.get('password-reveal')]),
+                h('span.lv-eye-hide', [Icons.get('password-hide')]),
+            ]);
+        };
+
         return [h('div#cp-main', [
             Pages.infopageTopbar(),
             h('div.container.cp-container', [
@@ -30,8 +50,10 @@ define([
                     h('div#userForm.form-group.col-md-6'+ssoEnforced, [
                         h('div.cp-login-instance', Msg._getKey('login_instance', [ Pages.Instance.name ])),
                         h('div.big-container', [
-                            h('div.input-container', [
+                            // ── Username field with User icon ─────────────────
+                            h('div.input-container.lv-input-wrap', [
                                 h('label.cp-default-label', { for: 'name' }, Msg.login_username),
+                                h('span.lv-field-icon', [Icons.get('user-account')]),
                                 h('input.form-control#name', {
                                     name: 'name',
                                     type: 'text',
@@ -43,14 +65,17 @@ define([
                                     autofocus: true,
                                 }),
                             ]),
-                            h('div.input-container', [
+                            // ── Password field with Lock icon + toggle ────────
+                            h('div.input-container.lv-input-wrap', [
                                 h('label.cp-default-label', { for: 'password' }, Msg.login_password),
+                                h('span.lv-field-icon', [Icons.get('lock')]),
                                 h('input.form-control#password', {
                                     type: 'password',
                                     'name': 'password',
                                     placeholder: Msg.login_password,
                                     autocomplete: "current-password"
                                 }),
+                                pwToggle('password'),
                             ]),
                         ]),
                         h('div.checkbox-container', [
@@ -73,9 +98,13 @@ define([
                     ]),
                     h('div.col-md-3'+ssoEnabled),
                 ]),
+                // ── Encryption disclaimer with ShieldAlert icon ───────────────
                 h('div.row.cp-login-encryption', [
                     h('div.col-md-3'),
-                    h('div.col-md-6', Msg.register_warning_note),
+                    h('div.col-md-6', [
+                        h('span.lv-disclaimer-icon', [Icons.get('shield-alert')]),
+                        Msg.register_warning_note,
+                    ]),
                     h('div.col-md-3'),
                 ]),
             ]),

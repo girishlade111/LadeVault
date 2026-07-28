@@ -11,13 +11,41 @@
 @import (reference) "../include/forms.less";
 @import (reference) "../include/login.less";
 
+// ── LadeVault design tokens ─────────────────────────────────────────────────
+@lv-sage:         #71826E;
+@lv-sage-hover:   #61745E;
+@lv-sage-glow:    rgba(113, 130, 110, 0.15);
+@lv-border:       #E3E2D9;
+@lv-placeholder:  #9B9A95;
+@lv-card-bg:      #FFFFFF;
+@lv-page-bg:      #FEFEFE;
+@lv-title-fg:     #71826E;
+@lv-subtitle-fg:  #1B1B1B;
+@lv-disclaimer-fg:#77756F;
+@lv-warn-bg:      #FFF7E7;
+@lv-warn-fg:      #9A6A00;
+@lv-card-shadow:  0 10px 30px rgba(0, 0, 0, 0.06);
+@lv-radius-card:  20px;
+@lv-radius-input: 12px;
+@lv-radius-btn:   12px;
+@lv-input-h:      48px;
+@lv-btn-h:        48px;
+@lv-icon-color:   #9B9A95;
+@lv-icon-size:    18px;
+
+@lv-font-geist:   'Geist Sans', 'Inter', 'Helvetica Neue', sans-serif;
+@lv-font-inter:   'Inter', 'Helvetica Neue', sans-serif;
+
 &.cp-page-register {
     .infopages_main();
     .forms_main();
-
     .alertify_main();
     .checkmark_main(20px);
 
+    // ── Page background ────────────────────────────────────────────────────
+    background-color: @lv-page-bg;
+
+    // ── Registration-closed handling (unchanged logic) ─────────────────────
     &:not(.cp-register-closed) {
         .cp-restricted-registration {
             display: none;
@@ -32,40 +60,345 @@
         }
     }
 
+    // ── Container ─────────────────────────────────────────────────────────
     .cp-container {
-        .form-group {
-            .cp-register-instance {
-                text-align: center;
-                margin-bottom: 10px;
-            }
-            #register {
-                &.btn {
-                    padding: .5rem .5rem;
-                }
-                margin-top: 16px;
-                font-size: 1.25em;
-                min-width: 30%;
-            }
-        }
-        .input-container {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            input {
-                margin-top: 5px;
-            }
-        }
-        .cp-register-label { display: none; }
-        padding-bottom: 3em;
+        padding-top: 64px;
+        padding-bottom: 60px;
         min-height: 5vh;
+
+        .cp-hidden {
+            display: none !important;
+        }
     }
+
+    // ── Hero heading ──────────────────────────────────────────────────────
+    .cp-page-title {
+        text-align: center;
+        margin-bottom: 48px;
+        h1 {
+            font-family: @lv-font-geist;
+            font-weight: 700;
+            font-size: 60px;
+            line-height: 1.1;
+            color: @lv-title-fg;
+            margin: 0 auto 40px auto;
+            letter-spacing: -0.5px;
+        }
+    }
+
+    // ── Two-column register layout ─────────────────────────────────────────
+    .cp-register-det {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 0 16px;
+
+        .cp-hidden {
+            display: none !important;
+        }
+        .login_main();
+    }
+
+    // ── LEFT column: Important notes ──────────────────────────────────────
+    .lv-notes-col,
+    #data {
+        flex: 0 1 400px;
+        min-width: 280px;
+
+        h2 {
+            font-family: @lv-font-geist;
+            font-weight: 700;
+            font-size: 22px;
+            color: @lv-subtitle-fg;
+            margin-bottom: 20px;
+            padding-left: 0 !important;
+        }
+
+        .cp-register-notes {
+            ul.cp-notes-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+
+                li.lv-note-item {
+                    display: flex;
+                    align-items: flex-start;
+                    gap: 12px;
+                    margin-bottom: 20px;
+                    background-color: @lv-warn-bg;
+                    border: 1px solid fade(@lv-warn-fg, 20%);
+                    border-radius: 12px;
+                    padding: 16px;
+
+                    .lv-note-icon {
+                        flex-shrink: 0;
+                        margin-top: 1px;
+                        color: @lv-warn-fg !important;
+                        .lucide {
+                            width: 20px !important;
+                            height: 20px !important;
+                            margin: 0 !important;
+                            stroke-width: 2;
+                            color: @lv-warn-fg;
+                            stroke: @lv-warn-fg;
+                        }
+                        svg {
+                            color: @lv-warn-fg;
+                            stroke: @lv-warn-fg;
+                        }
+                    }
+
+                    .lv-note-text {
+                        font-family: @lv-font-inter;
+                        font-size: 14px;
+                        line-height: 1.6;
+                        color: @lv-subtitle-fg;
+
+                        // Override old red/pink highlight → warm amber
+                        .red, span.red {
+                            background-color: @lv-warn-bg !important;
+                            color: @lv-warn-fg !important;
+                            border-radius: 4px;
+                            padding: 2px 4px;
+                            font-weight: 600;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // ── RIGHT column: Registration form card ──────────────────────────────
+    .cp-reg-form {
+        flex: 0 1 480px;
+        min-width: 280px;
+
+        #userForm {
+            background-color: @lv-card-bg !important;
+            border: 1px solid @lv-border !important;
+            border-radius: @lv-radius-card !important;
+            box-shadow: @lv-card-shadow !important;
+            padding: 40px !important;
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto !important;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+
+            // Card subtitle
+            .cp-register-instance {
+                font-family: @lv-font-inter;
+                font-weight: 500;
+                font-size: 18px;
+                color: @lv-subtitle-fg;
+                text-align: center;
+                margin-bottom: 28px !important;
+                line-height: 1.5;
+
+                a {
+                    color: @lv-sage;
+                    text-decoration: none;
+                    font-size: 14px;
+                    display: block;
+                    margin-top: 4px;
+                    &:hover {
+                        text-decoration: underline;
+                        color: @lv-sage-hover;
+                    }
+                }
+            }
+
+            // Hide register label (icons replace them visually)
+            .cp-register-label {
+                display: none !important;
+            }
+
+            // ── Input container with icons ─────────────────────────────
+            .big-container {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                margin-bottom: 16px;
+            }
+
+            .input-container,
+            .lv-input-wrap {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            // Left inset icon
+            .lv-field-icon {
+                position: absolute;
+                left: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: @lv-icon-color;
+                display: flex;
+                align-items: center;
+                pointer-events: none;
+                z-index: 2;
+                .lucide {
+                    width: @lv-icon-size;
+                    height: @lv-icon-size;
+                    margin: 0;
+                    stroke-width: 1.75;
+                }
+            }
+
+            // Input field overrides
+            .form-control {
+                height: @lv-input-h !important;
+                padding: 0 42px 0 42px !important;
+                border-radius: @lv-radius-input !important;
+                border: 1.5px solid @lv-border !important;
+                background-color: @lv-card-bg !important;
+                color: @lv-subtitle-fg !important;
+                font-family: @lv-font-inter;
+                font-size: 15px;
+                margin-bottom: 0 !important;
+                transition: border-color 0.18s ease, box-shadow 0.18s ease;
+                width: 100%;
+                &::placeholder {
+                    color: @lv-placeholder;
+                    opacity: 1;
+                }
+                &:focus {
+                    border-color: @lv-sage !important;
+                    box-shadow: 0 0 0 3px @lv-sage-glow !important;
+                    outline: none !important;
+                }
+            }
+
+            // Password visibility toggle (purely visual)
+            .lv-pw-toggle {
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: transparent;
+                border: none;
+                padding: 4px;
+                cursor: pointer;
+                color: @lv-icon-color;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 6px;
+                z-index: 3;
+                transition: color 0.15s ease;
+                margin: 0;
+                &:hover {
+                    color: @lv-sage;
+                    background-color: transparent;
+                }
+                &:focus-visible {
+                    outline: 2px solid @lv-sage;
+                    outline-offset: 2px;
+                }
+                .lv-eye-show,
+                .lv-eye-hide {
+                    display: flex;
+                    align-items: center;
+                }
+                .lv-eye-hide {
+                    display: none;
+                }
+                &.lv-revealed {
+                    color: @lv-sage;
+                    .lv-eye-show { display: none; }
+                    .lv-eye-hide { display: flex; }
+                }
+                .lucide {
+                    width: @lv-icon-size;
+                    height: @lv-icon-size;
+                    margin: 0;
+                    stroke-width: 1.75;
+                }
+            }
+
+            // ── Custom checkbox ────────────────────────────────────────
+            .checkbox-container {
+                margin: 4px 0 12px 0;
+                .cp-checkmark {
+                    .cp-checkmark-mark {
+                        border-radius: 6px !important;
+                        border-color: @lv-border !important;
+                        width: 20px;
+                        height: 20px;
+                        transition: background-color 0.15s ease, border-color 0.15s ease;
+                    }
+                    input:checked ~ .cp-checkmark-mark {
+                        background-color: @lv-sage !important;
+                        border-color: @lv-sage !important;
+                    }
+                    &:hover .cp-checkmark-mark {
+                        border-color: @lv-sage !important;
+                        background-color: @lv-sage-glow !important;
+                    }
+                }
+                .cp-checkmark-label {
+                    font-family: @lv-font-inter;
+                    font-size: 14px;
+                    color: @lv-disclaimer-fg;
+                }
+            }
+
+            // ── Register (Sign up) primary button ──────────────────────
+            button#register {
+                background-color: @lv-sage !important;
+                color: #FFFFFF !important;
+                border: none !important;
+                border-radius: @lv-radius-btn !important;
+                height: @lv-btn-h;
+                width: 100%;
+                padding: 0 !important;
+                font-family: @lv-font-inter;
+                font-size: 15px;
+                font-weight: 700;
+                cursor: pointer;
+                margin-top: 20px !important;
+                min-width: unset;
+                box-shadow: 0 2px 8px rgba(113, 130, 110, 0.25);
+                transition: background-color 0.18s ease, box-shadow 0.18s ease;
+                &:hover {
+                    background-color: @lv-sage-hover !important;
+                    box-shadow: 0 4px 12px rgba(113, 130, 110, 0.35);
+                }
+                &:focus-visible {
+                    outline: 2px solid @lv-sage;
+                    outline-offset: 3px;
+                }
+            }
+        }
+
+        // SSO form card
+        #ssoForm {
+            background-color: @lv-card-bg;
+            border: 1px solid @lv-border;
+            border-radius: @lv-radius-card;
+            box-shadow: @lv-card-shadow;
+            padding: 40px;
+            max-width: 480px;
+            margin: 20px auto 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+    }
+
+    // ── Alertify overrides ────────────────────────────────────────────────
     .alertify {
-        // workaround for alertify making empty p
         p:empty {
             display: none;
         }
-
         nav {
             display: flex;
             justify-content: flex-end;
@@ -74,68 +407,40 @@
                 white-space: normal;
             }
         }
-
     }
+
     .cp-restricted-registration {
         text-align: center !important;
     }
 
-    .cp-register-det {
+    // ── Responsive ────────────────────────────────────────────────────────
+    @media (max-width: 900px) {
+        .cp-register-det {
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+        }
+        .lv-notes-col,
         #data {
-
-            p {
-                li {
-                    margin-bottom: 1em;
-                }
-            }
-            h3 {
-                font-weight: 700;
-                margin-bottom: 1em;
-            }
+            flex: 0 1 100%;
+            max-width: 480px;
         }
         .cp-reg-form {
-            img {
-                margin-top: 0px;
-                position: relative;
-                z-index: 0;
-            }
+            flex: 0 1 100%;
+            max-width: 480px;
         }
-        .cp-hidden {
-            display: none !important;
+    }
+
+    @media (max-width: 600px) {
+        .cp-container {
+            padding-top: 40px;
         }
-        .login_main();
-        #userForm, #ssoForm {
-            position: relative;
-            z-index: 2;
-            max-width: 100%;
-            padding: 15px;
-            .checkbox-container {
-                margin-top: 0.5rem;
-            }
-            button#register {
-                margin-top: 10px;
-            }
+        .cp-page-title h1 {
+            font-size: 42px;
+            margin-bottom: 28px;
         }
-        #ssoForm {
-            margin-top: 15px;
-        }
-        h2 {
-            padding-left: 30px;
-        }
-        .cp-register-notes {
-            ul.cp-notes-list {
-                list-style: none;
-                margin-left: 0;
-                padding-left: 30px;
-                position: relative;
-                li {
-                    margin-bottom: 10px;
-                    .red {
-                        background-color: @cp_static-danger;
-                    }
-                }
-            }
+        .cp-reg-form #userForm {
+            padding: 28px 20px !important;
         }
     }
 }
-
