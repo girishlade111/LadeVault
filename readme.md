@@ -1,3 +1,11 @@
+# LadeVault
+
+**LadeVault** is an end-to-end encrypted, open-source collaboration suite — girish Lade's private-collaboration product in the [LadeStack](https://ladestack.in) family. It is built on [CryptPad](https://cryptpad.org) (AGPL-3.0-or-later) and adds real-time collaborative documents, spreadsheets, presentations, whiteboards, kanban boards, and code editing — all encrypted so that even the server operator cannot read your content.
+
+**Built by [Girish Lade](https://github.com/girishlade111)** — part of [LadeStack](https://ladestack.in).
+
+---
+
 <!--
 SPDX-FileCopyrightText: 2023 XWiki CryptPad Team <contact@cryptpad.org> and contributors
 
